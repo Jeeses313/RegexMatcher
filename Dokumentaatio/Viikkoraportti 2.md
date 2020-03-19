@@ -21,7 +21,7 @@ Viikon aikana työhön käytettyjä tunteja: 9
 ### Seuraavaksi tehtäviä asioita  
 * Sulkujen toiminnan toteutus.  
 * Plussan ja tähden toiminnan korjaus/toteutus.  
-* Tai operaation toetutus.  
+* Tai operaation toteutus.  
 * DFA:n muodostamiseen käytettävien ratkaisujen pohtiminen.  
 * Muita 3. viikolla vaadittuja asioita.  
 

@@ -40,7 +40,7 @@ JavaDoc löytyy: _target/site/apidocs/index.html_
 
 #### Checkstyle
 
-Tiedostossa [checkstyle.xml]() määrittellyt tarkistukset komennolla:
+Tiedostossa [checkstyle.xml](https://github.com/Jeeses313/RegexMatcher/blob/master/RegexMatcher/checkstyle.xml) määrittellyt tarkistukset komennolla:
 
 ```
 mvn jxr:jxr checkstyle:checkstyle
