@@ -9,9 +9,10 @@ Valitsin ratkaistavaksi ongelmaksi säännöllisten lauseiden tulkin, koska aihe
 ### Ohjelman saama syöte ja sen käyttö 
 Ohjelman on tarkoitus ottaa ensin syötteenä säännöllinen lauseke, josta muodostetaan automaatti, jos se on mahdollista. Tämän jälkeen syötteeksi voidaan antaa merkkijonoja, joista kerrotaan, kuuluvatko ne säännöllisen lausekkeen kieleen.  
 Säännöllisten lausekkeiden määrittelyssä käytettävä kieli:  
-A={w kuuluu {0, ..., 9, a, ..., z, A, ..., Z, (, ), [, ], -, ., *, +, |}* | w sisältää yhtä monta ( ja ) ja w sisältää yhtä monta [ ja ]} 
+A={w kuuluu {0, ..., 9, a, ..., z, A, ..., Z, (, ), [, ], -, ., *, +, |}* | w sisältää yhtä monta ( ja ), w sisältää yhtä monta [ ja ], ja - esiintyy vain [ ja ] välissä siten, että sitä ennen oleva merkki on kirjain tai numero ja sen jälkeen on samaa tyyppiä oleva ja järjestyksessä jälkimmäisenä oleva merkki}  
+ja kaikkien säännöllisten lausekkeiden määrittelemien kielten aakkosto on {a, ..., z, A, ..., Z, 0, ..., 9}
 ### Tavoite aika- ja tilavaativuudet
-Tavoitteena olisi päästä automaatin muodostuksen kannalta aika- ja tilavaativuuteen O(2^m), jossa m on säännöllisen lausekkeen pituus, ja merkkijonon tarkistuksen kannalta tilavaativuuteen O(1) ja aikavaativuuteen O(n), jossa n on merkkijonon pituus, jos saan tehtyä: säännöllinenlauseke -> NFA -> DFA.  
+Tavoitteena olisi päästä automaatin muodostuksen kannalta aika- ja tilavaativuuteen O(2^m), jossa m on säännöllisen lausekkeen pituus, ja merkkijonon tarkistuksen kannalta tilavaativuuteen O(1) ja aikavaativuuteen O(n), jossa n on merkkijonon pituus, jos saan tehtyä: säännöllinen lauseke -> NFA -> DFA.  
 Jos saan tehtyä vain: säännöllinen lauseke -> NFA, niin automaatin muodostuksen tavoite tila- ja aikavaativuudelle on O(m) ja merkkijonon tarkistukselle tilavaativuus on O(m) ja aikavaativuus O(nm^2).  
 ### Lähteet
 * [https://en.wikipedia.org/wiki/Regular_expression](https://en.wikipedia.org/wiki/Regular_expression)  
