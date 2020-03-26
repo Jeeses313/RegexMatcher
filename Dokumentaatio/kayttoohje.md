@@ -47,13 +47,3 @@ mvn jxr:jxr checkstyle:checkstyle
 ```
 
 Mahdolliset virheilmoitukset löytyy: _target/site/checkstyle.html_
-
-#### JavaDoc
-
-JavaDoc komennolla:
-
-```
-mvn javadoc:javadoc
-```
-
-JavaDoc löytyy: _target/site/apidocs/index.html_

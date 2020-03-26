@@ -1,24 +1,20 @@
 package regexmatcher;
 
-import java.util.ArrayList;
-
 /**
  * Säännöllisen lausekkeen kieleen kuulumisen tarkistamiseen käytettävä luokka.
  */
 public class Matcher {
 
-    private ArrayList<Node> automate;
-    private int currentState;
-    private int index;
+    private List<Node> automate;
 
     /**
      * Luokan konstruktori, jolle annetaan parametriksi Nodeja sisältävä lista,
      * joka toimii automaattina/verkkona ja jolla kieleen kuulumisen tarkistus
      * suoritetaan.
      *
-     * @param automate ArrayList, jolla kielen kuulumisen tarkistus suoritetaan.
+     * @param automate List, jolla kielen kuulumisen tarkistus suoritetaan.
      */
-    public Matcher(ArrayList<Node> automate) {
+    public Matcher(List<Node> automate) {
         this.automate = automate;
     }
 
@@ -32,45 +28,13 @@ public class Matcher {
         if (automate == null) {
             return false;
         }
-        index = 0;
-        currentState = 0;
-        while (true) {
-            char character = string.charAt(index);
-            boolean found = searchEdges(character);
-            if (!found || !isStandardChar(character)) {
-                return false;
+        if (string.length() == 0) {
+            if (automate.get(0).isEnd()) {
+                return true;
             }
-            index++;
-            if (index >= string.length()) {
-                break;
-            }
+            string = Character.toString((char) 0);
         }
-        return automate.get(currentState).isEnd();
-    }
-
-    /**
-     * Käy läpi tällä hetkellä olevan tilan vieruslistan kaaria ja etsii, onko
-     * siellä kaarta, jolla voidaan edetä.
-     *
-     * @param character char, jonka sopivuutta merkkijonon kyseisessä kohdassa
-     * tutkitaan.
-     * @return Totuusarvo, joka kertoo sopiiko merkki, eli voidaanko edetä.
-     */
-    private boolean searchEdges(char character) {
-        boolean edgeFound = false;
-        for (Edge edge : automate.get(currentState).getEdgeList()) {
-            if (edge.getCaharacter() == character || edge.getCaharacter() == '.') {
-                currentState = edge.getGoalNode();
-                edgeFound = true;
-                break;
-            } else if (edge.getCaharacter() == 0) {
-                currentState = edge.getGoalNode();
-                edgeFound = true;
-                index--;
-                break;
-            }
-        }
-        return edgeFound;
+        return search(string, 0, 0);
     }
 
     /**
@@ -81,6 +45,15 @@ public class Matcher {
      */
     public boolean getWorks() {
         return automate != null;
+    }
+
+    /**
+     * Palauttaa automaatin.
+     *
+     * @return List, joka sisältää automaatin tilat.
+     */
+    public List<Node> getAutomate() {
+        return automate;
     }
 
     /**
@@ -96,4 +69,56 @@ public class Matcher {
         return false;
     }
 
+    /**
+     * Käy automaattia läpi syvyyshaulla.
+     *
+     * @param string String, jonka kuulumista tarkistetaan.
+     * @param index int, joka kertoo tutkittavan merkin indeksin.
+     * @param state int, joka kertoo tämän hetkisen tilan.
+     * @return Totuusarvo, joka kertoo ollaanko päästy hyväksyvään tilaan
+     * kaikkien merkkien läpikäymisen jälkeen.
+     */
+    private boolean search(String string, int index, int state) {
+        char currentChar = (char) 174;
+        if (index >= string.length()) {
+            if (automate.get(state).isEnd()) {
+                return true;
+            }
+        } else {
+            currentChar = string.charAt(index);
+            if (!isStandardChar(currentChar) && (int) currentChar != 0) {
+                return false;
+            }
+        }
+        boolean result = false;
+        for (int i = 0; i < automate.get(state).getEdgeList().size(); i++) {
+            Edge edge = automate.get(state).getEdgeList().get(i);
+            if (result) {
+                break;
+            }
+            if (edge.getCaharacter() == currentChar) {
+                result = search(string, index + 1, edge.getGoalNode());
+            } else if (edge.getCaharacter() == (char) 0) {
+                result = search(string, index, edge.getGoalNode());
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Tulostaa automaatin.
+     */
+    public void printAutomate() {
+        for (int i = 0; i < automate.size(); i++) {
+            Node node = automate.get(i);
+            System.out.println("State: " + i + " Is end: " + node.isEnd());
+            System.out.println("Edges(char --> goal state): ");
+            for (int j = 0; j < node.getEdgeList().size(); j++) {
+                Edge edge = node.getEdgeList().get(j);
+                System.out.println(edge.getCaharacter() + " --> " + edge.getGoalNode());
+            }
+            System.out.println("");
+        }
+        System.out.println("");
+    }
 }

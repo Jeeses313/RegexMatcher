@@ -1,33 +1,43 @@
 package regexmatcher;
 
-import java.util.ArrayList;
-
 /**
  * Luokka, joka toimii verkon solmuna.
  */
 public class Node {
 
-    private ArrayList<Edge> edgeList;
+    /**
+     * Vieruslista.
+     */
+    private List<Edge> edgeList;
+    /**
+     * Totuusarvo, joka kertoo, onko solmu automaatin hyväksyvä tila
+     */
     private boolean isEnd;
 
     /**
-     * Luokan konstruktori, joka saa parametrina totuusarvon, onko solmu
-     * automaatin hyväksyvä tila.
-     *
-     * @param isEnd boolean, joka kertoo, onko solmu automaatin hyväksyvä tila
+     * Luokan konstruktori.
      */
-    public Node(boolean isEnd) {
-        this.edgeList = new ArrayList<>();
-        this.isEnd = isEnd;
+    public Node() {
+        this.edgeList = new List<>();
+        this.isEnd = false;
     }
 
     /**
      * Palauttaa solmun vieruslistan.
      *
-     * @return ArrayList, joka on solmun vieruslista.
+     * @return List, joka on solmun vieruslista.
      */
-    public ArrayList<Edge> getEdgeList() {
+    public List<Edge> getEdgeList() {
         return edgeList;
+    }
+
+    /**
+     * Asettaa annetun vieruslistan solmun vieruslistaksi.
+     *
+     * @param edgeList List, joka on solmun uusi vieruslista.
+     */
+    public void setEdgeList(List<Edge> edgeList) {
+        this.edgeList = edgeList;
     }
 
     /**

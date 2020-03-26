@@ -31,7 +31,14 @@ public class TextUserInterface {
             if (expression.equals("-q")) {
                 break;
             }
-            Matcher matcher = mfactory.createMatcher(expression);
+            if (expression.equals("-i")) {
+                printInstructions();
+                continue;
+            }
+            Matcher matcher;
+            boolean printNfa = requestBoolean("Print NFA?(y/n): ");
+            boolean printDfa = requestBoolean("Print DFA?(y/n): ");
+            matcher = mfactory.createMatcher(expression, printNfa, printDfa);
             if (matcher.getWorks()) {
                 boolean end = matchStrings(matcher);
                 if (end) {
@@ -51,13 +58,14 @@ public class TextUserInterface {
         System.out.println("Regular expression matcher");
         System.out.println("Syntax:");
         System.out.println("- * = previous 0-n times");
-        System.out.println("- + = prveious 1-n times");
+        System.out.println("- + = previous 1-n times");
         System.out.println("- | = or");
         System.out.println("- [a-z], [A-Z] and [0-9]");
         System.out.println("- ()");
         System.out.println("- . = {0, ... 9, a, ... z, A, ..., Z}");
         System.out.println("Type -q at any time to quit");
         System.out.println("Type -r to change regular expression");
+        System.out.println("Type -i at any time to get these instructions");
     }
 
     /**
@@ -70,6 +78,18 @@ public class TextUserInterface {
     private String requestInput(String request) {
         System.out.println(request);
         return reader.nextLine();
+    }
+
+    /**
+     * Tulostaa parametrina annetun kysymyksen ja palauttaa vastauksen
+     * totuusarvona.
+     *
+     * @param request String, joka esitetään kysymyksenä ennen syötteen antoa.
+     * @return Totuusarvo, jota luettu vastaus vastaa.
+     */
+    private boolean requestBoolean(String request) {
+        String answer = requestInput(request);
+        return (answer.equals("Y") || answer.equals("y"));
     }
 
     /**
@@ -95,20 +115,21 @@ public class TextUserInterface {
      *
      * @param matcher Matcher, jolla tarkistetaan annetun merkkijonon kieleen
      * kuuluminen.
-     * @return Totuusarvo, joka kertoo lopetetaanko ohjelma vai pyydetäänkö uutta 
-     * säännöllistä lauseketta.
+     * @return Totuusarvo, joka kertoo lopetetaanko ohjelma vai pyydetäänkö
+     * uutta säännöllistä lauseketta.
      */
     private boolean matchStrings(Matcher matcher) {
         while (true) {
             String string = requestInput("Give string: ");
-            if (string.isEmpty()) {
-                continue;
-            }
             if (string.equals("-q")) {
                 return true;
             }
             if (string.equals("-r")) {
                 return false;
+            }
+            if (string.equals("-i")) {
+                printInstructions();
+                continue;
             }
             match(string, matcher);
         }

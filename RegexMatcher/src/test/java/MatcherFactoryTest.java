@@ -9,19 +9,19 @@ public class MatcherFactoryTest {
 
     @Test
     public void canCreateWorkingMatcherWithValidRegularExpression() {
-        Matcher matcher = new MatcherFactory().createMatcher("a");
+        Matcher matcher = new MatcherFactory().createMatcher("a", false, false);
         assertTrue(matcher.getWorks());
     }
 
     @Test
     public void returnsNonWorkingMatcherWithInvalidRegularExpression() {
-        Matcher matcher = new MatcherFactory().createMatcher("[a-");
+        Matcher matcher = new MatcherFactory().createMatcher("[a-", false, false);
         assertFalse(matcher.getWorks());
     }
 
     @Test
     public void returnsNonWorkingMatcherWithEmptyRegularExpression() {
-        Matcher matcher = new MatcherFactory().createMatcher("");
+        Matcher matcher = new MatcherFactory().createMatcher("", false, false);
         assertFalse(matcher.getWorks());
     }
 }

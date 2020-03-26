@@ -37,7 +37,7 @@ public class TextUserInterfaceTest {
 
     @Test
     public void canGiveWorkingRegularExpressionAndThenMatchStrings() {
-        TextUserInterface tui = new TextUserInterface(new Scanner(join(new String[]{"aa", "aa", "ab", "-q"})));
+        TextUserInterface tui = new TextUserInterface(new Scanner(join(new String[]{"aa", "n", "n", "aa", "ab", "-q"})));
         tui.start();
         String[] output = outContent.toString().split("\n");
         assertTrue(output[output.length - 7].startsWith("Give string:"));
@@ -46,28 +46,53 @@ public class TextUserInterfaceTest {
     }
 
     @Test
-    public void emptyStringAfterRegularExpressionAsksStringAgain() {
-        TextUserInterface tui = new TextUserInterface(new Scanner(join(new String[]{"aa", "", "-q"})));
+    public void canChangeRegularExpression() {
+        TextUserInterface tui = new TextUserInterface(new Scanner(join(new String[]{"aa", "n", "n", "-r", "ab", "n", "n", "-q"})));
         tui.start();
         String[] output = outContent.toString().split("\n");
-        assertTrue(output[output.length - 4].startsWith("Give string:"));
+        assertTrue(output[output.length - 10].startsWith("Give regular expression:"));
+        assertTrue(output[output.length - 7].startsWith("Give string:"));
+        assertTrue(output[output.length - 6].startsWith("Give regular expression:"));
         assertTrue(output[output.length - 3].startsWith("Give string:"));
     }
 
     @Test
-    public void canChangeRegularExpression() {
-        TextUserInterface tui = new TextUserInterface(new Scanner(join(new String[]{"aa", "-r", "ab", "-q"})));
+    public void canPrintInstructionsWhenGivingRegularExpression() {
+        TextUserInterface tui = new TextUserInterface(new Scanner(join(new String[]{"-i", "-q"})));
         tui.start();
         String[] output = outContent.toString().split("\n");
-        assertTrue(output[output.length - 6].startsWith("Give regular expression:"));
-        assertTrue(output[output.length - 5].startsWith("Give string:"));
-        assertTrue(output[output.length - 4].startsWith("Give regular expression:"));
-        assertTrue(output[output.length - 3].startsWith("Give string:"));
+        assertTrue(output[output.length - 4].startsWith("Type -i at any time to get these instructions"));
+    }
+
+    @Test
+    public void canPrintInstructionsWhenGivingStrings() {
+        TextUserInterface tui = new TextUserInterface(new Scanner(join(new String[]{"aa", "n", "n", "-i", "-q"})));
+        tui.start();
+        String[] output = outContent.toString().split("\n");
+        assertTrue(output[output.length - 4].startsWith("Type -i at any time to get these instructions"));
+    }
+
+    @Test
+    public void canPrintNFA() {
+        TextUserInterface tui = new TextUserInterface(new Scanner(join(new String[]{"a*b", "y", "n", "-q"})));
+        tui.start();
+        String[] output = outContent.toString().split("\n");
+        assertTrue(output[output.length - 7].startsWith("State: 4 Is end: true"));
+        assertTrue(output[output.length - 6].startsWith("Edges(char --> goal state):"));
+    }
+    
+    @Test
+    public void canPrintDFA() {
+        TextUserInterface tui = new TextUserInterface(new Scanner(join(new String[]{"a*b", "n", "y", "-q"})));
+        tui.start();
+        String[] output = outContent.toString().split("\n");
+        assertTrue(output[output.length - 7].startsWith("State: 2 Is end: true"));
+        assertTrue(output[output.length - 6].startsWith("Edges(char --> goal state): "));
     }
 
     @Test
     public void cannotGiveStringaAfterGivingNonWorkingRegularExpression() {
-        TextUserInterface tui = new TextUserInterface(new Scanner(join(new String[]{"[a-", "-q"})));
+        TextUserInterface tui = new TextUserInterface(new Scanner(join(new String[]{"[a-", "n", "n", "-q"})));
         tui.start();
         String[] output = outContent.toString().split("\n");
         assertTrue(output[output.length - 4].startsWith("Give real regular expression"));
