@@ -34,7 +34,9 @@ public class DFAfactory {
         automate = new List<>();
         dfa = new List<>();
         dfaFormed = new List<>();
-        formCurrentNode(0);
+        List<Integer> stateList = new List<>();
+        stateList.add(0);
+        formCurrentNode(stateList);
         formDFA(0);
         formAutomate();
         return automate;
@@ -58,16 +60,21 @@ public class DFAfactory {
 
     /**
      * Muodostaa yhdistetyn tilan, eli kaikkien tyhjien merkkien siirtymien
-     * päässä olevan tilan, jossa annetussa NFA:n tilassa ollaan.
+     * päässä olevan tilan, jossa annetuissa NFA:n tiloissa ollaan.
      *
-     * @param state int, joka viittaa NFA:n tilaan, jossa tällä hetkellä ollaan.
+     * @param stateList List, joka viittaa NFA:n tiloihin, joissa tällä hetkellä
+     * ollaan.
      * @return int, joka viittaa muodostettuun yhdistettyyn tilaan yhdistettyjen
      * tilojen listassa.
      */
-    private int formCurrentNode(int state) {
+    private int formCurrentNode(List<Integer> stateList) {
         DFAnode currentNode = new DFAnode();
-        currentNode.getNodeList().add(state);
-        nodeSearch(state, currentNode);
+        for (int i = 0; i < stateList.size(); i++) {
+            if (!currentNode.getNodeList().contains(stateList.get(i))) {
+                currentNode.getNodeList().add(stateList.get(i));
+                nodeSearch(stateList.get(i), currentNode);
+            }
+        }
         if (dfa.contains(currentNode)) {
             for (int i = 0; i < dfa.size(); i++) {
                 if (dfa.get(i).equals(currentNode)) {
@@ -125,22 +132,48 @@ public class DFAfactory {
      */
     private void formDFA(int state) {
         Stack<Integer> dfaGoalStack = new Stack<>();
+        List<Character> edgeCharacters = new List<>();
+        List<List<Integer>> nfaGoalList = new List<>();
+        collectEdges(state, edgeCharacters, nfaGoalList);
+        for (int i = 0; i < edgeCharacters.size(); i++) {
+            int dfaGoal = formCurrentNode(nfaGoalList.get(i));
+            dfa.get(state).getEdgeList().add(new Edge(dfaGoal, edgeCharacters.get(i)));
+            if (!dfaFormed.contains(dfaGoal)) {
+                dfaFormed.add(dfaGoal);
+                dfaGoalStack.push(dfaGoal);
+            }
+        }
+        while (!dfaGoalStack.isEmpty()) {
+            formDFA(dfaGoalStack.pop());
+        }
+    }
+
+    /**
+     * Käy yhdistetyn tilan sisältämien solmujen kaaria ja lisää niiden
+     * kirjaimet ja kirjaimia vastaavat maalisolmut annetuille listoille.
+     *
+     * @param state int, joka viittaa yhdistettyyn tilaan, jonka kaaria käydään
+     * läpi.
+     * @param edgeCharacters List, johon kaarien kirjaimet talletetaan.
+     * @param nfaGoalList List, jonka sisältämiin listoihin kaarien kirjaimia
+     * vastaavat maalisomut talletetaan.
+     */
+    private void collectEdges(int state, List<Character> edgeCharacters, List<List<Integer>> nfaGoalList) {
         for (int i = 0; i < dfa.get(state).getNodeList().size(); i++) {
             Node node = nfa.get(dfa.get(state).getNodeList().get(i));
             for (int j = 0; j < node.getEdgeList().size(); j++) {
                 Edge edge = node.getEdgeList().get(j);
                 if (edge.getCaharacter() != (char) 0) {
-                    int dfaGoal = formCurrentNode(edge.getGoalNode());
-                    dfa.get(state).getEdgeList().add(new Edge(dfaGoal, edge.getCaharacter()));
-                    if (!dfaFormed.contains(dfaGoal)) {
-                        dfaFormed.add(dfaGoal);
-                        dfaGoalStack.push(dfaGoal);
+                    int index = edgeCharacters.indexOf(edge.getCaharacter());
+                    if (index != -1 && !nfaGoalList.get(index).contains(edge.getGoalNode())) {
+                        nfaGoalList.get(index).add(edge.getGoalNode());
+                    } else if (index == -1) {
+                        edgeCharacters.add(edge.getCaharacter());
+                        nfaGoalList.add(new List<>());
+                        nfaGoalList.get(nfaGoalList.size() - 1).add(edge.getGoalNode());
                     }
                 }
             }
-        }
-        while (!dfaGoalStack.isEmpty()) {
-            formDFA(dfaGoalStack.pop());
         }
     }
 

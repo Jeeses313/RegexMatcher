@@ -4,14 +4,14 @@ import org.junit.Test;
 import regexmatcher.List;
 
 public class ListTest {
-    
+
     @Test
     public void newListSizeIsZero() {
         List<Integer> list = new List<>();
         assertEquals(0, list.size());
         assertTrue(list.isEmpty());
     }
-    
+
     @Test
     public void addGrowsListSizeCorrectlyAndMakesItNonEmpty() {
         List<Integer> list = new List<>();
@@ -21,7 +21,7 @@ public class ListTest {
         assertEquals(100, list.size());
         assertFalse(list.isEmpty());
     }
-    
+
     @Test
     public void canGetIndex() {
         List<Integer> list = new List<>();
@@ -32,7 +32,7 @@ public class ListTest {
         assertEquals(2, (int) list.get(1));
         assertEquals(3, (int) list.get(2));
     }
-    
+
     @Test
     public void canCheckIfListContains() {
         List<Integer> list = new List<>();
@@ -41,5 +41,24 @@ public class ListTest {
         list.add(3);
         assertFalse(list.contains(4));
         assertTrue(list.contains(2));
+    }
+
+    @Test
+    public void canGetIndexOfObjectWhenItIsOnList() {
+        List<Integer> list = new List<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        assertEquals(1, list.indexOf(2));
+        assertEquals(2, list.indexOf(3));
+    }
+
+    @Test
+    public void indexOfReturnsMinusOneWhenObjectIsNotOnList() {
+        List<Integer> list = new List<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        assertEquals(-1, list.indexOf(4));
     }
 }

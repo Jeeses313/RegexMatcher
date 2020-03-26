@@ -80,7 +80,7 @@ public class TextUserInterfaceTest {
         assertTrue(output[output.length - 7].startsWith("State: 4 Is end: true"));
         assertTrue(output[output.length - 6].startsWith("Edges(char --> goal state):"));
     }
-    
+
     @Test
     public void canPrintDFA() {
         TextUserInterface tui = new TextUserInterface(new Scanner(join(new String[]{"a*b", "n", "y", "-q"})));

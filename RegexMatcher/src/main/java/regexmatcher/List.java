@@ -90,4 +90,21 @@ public class List<T> {
         }
         return false;
     }
+
+    /**
+     * Palauttaa kokonaisluvun, joka kertoo annettun objektin indeksin.
+     * Palauttaa -1, jos objektia ei ole listassa.
+     *
+     * @param t Objekti, jonka indeksiä haetaan.
+     * @return int, joka on annetun objektin indeksi. Palauttaa -1, jos objektia
+     * ei ole listassa.
+     */
+    public int indexOf(T t) {
+        for (int i = 0; i < size; i++) {
+            if (list[i].equals(t)) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }
