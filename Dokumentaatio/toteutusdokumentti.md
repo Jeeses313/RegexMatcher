@@ -72,6 +72,7 @@ Näin aikavaativuus on O(n), jossa n on annetun merkkijonon pituus.
 Koska tässä ei käytetä apuna listoja yms., vaan vain kokonaislukuja ja totuusarvoja, kun ajatellaan automaatin olevan valmiina käytettävissä, tilavaativuus on O(1).  
 
 ### Työn mahdolliset puutteet ja parannusehdotukset  
+ToDo  
 
 ### Lähteet  
 * [https://en.wikipedia.org/wiki/Regular_expression](https://en.wikipedia.org/wiki/Regular_expression)  

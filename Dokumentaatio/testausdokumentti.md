@@ -22,7 +22,7 @@ Kuvassa oikealla ylhäällä on automaatti, joka muodostettiin aiemmin, kun yrit
 Virhe johtui siitä, että DFA:ta tehdessä ei osattu yhdistää samaksi DFA:n tilaksi tiloja, joihin siirrytään samalla kirjaimella, mutta eivät ole yhteydessä toisiinsa tyhjien merkkien siirtymillä. 
 Nyt DFA:n muodostuksessa käydään ensin läpi kaikki siirtymät ja kerätään saman merkin siirtymien maalitilat samaan DFA:n tilaan ennen kuin katsotaan, mihin muihin tiloihin tyhjillä siirtymillä päästään.  
 Virhe myös tarkistetaan JUnitilla antamalla kahdelle merkkijonojen tarkistajalle, joista toinen tarkistaa NFA:n ja toinen DFA:n tarkistusmenetelmällä, säännöllisen lausekkeen mukaan muodostettu DFA. Tämän 
-jälkeen tarkastajille annetaan tarkistettavaksi merkkijono "a". NFA:n menetelmää käyttävä kertoo, että merkkijono kuuluu kieleen, kuten pitääkin. DFA:n menetelmää käyttävä kertoo, että merkkijono ei kuulu kielee, koska 
+jälkeen tarkastajille annetaan tarkistettavaksi merkkijono "a". NFA:n menetelmää käyttävä kertoo, että merkkijono kuuluu kieleen kuten pitääkin. DFA:n menetelmää käyttävä kertoo, että merkkijono ei kuulu kieleen, koska 
 se yrittää edetä a-z siirtymää pitkin ja huomaa, että tila ei ole hyväksyvä. DFA:n menetelmää käyttäessä ei peruuteta, koska sille ei pitäisi olla tarvetta ja siirtymä a-z on aina siirtymien listassa ensimmäisenä, koska 
 automaatti muodostetaan käymällä säännöllisen lausekkeen merkkejä järjestyksessä.  
 
