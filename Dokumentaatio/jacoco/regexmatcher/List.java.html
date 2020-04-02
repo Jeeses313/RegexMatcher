@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fi"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>List.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">RegexMatcher</a> &gt; <a href="index.source.html" class="el_package">regexmatcher</a> &gt; <span class="el_source">List.java</span></div><h1>List.java</h1><pre class="source lang-java linenums">package regexmatcher;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+/**
+ * Lista tietorakenne.
+ *
+ * @param &lt;T&gt; Listaan talletettavan datan tyyppy.
+ */
+public class List&lt;T&gt; {
+
+    private T[] list;
+    private int size;
+
+    /**
+     * Luokan konstruktori, joka alustaa listan.
+     */
+<span class="fc" id="L19">    public List() {</span>
+<span class="fc" id="L20">        list = (T[]) new Object[20];</span>
+<span class="fc" id="L21">        size = 0;</span>
+<span class="fc" id="L22">    }</span>
+
+    /**
+     * Lisää annetun objektin listan loppuun.
+     *
+     * @param t Listan loppuun asetettava objekti.
+     */
+    public void add(T t) {
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (size == list.length) {</span>
+<span class="fc" id="L31">            growList();</span>
+        }
+<span class="fc" id="L33">        list[size] = t;</span>
+<span class="fc" id="L34">        size++;</span>
+<span class="fc" id="L35">    }</span>
+
+    /**
+     * Kasvattaa listan kapasiteettia.
+     */
+    private void growList() {
+<span class="fc" id="L41">        T[] newList = (T[]) new Object[(int) (list.length * 1.5)];</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        for (int i = 0; i &lt; list.length; i++) {</span>
+<span class="fc" id="L43">            newList[i] = list[i];</span>
+        }
+<span class="fc" id="L45">        list = newList;</span>
+<span class="fc" id="L46">    }</span>
+
+    /**
+     * Palauttaa listassa olevien objektien määrän.
+     *
+     * @return Int, joka kertoo listassa olevien objektien määrän.
+     */
+    public int size() {
+<span class="fc" id="L54">        return size;</span>
+    }
+
+    /**
+     * Palauttaa annetussa indeksissä olevan objektin.
+     *
+     * @param index int, jonka osoittamasta kohdasta palautetaan objekti.
+     * @return Objekti, joka on annetun indeksin osoittamassa kohdassa.
+     */
+    public T get(int index) {
+<span class="fc bfc" id="L64" title="All 4 branches covered.">        if (index &gt;= size || index &lt; 0) {</span>
+<span class="fc" id="L65">            throw new IndexOutOfBoundsException();</span>
+        }
+<span class="fc" id="L67">        return list[index];</span>
+    }
+
+    /**
+     * Palauttaa totuusarvon, joka kertoo, onko lista tyhjä.
+     *
+     * @return Totuusarvo, joka kertoo, onko lista tyhjä.
+     */
+    public boolean isEmpty() {
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        return size == 0;</span>
+    }
+
+    /**
+     * Palauttaa totuusarvon, joka kertoo, onko annettu objekti listassa.
+     *
+     * @param t Objekti, jonka listassa olemista tarkistetaan.
+     * @return Totuusarvo, joka kertoo, onko annettu objekti listassa.
+     */
+    public boolean contains(T t) {
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        for (int i = 0; i &lt; size; i++) {</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">            if (list[i].equals(t)) {</span>
+<span class="fc" id="L88">                return true;</span>
+            }
+        }
+<span class="fc" id="L91">        return false;</span>
+    }
+
+    /**
+     * Palauttaa kokonaisluvun, joka kertoo annettun objektin indeksin.
+     * Palauttaa -1, jos objektia ei ole listassa.
+     *
+     * @param t Objekti, jonka indeksiä haetaan.
+     * @return int, joka on annetun objektin indeksi. Palauttaa -1, jos objektia
+     * ei ole listassa.
+     */
+    public int indexOf(T t) {
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        for (int i = 0; i &lt; size; i++) {</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">            if (list[i].equals(t)) {</span>
+<span class="fc" id="L105">                return i;</span>
+            }
+        }
+<span class="fc" id="L108">        return -1;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

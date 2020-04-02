@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fi"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TextUserInterface.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">RegexMatcher</a> &gt; <a href="index.source.html" class="el_package">regexmatcher</a> &gt; <span class="el_source">TextUserInterface.java</span></div><h1>TextUserInterface.java</h1><pre class="source lang-java linenums">package regexmatcher;
+
+import java.util.Scanner;
+
+/**
+ * Luokka toteuttaa ohjelman tekstikäyttöliittymän toiminnan
+ */
+public class TextUserInterface {
+
+    private Scanner reader;
+    private MatcherFactory mfactory;
+
+    /**
+     * Luokan konstruktori, jolle annetaan Scanner-olio, josta syötettä halutaan
+     * lukea.
+     *
+     * @param reader Scanner, josta syötettä luetaan.
+     */
+<span class="fc" id="L19">    public TextUserInterface(Scanner reader) {</span>
+<span class="fc" id="L20">        this.reader = reader;</span>
+<span class="fc" id="L21">        this.mfactory = new MatcherFactory();</span>
+<span class="fc" id="L22">    }</span>
+
+    /**
+     * Käynnistää tekstikäyttöliittymän.
+     */
+    public void start() {
+<span class="fc" id="L28">        printInstructions();</span>
+        while (true) {
+<span class="fc" id="L30">            String expression = requestInput(&quot;Give regular expression: &quot;);</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">            if (expression.equals(&quot;-q&quot;)) {</span>
+<span class="fc" id="L32">                break;</span>
+            }
+<span class="fc bfc" id="L34" title="All 2 branches covered.">            if (expression.equals(&quot;-i&quot;)) {</span>
+<span class="fc" id="L35">                printInstructions();</span>
+<span class="fc" id="L36">                continue;</span>
+            }
+            Matcher matcher;
+<span class="fc" id="L39">            boolean printDfa = false;</span>
+<span class="fc" id="L40">            boolean printNfa = requestBoolean(&quot;Print NFA?(y/n): &quot;);</span>
+<span class="fc" id="L41">            boolean useDfa = requestBoolean(&quot;Use DFA instead of NFA?(y/n): &quot;);</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">            if (useDfa) {</span>
+<span class="fc" id="L43">                printDfa = requestBoolean(&quot;Print DFA?(y/n): &quot;);</span>
+            }
+<span class="fc" id="L45">            matcher = mfactory.createMatcher(expression, useDfa, printNfa, printDfa);</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">            if (matcher.getWorks()) {</span>
+<span class="fc" id="L47">                boolean end = matchStrings(matcher);</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">                if (end) {</span>
+<span class="fc" id="L49">                    break;</span>
+                }
+<span class="fc" id="L51">            } else {</span>
+<span class="fc" id="L52">                System.out.println(&quot;Give real regular expression&quot;);</span>
+            }
+<span class="fc" id="L54">        }</span>
+<span class="fc" id="L55">        System.out.println(&quot;\nExiting...&quot;);</span>
+<span class="fc" id="L56">    }</span>
+
+    /**
+     * Tulostaa ohjeita ohjelman käyttöön.
+     */
+    private void printInstructions() {
+<span class="fc" id="L62">        System.out.println(&quot;Regular expression matcher&quot;);</span>
+<span class="fc" id="L63">        System.out.println(&quot;Syntax:&quot;);</span>
+<span class="fc" id="L64">        System.out.println(&quot;- * = previous 0-n times&quot;);</span>
+<span class="fc" id="L65">        System.out.println(&quot;- + = previous 1-n times&quot;);</span>
+<span class="fc" id="L66">        System.out.println(&quot;- | = or&quot;);</span>
+<span class="fc" id="L67">        System.out.println(&quot;- [a-z], [A-Z] and [0-9]&quot;);</span>
+<span class="fc" id="L68">        System.out.println(&quot;- ()&quot;);</span>
+<span class="fc" id="L69">        System.out.println(&quot;- . = {0, ... 9, a, ... z, A, ..., Z}&quot;);</span>
+<span class="fc" id="L70">        System.out.println(&quot;Type -q at any time to quit&quot;);</span>
+<span class="fc" id="L71">        System.out.println(&quot;Type -r to change regular expression&quot;);</span>
+<span class="fc" id="L72">        System.out.println(&quot;Type -i at any time to get these instructions&quot;);</span>
+<span class="fc" id="L73">    }</span>
+
+    /**
+     * Tulostaa parametrina annetun kysymyksen ja palauttaa Scannerista luetun
+     * vastauksen.
+     *
+     * @param request String, joka esitetään kysymyksenä ennen syötteen antoa.
+     * @return Scannerista luettu syöterivi.
+     */
+    private String requestInput(String request) {
+<span class="fc" id="L83">        System.out.println(request);</span>
+<span class="fc" id="L84">        return reader.nextLine();</span>
+    }
+
+    /**
+     * Tulostaa parametrina annetun kysymyksen ja palauttaa vastauksen
+     * totuusarvona.
+     *
+     * @param request String, joka esitetään kysymyksenä ennen syötteen antoa.
+     * @return Totuusarvo, jota luettu vastaus vastaa.
+     */
+    private boolean requestBoolean(String request) {
+<span class="fc" id="L95">        String answer = requestInput(request);</span>
+<span class="pc bpc" id="L96" title="1 of 4 branches missed.">        return (answer.equals(&quot;Y&quot;) || answer.equals(&quot;y&quot;));</span>
+    }
+
+    /**
+     * Katsoo kuuluuko merkkijon annetun säännöllisen lausekkeen kieleen ja
+     * tulostaa vastauksen.
+     *
+     * @param string String, jonka kuuluvuutta tarkistetaan.
+     * @param matcher Matcher, jolla tarkistetaan annetun merkkijonon kieleen
+     * kuuluminen.
+     */
+    private void match(String string, Matcher matcher) {
+<span class="fc" id="L108">        boolean matches = matcher.match(string);</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        if (matches) {</span>
+<span class="fc" id="L110">            System.out.println(&quot;String matches&quot;);</span>
+        } else {
+<span class="fc" id="L112">            System.out.println(&quot;String does not match&quot;);</span>
+        }
+<span class="fc" id="L114">    }</span>
+
+    /**
+     * Pyytää merkkijonoja, joista tarkistetaan, kuuluvatko ne annetun
+     * säännöllisen lausekkeen kieleen.
+     *
+     * @param matcher Matcher, jolla tarkistetaan annetun merkkijonon kieleen
+     * kuuluminen.
+     * @return Totuusarvo, joka kertoo lopetetaanko ohjelma vai pyydetäänkö
+     * uutta säännöllistä lauseketta.
+     */
+    private boolean matchStrings(Matcher matcher) {
+        while (true) {
+<span class="fc" id="L127">            String string = requestInput(&quot;Give string: &quot;);</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">            if (string.equals(&quot;-q&quot;)) {</span>
+<span class="fc" id="L129">                return true;</span>
+            }
+<span class="fc bfc" id="L131" title="All 2 branches covered.">            if (string.equals(&quot;-r&quot;)) {</span>
+<span class="fc" id="L132">                return false;</span>
+            }
+<span class="fc bfc" id="L134" title="All 2 branches covered.">            if (string.equals(&quot;-i&quot;)) {</span>
+<span class="fc" id="L135">                printInstructions();</span>
+<span class="fc" id="L136">                continue;</span>
+            }
+<span class="fc" id="L138">            match(string, matcher);</span>
+<span class="fc" id="L139">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>
