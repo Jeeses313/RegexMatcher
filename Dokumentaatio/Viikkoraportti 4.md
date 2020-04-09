@@ -17,7 +17,7 @@ Viikon aikana työhön käytettyjä tunteja: 6
 * Ei tällä hetkellä mieleen tulevia epäselviä asioita.
 
 ### Seuraavaksi tehtäviä asioita  
-* Dokumentaation jatakaminen.  
+* Dokumentaation jatkaminen.  
 * Suorituskykytestaus ja mahdollisesti myös automaattien rakennetestaus.  
 * Vertaisarviointi.  
 * Muita 5. viikolla vaadittuja asioita.  

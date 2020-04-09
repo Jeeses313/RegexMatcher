@@ -340,8 +340,8 @@
     private void handleBracketEndStarAndPlus(int stateBeforeBracket, char nextChar) {
 <span class="fc bfc" id="L341" title="All 4 branches covered.">        if (nextChar == '*' || nextChar == '+') {</span>
 <span class="fc" id="L342">            index++;</span>
-<span class="fc" id="L343">            automate.get(currentState).getEdgeList().add(new Edge(stateBeforeBracket, (char) 0));</span>
-<span class="fc" id="L344">            automate.add(new Node());</span>
+<span class="fc" id="L343">            automate.add(new Node());</span>
+<span class="fc" id="L344">            automate.get(currentState).getEdgeList().add(new Edge(stateBeforeBracket, (char) 0));</span>
 <span class="fc bfc" id="L345" title="All 2 branches covered.">            if (nextChar == '*') {</span>
 <span class="fc" id="L346">                automate.get(stateBeforeBracket).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
 <span class="fc" id="L347">                currentState = automate.size() - 1;</span>

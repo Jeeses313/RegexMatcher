@@ -239,4 +239,29 @@ public class MatcherTest {
         assertTrue(matcher.match("ab"));
         assertTrue(matcher.match("a"));
     }
+    
+    @Test
+    public void NFAMatcherCanMatchWithEmptyLoops() {
+        Matcher matcher = new Matcher(new NFAfactory().generateNFA("(a*b*c*)+"), false);
+        assertTrue(matcher.match(""));
+        assertTrue(matcher.match("a"));
+        assertTrue(matcher.match("ab"));
+        assertTrue(matcher.match("abc"));
+        assertTrue(matcher.match("aabbcc"));
+        assertFalse(matcher.match("d"));
+        matcher = new Matcher(new NFAfactory().generateNFA("(a*b*c*)*"), false);
+        assertTrue(matcher.match(""));
+        assertTrue(matcher.match("a"));
+        assertTrue(matcher.match("ab"));
+        assertTrue(matcher.match("abc"));
+        assertTrue(matcher.match("aabbcc"));
+        assertFalse(matcher.match("d"));
+        matcher = new Matcher(new NFAfactory().generateNFA("(a*|b*)+"), false);
+        assertTrue(matcher.match(""));
+        assertTrue(matcher.match("a"));
+        assertTrue(matcher.match("ab"));
+        assertTrue(matcher.match("aabb"));
+        assertTrue(matcher.match("ba"));
+        assertFalse(matcher.match("d"));
+    }
 }

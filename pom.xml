@@ -57,6 +57,8 @@
                 <configuration>
                     <excludes>
                         <exclude>regexmatcher/RegexMatcher.class</exclude>
+                        <exclude>regexmatcher/FactoryPerformanceTest.class</exclude>
+                        <exclude>regexmatcher/MatcherPerformanceTest.class</exclude>
                     </excludes>
                 </configuration> 
                 <executions>

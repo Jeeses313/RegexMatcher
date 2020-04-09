@@ -7,6 +7,11 @@ public class Matcher {
 
     private List<Node> automate;
     private boolean useDFA;
+    /**
+     * Tyhjien merkkien siirtymillä käytyjen tilojen muistissa pitämiseen
+     * tarkoitettu lista.
+     */
+    private List<Integer> stateMemory;
 
     /**
      * Luokan konstruktori, jolle annetaan parametriksi Nodeja sisältävä lista,
@@ -52,6 +57,7 @@ public class Matcher {
             }
             string = Character.toString((char) 0);
         }
+        stateMemory = new List<>();
         return search(string, 0, 0);
     }
 
@@ -147,8 +153,10 @@ public class Matcher {
                 break;
             }
             if (edge.getCaharacter() == currentChar) {
+                stateMemory = new List<>();
                 result = search(string, index + 1, edge.getGoalNode());
-            } else if (edge.getCaharacter() == (char) 0) {
+            } else if (edge.getCaharacter() == (char) 0 && !stateMemory.contains(edge.getGoalNode())) {
+                stateMemory.add(edge.getGoalNode());
                 result = search(string, index, edge.getGoalNode());
             }
         }

@@ -1,10 +1,10 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 RegexMatcher,regexmatcher,DFAnode,2,67,1,7,1,18,1,9,0,6
 RegexMatcher,regexmatcher,List,0,125,0,18,0,27,0,17,0,8
-RegexMatcher,regexmatcher,DFAfactory,0,381,5,37,0,69,5,24,0,8
+RegexMatcher,regexmatcher,DFAfactory,0,381,4,38,0,69,4,25,0,8
 RegexMatcher,regexmatcher,Node,0,25,0,0,0,10,0,5,0,5
 RegexMatcher,regexmatcher,Edge,0,15,0,0,0,6,0,3,0,3
-RegexMatcher,regexmatcher,Matcher,2,295,2,52,1,61,2,34,0,9
+RegexMatcher,regexmatcher,Matcher,2,318,2,54,1,64,2,35,0,9
 RegexMatcher,regexmatcher,Stack,0,118,0,10,0,25,0,12,0,7
 RegexMatcher,regexmatcher,MatcherFactory,6,69,3,13,1,16,3,7,0,2
 RegexMatcher,regexmatcher,TextUserInterface,0,171,1,21,0,57,1,17,0,7

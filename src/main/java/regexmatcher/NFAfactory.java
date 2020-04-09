@@ -340,8 +340,8 @@ public class NFAfactory {
     private void handleBracketEndStarAndPlus(int stateBeforeBracket, char nextChar) {
         if (nextChar == '*' || nextChar == '+') {
             index++;
-            automate.get(currentState).getEdgeList().add(new Edge(stateBeforeBracket, (char) 0));
             automate.add(new Node());
+            automate.get(currentState).getEdgeList().add(new Edge(stateBeforeBracket, (char) 0));
             if (nextChar == '*') {
                 automate.get(stateBeforeBracket).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));
                 currentState = automate.size() - 1;
