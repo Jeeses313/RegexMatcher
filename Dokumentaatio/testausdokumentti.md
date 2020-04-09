@@ -50,7 +50,7 @@ Tämänkin voi kuitenkin osittain korjata muuttamalla vanhan tilan siirtymien j�
 ei kuulu kieleen. Tämän taas voi korjata try-catch:lla nappaamalla StackOverflowError, jolloin ylivuodon tapahtuessa kerrotaan, että merkkijono ei kuulu kieleen. Ratkaisu ei ole paras mahdollinen, mutta toimii näissä tapauksissa. 
 Ongelma ei kuitenkaan häviä, jos säännöllisessä lausekkeessa on tai-osio sulkujen sisällä, jolloin tarkitukseen kuluu todella paljon aikaa, koska haun peruuttaessa 
 tai-osion aiheuttamaan risteykseen, käydään kaikki siirtymät läpi ja kaikissa edetään kunnes tapahtuu ylivuoto. Aikaa kuluu vielä enemmän, koska risteykseen saavutaan usein, koska se on osaa silmukkaa. 
-Tähänkin osittainen korjaus on ensimmäisen ylivuodon jälkeen laittaa muistiin, että tarkistus on rikki, jolloin syvyyshaku lopetetaan ja kerrotaan, että merkkijono ei kuulu kieleen.  
+Tähänkin osittainen korjaus on ensimmäisen ylivuodon jälkeen laittaa muistiin, että tarkistus on rikki, jolloin syvyyshaku lopetetaan ja kerrotaan, että merkkijono ei kuulu kieleen, mikä taas voi johtaa joissakin tapauksissa siihen, että annetaan väärä vastaus.  
 
 Lopullisena ja toimivana korjauksena käytetään listaa, johon laitetaan sellaisia tiloja muistiin, joissa on käyty, kuten syvyyshauissa yleensäkin saatetaan tehdä. Tiloja laitetaan muistiin, vain silloin kun niihin siirrytään tyhjällä merkkijonolla ja 
 muisti tyhjennetään aina, kun kuljetaan ei tyhjän merkin siirtymää pitkin. Näin vältetään silmukassa kulkeminen, ylivuodon aiheuttama virhe, ja jo käytyihin tiloihin pääsemättömyys, kun niihin pitäisi oikeasti päästä.  
