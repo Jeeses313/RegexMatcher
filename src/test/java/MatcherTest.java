@@ -295,5 +295,13 @@ public class MatcherTest {
         assertTrue(matcher.match("aabb"));
         assertTrue(matcher.match("ba"));
         assertFalse(matcher.match("d"));
+        matcher = new Matcher(new NFAfactory().generateNFA("(abc|a*b*c*)+"), false);
+        assertTrue(matcher.match(""));
+        assertTrue(matcher.match("a"));
+        assertTrue(matcher.match("ab"));
+        assertTrue(matcher.match("abc"));
+        assertTrue(matcher.match("aabbcc"));
+        assertTrue(matcher.match("ccbbaa"));
+        assertFalse(matcher.match("d"));
     }
 }

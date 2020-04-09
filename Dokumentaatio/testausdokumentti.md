@@ -53,7 +53,8 @@ tai-osion aiheuttamaan risteykseen, käydään kaikki siirtymät läpi ja kaikis
 Tähänkin osittainen korjaus on ensimmäisen ylivuodon jälkeen laittaa muistiin, että tarkistus on rikki, jolloin syvyyshaku lopetetaan ja kerrotaan, että merkkijono ei kuulu kieleen, mikä taas voi johtaa joissakin tapauksissa siihen, että annetaan väärä vastaus.  
 
 Lopullisena ja toimivana korjauksena käytetään listaa, johon laitetaan sellaisia tiloja muistiin, joissa on käyty, kuten syvyyshauissa yleensäkin saatetaan tehdä. Tiloja laitetaan muistiin, vain silloin kun niihin siirrytään tyhjällä merkkillä ja 
-muisti tyhjennetään aina, kun kuljetaan ei tyhjän merkin siirtymää pitkin. Näin vältetään silmukassa kulkeminen, ylivuodon aiheuttama virhe, ja jo käytyihin tiloihin pääsemättömyys, kun niihin pitäisi oikeasti päästä.  
+muisti tyhjennetään aina, kun kuljetaan ei tyhjän merkin siirtymää pitkin. Tila lisätään muistiin myös silloin, kun ei tyhjän merkin siirtymä 
+johti umpikujaan, ettei tai-osioiden saman kirjaimen siirtymät, esim. (ab|ac)*, aiheuta silmukkaan juuttumista listan tyhjentämisen takia. Näin vältetään silmukassa kulkeminen, ylivuodon aiheuttama virhe, ja jo käytyihin tiloihin pääsemättömyys, kun niihin pitäisi oikeasti päästä.  
 
 Virhe tarkistetaan JUnitilla antamalla merkkijonon tarkistajalle kolme ylläolevan pohdinnan mukaista säännöllistä lauseketta ja tarkistetaan erilaisia merkkijonoja NFA:n tarkistusmenetelmällä.  
 

@@ -8,8 +8,9 @@ public class Matcher {
     private List<Node> automate;
     private boolean useDFA;
     /**
-     * Tyhjien merkkien siirtymillä käytyjen tilojen muistissa pitämiseen
-     * tarkoitettu lista.
+     * Tyhjien merkkien siirtymillä käytyjen tilojen ja ei tyhjien merkkien
+     * siirtymillä käytyjen tilojen, jotka johtivat umpikujaan, muistissa
+     * pitämiseen tarkoitettu lista.
      */
     private List<Integer> stateMemory;
 
@@ -135,7 +136,6 @@ public class Matcher {
      * kaikkien merkkien läpikäymisen jälkeen.
      */
     private boolean search(String string, int index, int state) {
-        System.out.println(state);
         char currentChar = (char) 174;
         if (index >= string.length()) {
             if (automate.get(state).isEnd()) {
@@ -161,6 +161,7 @@ public class Matcher {
                 result = search(string, index, edge.getGoalNode());
             }
         }
+        stateMemory.add(state);
         return result;
     }
 
