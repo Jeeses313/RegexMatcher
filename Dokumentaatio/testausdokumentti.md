@@ -52,7 +52,7 @@ Ongelma ei kuitenkaan häviä, jos säännöllisessä lausekkeessa on tai-osio s
 tai-osion aiheuttamaan risteykseen, käydään kaikki siirtymät läpi ja kaikissa edetään kunnes tapahtuu ylivuoto. Aikaa kuluu vielä enemmän, koska risteykseen saavutaan usein, koska se on osaa silmukkaa. 
 Tähänkin osittainen korjaus on ensimmäisen ylivuodon jälkeen laittaa muistiin, että tarkistus on rikki, jolloin syvyyshaku lopetetaan ja kerrotaan, että merkkijono ei kuulu kieleen, mikä taas voi johtaa joissakin tapauksissa siihen, että annetaan väärä vastaus.  
 
-Lopullisena ja toimivana korjauksena käytetään listaa, johon laitetaan sellaisia tiloja muistiin, joissa on käyty, kuten syvyyshauissa yleensäkin saatetaan tehdä. Tiloja laitetaan muistiin, vain silloin kun niihin siirrytään tyhjällä merkkijonolla ja 
+Lopullisena ja toimivana korjauksena käytetään listaa, johon laitetaan sellaisia tiloja muistiin, joissa on käyty, kuten syvyyshauissa yleensäkin saatetaan tehdä. Tiloja laitetaan muistiin, vain silloin kun niihin siirrytään tyhjällä merkkillä ja 
 muisti tyhjennetään aina, kun kuljetaan ei tyhjän merkin siirtymää pitkin. Näin vältetään silmukassa kulkeminen, ylivuodon aiheuttama virhe, ja jo käytyihin tiloihin pääsemättömyys, kun niihin pitäisi oikeasti päästä.  
 
 Virhe tarkistetaan JUnitilla antamalla merkkijonon tarkistajalle kolme ylläolevan pohdinnan mukaista säännöllistä lauseketta ja tarkistetaan erilaisia merkkijonoja NFA:n tarkistusmenetelmällä.  
