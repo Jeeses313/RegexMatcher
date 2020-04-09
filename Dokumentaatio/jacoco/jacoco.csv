@@ -7,5 +7,5 @@ RegexMatcher,regexmatcher,Edge,0,15,0,0,0,6,0,3,0,3
 RegexMatcher,regexmatcher,Matcher,2,318,2,54,1,64,2,35,0,9
 RegexMatcher,regexmatcher,Stack,0,118,0,10,0,25,0,12,0,7
 RegexMatcher,regexmatcher,MatcherFactory,6,69,3,13,1,16,3,7,0,2
-RegexMatcher,regexmatcher,TextUserInterface,0,171,1,21,0,57,1,17,0,7
-RegexMatcher,regexmatcher,NFAfactory,2,969,7,101,1,164,7,68,0,17
+RegexMatcher,regexmatcher,TextUserInterface,0,174,1,21,0,58,1,17,0,7
+RegexMatcher,regexmatcher,NFAfactory,2,1112,9,112,1,185,9,75,0,18

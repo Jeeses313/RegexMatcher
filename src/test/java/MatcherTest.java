@@ -70,6 +70,14 @@ public class MatcherTest {
     }
 
     @Test
+    public void canMatchNFAWhenRegularExpressionHasQuestionmark() {
+        Matcher matcher = new MatcherFactory().createMatcher("a?", false, false, false);
+        assertTrue(matcher.match(""));
+        assertTrue(matcher.match("a"));
+        assertFalse(matcher.match("aa"));
+    }
+
+    @Test
     public void canMatchNFAWhenRegularExpressionHasBracketsAndStar() {
         Matcher matcher = new MatcherFactory().createMatcher("(abc)*", false, false, false);
         assertTrue(matcher.match(""));
@@ -85,6 +93,14 @@ public class MatcherTest {
         assertTrue(matcher.match("abc"));
         assertTrue(matcher.match("abcabc"));
         assertTrue(matcher.match("abcabcabc"));
+    }
+
+    @Test
+    public void canMatchNFAWhenRegularExpressionHasBracketsAndQuestionmark() {
+        Matcher matcher = new MatcherFactory().createMatcher("(abc)?", false, false, false);
+        assertTrue(matcher.match(""));
+        assertTrue(matcher.match("abc"));
+        assertFalse(matcher.match("abcabc"));
     }
 
     @Test
@@ -178,6 +194,14 @@ public class MatcherTest {
     }
 
     @Test
+    public void canMatchDFAWhenRegularExpressionHasQuestionmark() {
+        Matcher matcher = new MatcherFactory().createMatcher("a?", true, false, false);
+        assertTrue(matcher.match(""));
+        assertTrue(matcher.match("a"));
+        assertFalse(matcher.match("aa"));
+    }
+
+    @Test
     public void canMatchDFAWhenRegularExpressionHasBracketsAndStar() {
         Matcher matcher = new MatcherFactory().createMatcher("(abc)*", true, false, false);
         assertTrue(matcher.match(""));
@@ -193,6 +217,14 @@ public class MatcherTest {
         assertTrue(matcher.match("abc"));
         assertTrue(matcher.match("abcabc"));
         assertTrue(matcher.match("abcabcabc"));
+    }
+
+    @Test
+    public void canMatchDFAWhenRegularExpressionHasBracketsAndQuestionmark() {
+        Matcher matcher = new MatcherFactory().createMatcher("(abc)?", true, false, false);
+        assertTrue(matcher.match(""));
+        assertTrue(matcher.match("abc"));
+        assertFalse(matcher.match("abcabc"));
     }
 
     @Test
@@ -239,7 +271,7 @@ public class MatcherTest {
         assertTrue(matcher.match("ab"));
         assertTrue(matcher.match("a"));
     }
-    
+
     @Test
     public void NFAMatcherCanMatchWithEmptyLoops() {
         Matcher matcher = new Matcher(new NFAfactory().generateNFA("(a*b*c*)+"), false);

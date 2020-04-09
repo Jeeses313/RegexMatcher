@@ -49,6 +49,10 @@ public class NFAfactoryTest {
         assertTrue(automate == null);
         automate = new NFAfactory().generateNFA("(+a)");
         assertTrue(automate == null);
+        automate = new NFAfactory().generateNFA("?a");
+        assertTrue(automate == null);
+        automate = new NFAfactory().generateNFA("(?a)");
+        assertTrue(automate == null);
         automate = new NFAfactory().generateNFA("(a");
         assertTrue(automate == null);
         automate = new NFAfactory().generateNFA("a)");
@@ -82,6 +86,12 @@ public class NFAfactoryTest {
         List<Node> automate = new NFAfactory().generateNFA("a+");
         assertTrue(automate != null);
     }
+    
+    @Test
+    public void generateNFAReturnsAutomateWhenRegularExpressionIsValidAndHasQuestionmark() {
+        List<Node> automate = new NFAfactory().generateNFA("a?");
+        assertTrue(automate != null);
+    }
 
     @Test
     public void generateNFAReturnsAutomateWhenRegularExpressionIsValidAndHasSquareBrackets() {
@@ -102,6 +112,12 @@ public class NFAfactoryTest {
     }
     
     @Test
+    public void generateNFAReturnsAutomateWhenRegularExpressionIsValidAndHasQuestionmarkAndSquareBrackets() {
+        List<Node> automate = new NFAfactory().generateNFA("[a1-9]?");
+        assertTrue(automate != null);
+    }
+    
+    @Test
     public void generateNFAReturnsAutomateWhenRegularExpressionIsValidAndHasBrackets() {
         List<Node> automate = new NFAfactory().generateNFA("(abc)a");
         assertTrue(automate != null);
@@ -116,6 +132,12 @@ public class NFAfactoryTest {
     @Test
     public void generateNFAReturnsAutomateWhenRegularExpressionIsValidAndHasPlusAndBrackets() {
         List<Node> automate = new NFAfactory().generateNFA("(abc)+");
+        assertTrue(automate != null);
+    }
+    
+    @Test
+    public void generateNFAReturnsAutomateWhenRegularExpressionIsValidAndHasQuestionmarkAndBrackets() {
+        List<Node> automate = new NFAfactory().generateNFA("(abc)?");
         assertTrue(automate != null);
     }
 

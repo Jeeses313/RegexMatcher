@@ -2,6 +2,7 @@
 Viikon aikana työhön käytettyjä tunteja: 8+
 ### Viikolla tehty työ
 * Vertaisarvioinnin tekeminen.  
+* Kysymysmerkin toiminnan toteutus ja testaus.  
 * NFA:n käytön parantaminen merkkijonojen tarkistuksessa, erityisesti silloin, kun on tyhjien merkkien muodostamia silmukoita.  
 * Suorituskykytestauksen toteuttaminen.  
 * Toteutus- ja testausdokumentaation jatkaminen. 

@@ -8,12 +8,12 @@ Suorituskykytestaus on toteutettu luokilla [MatcherPerformanceTest.java](https:/
 
 ### Minkälaisilla syötteillä testaus tehtiin  
 JUnitilla testausta on tehty monilla erilaisilla säännöllisillä lausekkeilla, jotka sisältävät yhden tai usemapia merkkejä, joiden toteutus eroaa toisistaan.  
-Esim. ., a*, a+, [a1-9]*, (ab|cd)* ja a|b.  
+Esim. ., a*, a+, a?, [a1-9]*, (ab|cd)* ja a|b.  
 Myös monia erilaisia ei valideja säännöllisiä lausekkeita on myös testattu.  
-Esim. ]a, [a, [a-.], [a-9], (*a), +a ja @.  
+Esim. ]a, [a, [a-.], [a-9], (*a), +a, ?a ja @.  
 
 Suorituskykytestausksessa merkkijonojen tarkistamiseen on käytetty säännöllisiä lausekkeita a*b*c*, ab*c|a*bc|abc*, ([a-z]*[0-9])+ ja (abc|[0-9]*|a*b*c*)+ 
-ja automaattien muodostamiseen on käytetty säännöllisiä lausekkeita, joissa on 1, 10 ja 100 kertaa peräkkäin a*, a+, (a, jonka jälkeen 1, 10 ja 100 kertaa ), ja a|, jonka jälkeen yksi a.  
+ja automaattien muodostamiseen on käytetty säännöllisiä lausekkeita, joissa on 1, 10 ja 100 kertaa peräkkäin a*, a+, a?, (a, jonka jälkeen 1, 10 ja 100 kertaa ), ja a|, jonka jälkeen yksi a.  
 
 ### Miten testit voidaan toistaa  
 Testit voidaan toistaa lataamalla projekti ja suorittamalla testit antamalla komentokehotteelle komento ```mvn test```, suorittamalla ohjelman tai suorittamalla suorituskykytestaukseen tarkoitetut luokat.  

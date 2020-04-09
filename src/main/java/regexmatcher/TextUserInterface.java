@@ -63,6 +63,7 @@ public class TextUserInterface {
         System.out.println("Syntax:");
         System.out.println("- * = previous 0-n times");
         System.out.println("- + = previous 1-n times");
+        System.out.println("- ? = previous 0-1 times");
         System.out.println("- | = or");
         System.out.println("- [a-z], [A-Z] and [0-9]");
         System.out.println("- ()");

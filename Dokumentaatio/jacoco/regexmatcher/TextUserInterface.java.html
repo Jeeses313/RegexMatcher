@@ -63,14 +63,15 @@ public class TextUserInterface {
 <span class="fc" id="L63">        System.out.println(&quot;Syntax:&quot;);</span>
 <span class="fc" id="L64">        System.out.println(&quot;- * = previous 0-n times&quot;);</span>
 <span class="fc" id="L65">        System.out.println(&quot;- + = previous 1-n times&quot;);</span>
-<span class="fc" id="L66">        System.out.println(&quot;- | = or&quot;);</span>
-<span class="fc" id="L67">        System.out.println(&quot;- [a-z], [A-Z] and [0-9]&quot;);</span>
-<span class="fc" id="L68">        System.out.println(&quot;- ()&quot;);</span>
-<span class="fc" id="L69">        System.out.println(&quot;- . = {0, ... 9, a, ... z, A, ..., Z}&quot;);</span>
-<span class="fc" id="L70">        System.out.println(&quot;Type -q at any time to quit&quot;);</span>
-<span class="fc" id="L71">        System.out.println(&quot;Type -r to change regular expression&quot;);</span>
-<span class="fc" id="L72">        System.out.println(&quot;Type -i at any time to get these instructions&quot;);</span>
-<span class="fc" id="L73">    }</span>
+<span class="fc" id="L66">        System.out.println(&quot;- ? = previous 0-1 times&quot;);</span>
+<span class="fc" id="L67">        System.out.println(&quot;- | = or&quot;);</span>
+<span class="fc" id="L68">        System.out.println(&quot;- [a-z], [A-Z] and [0-9]&quot;);</span>
+<span class="fc" id="L69">        System.out.println(&quot;- ()&quot;);</span>
+<span class="fc" id="L70">        System.out.println(&quot;- . = {0, ... 9, a, ... z, A, ..., Z}&quot;);</span>
+<span class="fc" id="L71">        System.out.println(&quot;Type -q at any time to quit&quot;);</span>
+<span class="fc" id="L72">        System.out.println(&quot;Type -r to change regular expression&quot;);</span>
+<span class="fc" id="L73">        System.out.println(&quot;Type -i at any time to get these instructions&quot;);</span>
+<span class="fc" id="L74">    }</span>
 
     /**
      * Tulostaa parametrina annetun kysymyksen ja palauttaa Scannerista luetun
@@ -80,8 +81,8 @@ public class TextUserInterface {
      * @return Scannerista luettu syöterivi.
      */
     private String requestInput(String request) {
-<span class="fc" id="L83">        System.out.println(request);</span>
-<span class="fc" id="L84">        return reader.nextLine();</span>
+<span class="fc" id="L84">        System.out.println(request);</span>
+<span class="fc" id="L85">        return reader.nextLine();</span>
     }
 
     /**
@@ -92,8 +93,8 @@ public class TextUserInterface {
      * @return Totuusarvo, jota luettu vastaus vastaa.
      */
     private boolean requestBoolean(String request) {
-<span class="fc" id="L95">        String answer = requestInput(request);</span>
-<span class="pc bpc" id="L96" title="1 of 4 branches missed.">        return (answer.equals(&quot;Y&quot;) || answer.equals(&quot;y&quot;));</span>
+<span class="fc" id="L96">        String answer = requestInput(request);</span>
+<span class="pc bpc" id="L97" title="1 of 4 branches missed.">        return (answer.equals(&quot;Y&quot;) || answer.equals(&quot;y&quot;));</span>
     }
 
     /**
@@ -105,13 +106,13 @@ public class TextUserInterface {
      * kuuluminen.
      */
     private void match(String string, Matcher matcher) {
-<span class="fc" id="L108">        boolean matches = matcher.match(string);</span>
-<span class="fc bfc" id="L109" title="All 2 branches covered.">        if (matches) {</span>
-<span class="fc" id="L110">            System.out.println(&quot;String matches&quot;);</span>
+<span class="fc" id="L109">        boolean matches = matcher.match(string);</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">        if (matches) {</span>
+<span class="fc" id="L111">            System.out.println(&quot;String matches&quot;);</span>
         } else {
-<span class="fc" id="L112">            System.out.println(&quot;String does not match&quot;);</span>
+<span class="fc" id="L113">            System.out.println(&quot;String does not match&quot;);</span>
         }
-<span class="fc" id="L114">    }</span>
+<span class="fc" id="L115">    }</span>
 
     /**
      * Pyytää merkkijonoja, joista tarkistetaan, kuuluvatko ne annetun
@@ -124,19 +125,19 @@ public class TextUserInterface {
      */
     private boolean matchStrings(Matcher matcher) {
         while (true) {
-<span class="fc" id="L127">            String string = requestInput(&quot;Give string: &quot;);</span>
-<span class="fc bfc" id="L128" title="All 2 branches covered.">            if (string.equals(&quot;-q&quot;)) {</span>
-<span class="fc" id="L129">                return true;</span>
+<span class="fc" id="L128">            String string = requestInput(&quot;Give string: &quot;);</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">            if (string.equals(&quot;-q&quot;)) {</span>
+<span class="fc" id="L130">                return true;</span>
             }
-<span class="fc bfc" id="L131" title="All 2 branches covered.">            if (string.equals(&quot;-r&quot;)) {</span>
-<span class="fc" id="L132">                return false;</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">            if (string.equals(&quot;-r&quot;)) {</span>
+<span class="fc" id="L133">                return false;</span>
             }
-<span class="fc bfc" id="L134" title="All 2 branches covered.">            if (string.equals(&quot;-i&quot;)) {</span>
-<span class="fc" id="L135">                printInstructions();</span>
-<span class="fc" id="L136">                continue;</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">            if (string.equals(&quot;-i&quot;)) {</span>
+<span class="fc" id="L136">                printInstructions();</span>
+<span class="fc" id="L137">                continue;</span>
             }
-<span class="fc" id="L138">            match(string, matcher);</span>
-<span class="fc" id="L139">        }</span>
+<span class="fc" id="L139">            match(string, matcher);</span>
+<span class="fc" id="L140">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

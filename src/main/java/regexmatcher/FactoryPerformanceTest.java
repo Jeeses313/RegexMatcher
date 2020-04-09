@@ -15,6 +15,7 @@ public class FactoryPerformanceTest {
         testExpressionWithBrackets();
         testExpressionWithStar();
         testExpressionWithPlus();
+        testExpressionWithQuestionmark();
         testExpressionWithOr();
     }
 
@@ -101,6 +102,34 @@ public class FactoryPerformanceTest {
         String expression = "";
         for (int i = 0; i < scale; i++) {
             expression += "a+";
+        }
+        return expression;
+    }
+
+    /**
+     * Testaa säännöllisiä lausekkeita, joissa on plussia.
+     */
+    private static void testExpressionWithQuestionmark() {
+        int scale = 1;
+        while (scale <= 100) {
+            String expression = generatePlusExpression(scale);
+            testAutomateForming(expression, "Question mark(" + scale + ")");
+            scale *= 10;
+        }
+        System.out.println("------------------------");
+    }
+
+    /**
+     * Muodostaa annetun pituisen säännöllisenlausekkeen, jossa on plussia.
+     *
+     * @param scale int, joka kertoo muodostettavan säännöllisen lausekkeen
+     * pituuden.
+     * @return String, joka on muodostettu säännöllinen lauseke.
+     */
+    private static String generateQuestionmarkExpression(int scale) {
+        String expression = "";
+        for (int i = 0; i < scale; i++) {
+            expression += "a?";
         }
         return expression;
     }

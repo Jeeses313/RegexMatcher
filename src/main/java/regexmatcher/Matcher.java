@@ -135,6 +135,7 @@ public class Matcher {
      * kaikkien merkkien läpikäymisen jälkeen.
      */
     private boolean search(String string, int index, int state) {
+        System.out.println(state);
         char currentChar = (char) 174;
         if (index >= string.length()) {
             if (automate.get(state).isEnd()) {

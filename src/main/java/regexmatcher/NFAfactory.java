@@ -74,6 +74,9 @@ public class NFAfactory {
             case '+':
                 works = handlePlus(expression);
                 break;
+            case '?':
+                works = handleQuestionmark(expression);
+                break;
             case '|':
                 works = handleOr();
                 break;
@@ -262,6 +265,29 @@ public class NFAfactory {
     }
 
     /**
+     * Käsittelee säännöllisen lausekkeen kysymysmerkit.
+     *
+     * @param expression String, joka on säännöllinen lauseke, josta
+     * muodostetaan automaattia.
+     * @return Totuusarvo, joka kertoo, onnistuiko käsittely.
+     */
+    private boolean handleQuestionmark(String expression) {
+        if (index == 0) {
+            return false;
+        }
+        char charBefore = expression.charAt(index - 1);
+        if (isStandardChar(charBefore) || charBefore == ']' || charBefore == '.') {
+            automate.add(new Node());
+            automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));
+            automate.get(previousState).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));
+            previousState = currentState;
+            currentState = automate.size() - 1;
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Asettaa automaatin hyväksyvät tilat.
      *
      * @return Totuusarvo, joka kertoo, onko automaatin käsittely loppunut
@@ -296,6 +322,13 @@ public class NFAfactory {
         return true;
     }
 
+    /**
+     * Käsittelee säännöllisen lausekkeen kaarisulkujen lopun.
+     *
+     * @param expression String, joka on säännöllinen lauseke, josta
+     * muodostetaan automaattia.
+     * @return Totuusarvo, joka kertoo, onnistuiko käsittely.
+     */
     private boolean handleBracketEnd(String expression) {
         if (stack.size() <= 1) {
             return false;
@@ -307,7 +340,7 @@ public class NFAfactory {
             return true;
         }
         char nextChar = expression.charAt(index + 1);
-        handleBracketEndStarAndPlus(stateBeforeBracket, nextChar);
+        handleBracketEndQuestionmarkStarAndPlus(stateBeforeBracket, nextChar);
         return true;
     }
 
@@ -332,24 +365,36 @@ public class NFAfactory {
 
     /**
      * Käsittelee säännöllisen lausekkeen kaarisulkujen lopun, kun sulkujen
-     * jälkeen on plus tai tähti.
+     * jälkeen on kysymysmerkki, plus tai tähti.
      *
      * @param stateBeforeBracket int, joka kertoo sulkuja edeltävän tilan.
      * @param nextChar char, joka on seuraavana seuraavana
      */
-    private void handleBracketEndStarAndPlus(int stateBeforeBracket, char nextChar) {
-        if (nextChar == '*' || nextChar == '+') {
+    private void handleBracketEndQuestionmarkStarAndPlus(int stateBeforeBracket, char nextChar) {
+        if (nextChar == '*' || nextChar == '+' || nextChar == '?') {
             index++;
             automate.add(new Node());
-            automate.get(currentState).getEdgeList().add(new Edge(stateBeforeBracket, (char) 0));
-            if (nextChar == '*') {
-                automate.get(stateBeforeBracket).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));
-                currentState = automate.size() - 1;
-                previousState = stateBeforeBracket;
-            } else {
-                automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));
-                previousState = currentState;
-                currentState = automate.size() - 1;
+            switch (nextChar) {
+                case '*':
+                    automate.get(currentState).getEdgeList().add(new Edge(stateBeforeBracket, (char) 0));
+                    automate.get(stateBeforeBracket).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));
+                    currentState = automate.size() - 1;
+                    previousState = stateBeforeBracket;
+                    break;
+                case '+':
+                    automate.get(currentState).getEdgeList().add(new Edge(stateBeforeBracket, (char) 0));
+                    automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));
+                    previousState = currentState;
+                    currentState = automate.size() - 1;
+                    break;
+                case '?':
+                    automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));
+                    automate.get(stateBeforeBracket).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));
+                    previousState = currentState;
+                    currentState = automate.size() - 1;
+                    break;
+                default:
+                    break;
             }
         }
     }
