@@ -109,7 +109,7 @@ public class MatcherPerformanceTest {
 
     /**
      * Testaa ja tulostaa annetun lausekkeen NFA:ksi ja DFA:ksi muuttamiseen ja
-     * kaikkien annettujen merkkijonojen tarkistamiseen kuluvan ajan keskiarvon.
+     * kaikkien annettujen merkkijonojen tarkistamiseen kuluvan ajan mediaanin.
      *
      * @param expression String, joka on säännöllinen lauseke, josta automaatti
      * muodostetaan.
@@ -117,8 +117,8 @@ public class MatcherPerformanceTest {
      * @param string List, joka sisältää tarkistettavat merkkijonot.
      */
     private static void testMatching(String expression, String testName, List<String> strings) {
-        long nfaTimesSum = 0;
-        long dfaTimesSum = 0;
+        long[] nfaTimes = new long[1000];
+        long[] dfaTimes = new long[1000];
         for (int j = 0; j < 1000; j++) {
             long start = System.nanoTime();
             Matcher matcher = new Matcher(new NFAfactory().generateNFA(expression), false);
@@ -126,17 +126,34 @@ public class MatcherPerformanceTest {
                 matcher.match(strings.get(i));
             }
             long end = System.nanoTime();
-            nfaTimesSum += end - start;
+            nfaTimes[j] = (end - start);
             start = System.nanoTime();
             matcher = new Matcher(new DFAfactory().generateDFA(new NFAfactory().generateNFA(expression)), true);
             for (int i = 0; i < strings.size(); i++) {
                 matcher.match(strings.get(i));
             }
             end = System.nanoTime();
-            dfaTimesSum += end - start;
+            dfaTimes[j] = (end - start);
         }
-        System.out.println("NFA: " + testName + ": " + (nfaTimesSum / 100) + "ns");
-        System.out.println("DFA: " + testName + ": " + (dfaTimesSum / 100) + "ns");
-        System.out.println("Difference(NFA-DFA): " + ((nfaTimesSum / 100) - (dfaTimesSum / 100)));
+        System.out.println("NFA: " + testName + ": " + (nfaTimes[1000 / 2]) + "ns");
+        System.out.println("DFA: " + testName + ": " + (dfaTimes[1000 / 2]) + "ns");
+        System.out.println("Difference(NFA-DFA): " + ((nfaTimes[1000 / 2]) - (dfaTimes[1000 / 2])));
+    }
+
+    /**
+     * Järjestää annetun long-taulukon lisäysjärjestyksellä.
+     *
+     * @param array Taulukko, joka järjestetään.
+     */
+    private static void sort(long[] array) {
+        for (int i = 1; i < array.length; ++i) {
+            long current = array[i];
+            int j = i - 1;
+            while (j >= 0 && array[j] > current) {
+                array[j + 1] = array[j];
+                j = j - 1;
+            }
+            array[j + 1] = current;
+        }
     }
 }

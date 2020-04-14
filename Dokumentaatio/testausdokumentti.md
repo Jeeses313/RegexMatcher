@@ -28,7 +28,7 @@ Virhe johtui siitä, että DFA:ta tehdessä ei osattu yhdistää samaksi DFA:n t
 
 Ongelma on ratkaistu siten, että DFA:n muodostuksessa käydään ensin läpi kaikki siirtymät ja kerätään saman merkin siirtymien maalitilat samaan DFA:n tilaan ennen kuin katsotaan, mihin muihin tiloihin tyhjillä siirtymillä päästään.  
 
-Virhe myös tarkistetaan JUnitilla antamalla kahdelle merkkijonojen tarkistajalle, joista toinen tarkistaa NFA:n ja toinen DFA:n tarkistusmenetelmällä, säännöllisen lausekkeen mukaan muodostettu DFA. Tämän 
+Virhe myös tarkistetaan JUnitilla antamalla kahdelle merkkijonojen tarkistajalle, joista toinen tarkistaa NFA:n ja toinen DFA:n tarkistusmenetelmällä, yllä olevan säännöllisen lausekkeen mukaan muodostettu DFA. Tämän 
 jälkeen tarkastajille annetaan tarkistettavaksi merkkijono "a". NFA:n menetelmää käyttävä kertoo, että merkkijono kuuluu kieleen kuten pitääkin. DFA:n menetelmää käyttävä kertoo, että merkkijono ei kuulu kieleen, koska 
 se yrittää edetä a-z siirtymää pitkin ja huomaa, että tila ei ole hyväksyvä. DFA:n menetelmää käyttäessä ei peruuteta, koska sille ei pitäisi olla tarvetta ja siirtymä a-z on aina siirtymien listassa ensimmäisenä, koska 
 automaatti muodostetaan käymällä säännöllisen lausekkeen merkkejä järjestyksessä.  
@@ -56,14 +56,103 @@ Lopullisena ja toimivana korjauksena käytetään listaa, johon laitetaan sellai
 muisti tyhjennetään aina, kun kuljetaan ei tyhjän merkin siirtymää pitkin. Tila lisätään muistiin myös silloin, kun ei tyhjän merkin siirtymä 
 johti umpikujaan, ettei tai-osioiden saman kirjaimen siirtymät, esim. (ab|ac)*, aiheuta silmukkaan juuttumista listan tyhjentämisen takia. Näin vältetään silmukassa kulkeminen, ylivuodon aiheuttama virhe, ja jo käytyihin tiloihin pääsemättömyys, kun niihin pitäisi oikeasti päästä.  
 
-Virhe tarkistetaan JUnitilla antamalla merkkijonon tarkistajalle kolme ylläolevan pohdinnan mukaista säännöllistä lauseketta ja tarkistetaan erilaisia merkkijonoja NFA:n tarkistusmenetelmällä.  
+Virhe tarkistetaan JUnitilla antamalla merkkijonon tarkistajalle kolme ylläolevan pohdinnan mukaisesta säännöllisestä lausekkeesta muodostetut automaatit ja tarkistetaan erilaisia merkkijonoja NFA:n tarkistusmenetelmällä.  
 
 #### Suorituskykytestaus  
 ##### [Automaattien muodostus](https://github.com/Jeeses313/RegexMatcher/blob/master/src/main/java/regexmatcher/FactoryPerformanceTest.java)  
 NFA:n ja DFA:n muodostamisnopeuksien vertailu on turhaa, koska ohjelma vaatii NFA:n muodostuksen DFA:n muodostamiseksi, mutta erilaisten säännöllisten lausekkeiden muuttaminen automaateiksi voi tuottaa kiinnostavia tuloksia.  
-ToDo 
+
+Testeissä muodostetaan erilaisia toistuvia merkkiyhdistelmiä sisältäviä säännöllisiä lausekkeita 1, 10 ja 100 merkkiyhdistelmän kokoisina ja jokaisesta säännöllisestä lausekkeesta muodostetaan tuhat kertaa NFA ja DFA ja sitten lasketaan näiden tuhannen muodostamiseen kuluvan 
+ajan mediaanin. Testeissä käytetään mediaania, koska Javan toiminta voi aiheuttaa/aiheuttaa hyvin suuria eroja ajoissa, mikä kasvattaisi keskiarvoa paljon. Testeistä saadaan seuraavat tulokset:  
+
+```  
+NFA: Brackets(1): 2900ns
+DFA: Brackets(1): 6200ns
+NFA: Brackets(10): 6100ns
+DFA: Brackets(10): 15100ns
+NFA: Brackets(100): 16600ns
+DFA: Brackets(100): 149500ns
+------------------------
+NFA: Star(1): 800ns
+DFA: Star(1): 3000ns
+NFA: Star(10): 3200ns
+DFA: Star(10): 47900ns
+NFA: Star(100): 10400ns
+DFA: Star(100): 126600ns
+------------------------
+NFA: Plus(1): 600ns
+DFA: Plus(1): 900ns
+NFA: Plus(10): 1600ns
+DFA: Plus(10): 11600ns
+NFA: Plus(100): 10700ns
+DFA: Plus(100): 2020900ns
+------------------------
+NFA: Question mark(1): 700ns
+DFA: Question mark(1): 700ns
+NFA: Question mark(10): 1500ns
+DFA: Question mark(10): 9000ns
+NFA: Question mark(100): 10100ns
+DFA: Question mark(100): 1834400ns
+------------------------
+NFA: Or(1): 700ns
+DFA: Or(1): 600ns
+NFA: Or(10): 2000ns
+DFA: Or(10): 1500ns
+NFA: Or(100): 11100ns
+DFA: Or(100): 24300ns 
+```  
+
+Tuloksista huomataan, että NFA:n muostukseen kuluva aikaa kasvaa lienaarisesti tai lineaarista hitaammin. Tuloksista huomaa myös, että sulkuja sisältävien lausekkeiden muuttaminen automaatiksi kuluttaa eniten aikaa. Tämä 
+johtuu siitä, että sulkuja käyttäessä lausekkeista on tullut pidempiä, koska kahden merkin, eli a*, a+ ja a?, tuleekin kolme, (a), eli käsitellään enemmän merkkejä.  
+
+DFA:n tuloksista oudoimpana on yhden ja kymmenen merkkiyhdistelmän tai-osion sisältävät lausekkeet, koska ne ovat jostain syystä nopeampia kuin NFA:n muodostus, vaikka DFA:ta muodostaessa aina muodostetaan NFA ensin. Tämä voi johtua Javan toiminnasta ja siitä, että käytetään mediaania. 
+Muuten DFA:n muodostamiseen kuluva aika kasvaa lienaarisesti tai lineaarista hitaammin, mutta plussia ja kysymysmerkkejä sisältävien lausekkeiden ajat kasvavat todella paljon, ~10000ns -> ~2000000ns verrattuna ~20000ns -> 130000ns. Kysymysmerkkejä sisältävien pitkä kesto johtuu 
+pitkistä tyhjien merkkien siirtymäketjuista, jolloin DFA:ta muodostaessa joudutaan käymään paljon tiloja läpi jokaisen siirtymän jälkeen, että saataisiin muodostettua yhdistetty tila. Plussia sisältävillä näin ei pitäisi käydä, kun taas tähtiä sisältävillä, joiden aika on paljon lyhyempi, näin pitäisi käydä, eli testeissä 
+saattaa tapahtua Javan aiheuttaamaa häiriötä.  
 
 ##### [Merkkijonojen tarkistaminen](https://github.com/Jeeses313/RegexMatcher/blob/master/src/main/java/regexmatcher/MatcherPerformanceTest.java)  
 On selvää, että DFA on NFA:ta nopeampi, mutta DFA:n muodostuksessa kestää kauemmin. Tämän takia on hyvä tutkia miten paljon/millaisia merkkijonoja pitää tarkistaa, että DFA:n muodostaminen on nopeampaa.  
-ToDo
+
+Testeissä mudostetaan erilaisista säännöllisistä lausekkeista NFA ja DFA ja tarkistetaan molemmilla erilaisia merkkijonoja. Muodostus ja tarkistukset tehdään tuhat kertaa ja näistä lasketaan automaatin muodostuksen ja tarkistusten yhteen kuluvan ajan mediaani. 
+Testeissä käytetään mediaania, koska Javan toiminta voi aiheuttaa/aiheuttaa hyvin suuria eroja ajoissa, mikä kasvattaisi keskiarvoa paljon. Testeistä saadaan seuraavat tulokset:  
+
+```  
+NFA: Simple expression: 345100ns
+DFA: Simple expression: 39500ns
+Difference(NFA-DFA): 305600
+------------------------
+NFA: Simple expression with or: 27400ns
+DFA: Simple expression with or: 32900ns
+Difference(NFA-DFA): -5500
+------------------------
+NFA: Difficult expression: 233400ns
+DFA: Difficult expression: 127300ns
+Difference(NFA-DFA): 106100
+------------------------
+NFA: Difficult expression with or: 48400ns
+DFA: Difficult expression with or: 118600ns
+Difference(NFA-DFA): -70200  
+```  
+
+Tuloksista huomataan, että NFA:n käyttäminen on hitaampaa kuin DFA:n muodostaminen ja sen käyttäminen silloin, kun säännöllisessä lausekkeessa on tai-osioita. Tämä johtuu siitä, että tarkistus NFA:lla toimii syvyyshaun tavoin ja tai-osioiden takia joudutaan tekemään paljon 
+peruuttamista, koska automaatissa on useita siirtymä vaihtoehtoja, kun DFA:lla on aina vain yksi vaihtoehto. Muulloin on paljon nopeampaa olla muodostamatta DFA:ta ja käyttää vain NFA:ta merkkijonojen tarkistamiseen.  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

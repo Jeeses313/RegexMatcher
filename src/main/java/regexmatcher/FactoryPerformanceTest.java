@@ -107,12 +107,12 @@ public class FactoryPerformanceTest {
     }
 
     /**
-     * Testaa säännöllisiä lausekkeita, joissa on plussia.
+     * Testaa säännöllisiä lausekkeita, joissa on kysymysmerkkejä.
      */
     private static void testExpressionWithQuestionmark() {
         int scale = 1;
         while (scale <= 100) {
-            String expression = generatePlusExpression(scale);
+            String expression = generateQuestionmarkExpression(scale);
             testAutomateForming(expression, "Question mark(" + scale + ")");
             scale *= 10;
         }
@@ -120,7 +120,8 @@ public class FactoryPerformanceTest {
     }
 
     /**
-     * Muodostaa annetun pituisen säännöllisenlausekkeen, jossa on plussia.
+     * Muodostaa annetun pituisen säännöllisenlausekkeen, jossa on
+     * kysymysmerkkejä.
      *
      * @param scale int, joka kertoo muodostettavan säännöllisen lausekkeen
      * pituuden.
@@ -165,26 +166,45 @@ public class FactoryPerformanceTest {
 
     /**
      * Testaa ja tulostaa annetun lausekkeen NFA:ksi ja DFA:ksi muuttamiseen
-     * kuluvan ajan keskiarvon.
+     * kuluvan ajan mediaani.
      *
      * @param expression String, joka on säännöllinen lauseke, josta automaatti
      * muodostetaan.
      * @param testName String, joka on testin nimi.
      */
     private static void testAutomateForming(String expression, String testName) {
-        long nfaTimesSum = 0;
-        long dfaTimesSum = 0;
+        long[] nfaTimes = new long[1000];
+        long[] dfaTimes = new long[1000];
         for (int i = 0; i < 1000; i++) {
             long start = System.nanoTime();
             List<Node> automate = new NFAfactory().generateNFA(expression);
             long end = System.nanoTime();
-            nfaTimesSum += end - start;
+            nfaTimes[i] = (end - start);
             start = System.nanoTime();
             automate = new DFAfactory().generateDFA(automate);
             end = System.nanoTime();
-            dfaTimesSum += end - start;
+            dfaTimes[i] = (end - start);
         }
-        System.out.println("NFA: " + testName + ": " + (nfaTimesSum / 100) + "ns");
-        System.out.println("DFA: " + testName + ": " + (dfaTimesSum / 100) + "ns");
+        sort(nfaTimes);
+        sort(dfaTimes);
+        System.out.println("NFA: " + testName + ": " + (nfaTimes[1000 / 2]) + "ns");
+        System.out.println("DFA: " + testName + ": " + (dfaTimes[1000 / 2]) + "ns");
+    }
+
+    /**
+     * Järjestää annetun long-taulukon lisäysjärjestyksellä.
+     *
+     * @param array Taulukko, joka järjestetään.
+     */
+    private static void sort(long[] array) {
+        for (int i = 1; i < array.length; ++i) {
+            long current = array[i];
+            int j = i - 1;
+            while (j >= 0 && array[j] > current) {
+                array[j + 1] = array[j];
+                j = j - 1;
+            }
+            array[j + 1] = current;
+        }
     }
 }

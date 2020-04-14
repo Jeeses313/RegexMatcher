@@ -1,8 +1,5 @@
 package regexmatcher;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-
 /**
  * Lista tietorakenne.
  *
