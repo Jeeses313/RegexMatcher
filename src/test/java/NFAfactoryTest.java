@@ -11,6 +11,8 @@ public class NFAfactoryTest {
     public void generateNFAReturnsNullWhenRegularExpressionIsInvalid() {
         List<Node> automate = new NFAfactory().generateNFA("[a-");
         assertTrue(automate == null);
+        automate = new NFAfactory().generateNFA("[");
+        assertTrue(automate == null);
         automate = new NFAfactory().generateNFA("]a");
         assertTrue(automate == null);
         automate = new NFAfactory().generateNFA("[a");
@@ -96,6 +98,8 @@ public class NFAfactoryTest {
     @Test
     public void generateNFAReturnsAutomateWhenRegularExpressionIsValidAndHasSquareBrackets() {
         List<Node> automate = new NFAfactory().generateNFA("[a1-9]");
+        assertTrue(automate != null);
+        automate = new NFAfactory().generateNFA("[bba-z]");
         assertTrue(automate != null);
     }
 

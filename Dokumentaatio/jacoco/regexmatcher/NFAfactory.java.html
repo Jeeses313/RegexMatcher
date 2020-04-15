@@ -95,115 +95,139 @@
     /**
      * Käsittelee säännöllisen lausekkeen hakasulkeet.
      *
+     * Muodostaa uuden tilan ja tekee siirtymän nykyisestä tilasta uuteen
+     * kaikilla hakasulkeiden sisällä olevilla ja tavuviivan osoittamilla
+     * merkeillä.
+     *
      * @param expression String, joka on säännöllinen lauseke, josta
      * muodostetaan automaattia.
      * @return Totuusarvo, joka kertoo, onnistuiko käsittely.
      */
     private boolean handleSquareBrackets(String expression) {
-<span class="fc" id="L103">        index++;</span>
-<span class="fc" id="L104">        automate.add(new Node());</span>
+<span class="fc" id="L107">        index++;</span>
+<span class="fc" id="L108">        automate.add(new Node());</span>
+<span class="fc" id="L109">        boolean[] contained = new boolean[123];</span>
         while (true) {
-<span class="pc bpc" id="L106" title="1 of 2 branches missed.">            if (index &gt;= expression.length()) {</span>
-<span class="nc" id="L107">                return false;</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">            if (index &gt;= expression.length()) {</span>
+<span class="fc" id="L112">                return false;</span>
             }
-<span class="fc" id="L109">            int startChar = expression.charAt(index);</span>
-<span class="fc bfc" id="L110" title="All 2 branches covered.">            if (startChar == ']') {</span>
-<span class="fc" id="L111">                break;</span>
+<span class="fc" id="L114">            int startChar = expression.charAt(index);</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">            if (startChar == ']') {</span>
+<span class="fc" id="L116">                break;</span>
             }
-<span class="fc bfc" id="L113" title="All 4 branches covered.">            if (index &gt;= expression.length() - 1 || !isStandardChar((char) startChar)) {</span>
-<span class="fc" id="L114">                return false;</span>
+<span class="fc bfc" id="L118" title="All 4 branches covered.">            if (index &gt;= expression.length() - 1 || !isStandardChar((char) startChar)) {</span>
+<span class="fc" id="L119">                return false;</span>
             }
-<span class="fc bfc" id="L116" title="All 2 branches covered.">            if (expression.charAt(index + 1) == '-') {</span>
-<span class="fc" id="L117">                boolean works = handleHyphen(expression, startChar);</span>
-<span class="fc bfc" id="L118" title="All 2 branches covered.">                if (!works) {</span>
-<span class="fc" id="L119">                    return false;</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">            if (expression.charAt(index + 1) == '-') {</span>
+<span class="fc" id="L122">                boolean works = handleHyphen(expression, startChar, contained);</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">                if (!works) {</span>
+<span class="fc" id="L124">                    return false;</span>
                 }
-<span class="fc" id="L121">            } else {</span>
-<span class="fc" id="L122">                automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) startChar));</span>
-<span class="fc" id="L123">                index++;</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">            } else if (!contained[startChar]) {</span>
+<span class="fc" id="L127">                automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) startChar));</span>
+<span class="fc" id="L128">                contained[startChar] = true;</span>
             }
-<span class="fc" id="L125">        }</span>
-<span class="fc" id="L126">        previousState = currentState;</span>
-<span class="fc" id="L127">        currentState = automate.size() - 1;</span>
-<span class="fc" id="L128">        return true;</span>
+<span class="fc" id="L130">            index++;</span>
+<span class="fc" id="L131">        }</span>
+<span class="fc" id="L132">        previousState = currentState;</span>
+<span class="fc" id="L133">        currentState = automate.size() - 1;</span>
+<span class="fc" id="L134">        return true;</span>
     }
 
     /**
      * Käsittelee säännöllisen lausekkeen tavuviivan hakasulkeiden sisällä.
      *
+     * Muodostaa siirtymän nykyisestä tilastaa uuteen tilaan kaikilla merkeillä,
+     * jotka ovat tavuviivan edeltävän ja jäljessä olevan merkin välillä.
+     *
      * @param expression String, joka on säännöllinen lauseke, josta
      * muodostetaan automaattia.
      * @param startChar int, joka on merkkijoukon aloittavan merkin numero.
+     * @param contained boolean taulukko, joka kertoo, onko merkki esiintynyt jo
+     * hakasulkeiden sisällä.
      * @return
      */
-    private boolean handleHyphen(String expression, int startChar) {
-<span class="fc bfc" id="L140" title="All 2 branches covered.">        if (index &gt;= expression.length() - 2) {</span>
-<span class="fc" id="L141">            return false;</span>
+    private boolean handleHyphen(String expression, int startChar, boolean[] contained) {
+<span class="fc bfc" id="L151" title="All 2 branches covered.">        if (index &gt;= expression.length() - 2) {</span>
+<span class="fc" id="L152">            return false;</span>
         }
-<span class="fc" id="L143">        int endChar = expression.charAt(index + 2);</span>
-<span class="pc bpc" id="L144" title="3 of 20 branches missed.">        if (endChar &lt; startChar || (startChar &gt;= 48 &amp;&amp; startChar &lt;= 57 &amp;&amp; endChar &gt; 57) || (startChar &gt;= 65 &amp;&amp; startChar &lt;= 90 &amp;&amp; endChar &gt; 90) || (startChar &gt;= 97 &amp;&amp; startChar &lt;= 122 &amp;&amp; endChar &gt; 122)) {</span>
-<span class="fc" id="L145">            return false;</span>
+<span class="fc" id="L154">        int endChar = expression.charAt(index + 2);</span>
+<span class="pc bpc" id="L155" title="3 of 20 branches missed.">        if (endChar &lt; startChar || (startChar &gt;= 48 &amp;&amp; startChar &lt;= 57 &amp;&amp; endChar &gt; 57) || (startChar &gt;= 65 &amp;&amp; startChar &lt;= 90 &amp;&amp; endChar &gt; 90) || (startChar &gt;= 97 &amp;&amp; startChar &lt;= 122 &amp;&amp; endChar &gt; 122)) {</span>
+<span class="fc" id="L156">            return false;</span>
         }
-<span class="fc bfc" id="L147" title="All 2 branches covered.">        for (int k = startChar; k &lt;= endChar; k++) {</span>
-<span class="fc" id="L148">            automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) k));</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">        for (int k = startChar; k &lt;= endChar; k++) {</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">            if (!contained[k]) {</span>
+<span class="fc" id="L160">                contained[k] = true;</span>
+<span class="fc" id="L161">                automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) k));</span>
+            }
         }
-<span class="fc" id="L150">        index += 3;</span>
-<span class="fc" id="L151">        return true;</span>
+<span class="fc" id="L164">        index += 2;</span>
+<span class="fc" id="L165">        return true;</span>
     }
 
     /**
      * Alustaa automaatin tekoon käytettävän datan.
+     *
+     * Muodostaa kaksi tilaa, joista ensimmäinen on aloitustila, josta on tyhjän
+     * merkin siirtymä toiseen tilaan. Ensimmäinen tila lisätään myös sulkujen
+     * alkukohtia muistissa pitävään pinoon.
      */
     private void initData() {
-<span class="fc" id="L158">        automate = new List&lt;&gt;();</span>
-<span class="fc" id="L159">        stack = new Stack&lt;&gt;();</span>
-<span class="fc" id="L160">        memory = new Stack&lt;&gt;();</span>
-<span class="fc" id="L161">        automate.add(new Node());</span>
-<span class="fc" id="L162">        stack.push(0);</span>
-<span class="fc" id="L163">        memory.push(new List&lt;&gt;());</span>
-<span class="fc" id="L164">        automate.add(new Node());</span>
-<span class="fc" id="L165">        automate.get(0).getEdgeList().add(new Edge(1, (char) 0));</span>
-<span class="fc" id="L166">        previousState = 0;</span>
-<span class="fc" id="L167">        currentState = 1;</span>
-<span class="fc" id="L168">        index = 0;</span>
-<span class="fc" id="L169">    }</span>
+<span class="fc" id="L176">        automate = new List&lt;&gt;();</span>
+<span class="fc" id="L177">        stack = new Stack&lt;&gt;();</span>
+<span class="fc" id="L178">        memory = new Stack&lt;&gt;();</span>
+<span class="fc" id="L179">        automate.add(new Node());</span>
+<span class="fc" id="L180">        stack.push(0);</span>
+<span class="fc" id="L181">        memory.push(new List&lt;&gt;());</span>
+<span class="fc" id="L182">        automate.add(new Node());</span>
+<span class="fc" id="L183">        automate.get(0).getEdgeList().add(new Edge(1, (char) 0));</span>
+<span class="fc" id="L184">        previousState = 0;</span>
+<span class="fc" id="L185">        currentState = 1;</span>
+<span class="fc" id="L186">        index = 0;</span>
+<span class="fc" id="L187">    }</span>
 
     /**
      * Käsittelee säännöllisen lausekkeen muut merkit. Hyväksyy a-z, 0-9 ja A-Z.
+     *
+     * Muodostaa uuden tilan ja tekee siirtymän nykyisestä tilasta uuteen
+     * annetulla merkillä.
      *
      * @param character char, jota käsitellään.
      * @return Totuusarvo, joka kertoo, onnistuiko käsittely.
      */
     private boolean handleNormalCharacter(char character) {
-<span class="fc bfc" id="L178" title="All 2 branches covered.">        if (!isStandardChar(character)) {</span>
-<span class="fc" id="L179">            return false;</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">        if (!isStandardChar(character)) {</span>
+<span class="fc" id="L200">            return false;</span>
         }
-<span class="fc" id="L181">        automate.add(new Node());</span>
-<span class="fc" id="L182">        automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, character));</span>
-<span class="fc" id="L183">        previousState = currentState;</span>
-<span class="fc" id="L184">        currentState = automate.size() - 1;</span>
-<span class="fc" id="L185">        return true;</span>
+<span class="fc" id="L202">        automate.add(new Node());</span>
+<span class="fc" id="L203">        automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, character));</span>
+<span class="fc" id="L204">        previousState = currentState;</span>
+<span class="fc" id="L205">        currentState = automate.size() - 1;</span>
+<span class="fc" id="L206">        return true;</span>
     }
 
     /**
      * Käsittelee säännöllisen lausekkeen pisteen.
      *
+     * Muodostaa uuden tilan ja tekee siirtymän nykyisestä tilasta uuteen
+     * kaikilla hyväksytyillä merkeillä, eli a-z, 0-9 ja A-Z.
+     *
      * @return Totuusarvo, joka kertoo, onnistuiko käsittely.
      */
     private boolean handleDot() {
-<span class="fc" id="L194">        automate.add(new Node());</span>
-<span class="fc bfc" id="L195" title="All 2 branches covered.">        for (int i = 48; i &lt;= 57; i++) {</span>
-<span class="fc" id="L196">            automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) i));</span>
+<span class="fc" id="L218">        automate.add(new Node());</span>
+<span class="fc bfc" id="L219" title="All 2 branches covered.">        for (int i = 48; i &lt;= 57; i++) {</span>
+<span class="fc" id="L220">            automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) i));</span>
         }
-<span class="fc bfc" id="L198" title="All 2 branches covered.">        for (int i = 65; i &lt;= 90; i++) {</span>
-<span class="fc" id="L199">            automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) i));</span>
+<span class="fc bfc" id="L222" title="All 2 branches covered.">        for (int i = 65; i &lt;= 90; i++) {</span>
+<span class="fc" id="L223">            automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) i));</span>
         }
-<span class="fc bfc" id="L201" title="All 2 branches covered.">        for (int i = 97; i &lt;= 122; i++) {</span>
-<span class="fc" id="L202">            automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) i));</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">        for (int i = 97; i &lt;= 122; i++) {</span>
+<span class="fc" id="L226">            automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) i));</span>
         }
-<span class="fc" id="L204">        previousState = currentState;</span>
-<span class="fc" id="L205">        currentState = automate.size() - 1;</span>
-<span class="fc" id="L206">        return true;</span>
+<span class="fc" id="L228">        previousState = currentState;</span>
+<span class="fc" id="L229">        currentState = automate.size() - 1;</span>
+<span class="fc" id="L230">        return true;</span>
     }
 
     /**
@@ -213,206 +237,241 @@
      * @return Totuusarvo, joka kertoo, onko merkki tavallinen.
      */
     private boolean isStandardChar(char character) {
-<span class="pc bpc" id="L216" title="1 of 12 branches missed.">        if ((character &gt;= 48 &amp;&amp; character &lt;= 57) || (character &gt;= 65 &amp;&amp; character &lt;= 90) || (character &gt;= 97 &amp;&amp; character &lt;= 122)) {</span>
-<span class="fc" id="L217">            return true;</span>
+<span class="pc bpc" id="L240" title="1 of 12 branches missed.">        if ((character &gt;= 48 &amp;&amp; character &lt;= 57) || (character &gt;= 65 &amp;&amp; character &lt;= 90) || (character &gt;= 97 &amp;&amp; character &lt;= 122)) {</span>
+<span class="fc" id="L241">            return true;</span>
         }
-<span class="fc" id="L219">        return false;</span>
+<span class="fc" id="L243">        return false;</span>
     }
 
     /**
      * Käsittelee säännöllisen lausekkeen tähdet.
+     *
+     * Muodostaa uuden tilan ja tekee tyhjän merkin siirtymän nykyisestä tilasta
+     * aiempaan tilaan ja aiemmasta tilasta uuteen tilaan.
      *
      * @param expression String, joka on säännöllinen lauseke, josta
      * muodostetaan automaattia.
      * @return Totuusarvo, joka kertoo, onnistuiko käsittely.
      */
     private boolean handleStar(String expression) {
-<span class="fc bfc" id="L230" title="All 2 branches covered.">        if (index == 0) {</span>
-<span class="fc" id="L231">            return false;</span>
+<span class="fc bfc" id="L257" title="All 2 branches covered.">        if (index == 0) {</span>
+<span class="fc" id="L258">            return false;</span>
         }
-<span class="fc" id="L233">        char charBefore = expression.charAt(index - 1);</span>
-<span class="fc bfc" id="L234" title="All 6 branches covered.">        if (isStandardChar(charBefore) || charBefore == ']' || charBefore == '.') {</span>
-<span class="fc" id="L235">            automate.get(currentState).getEdgeList().add(new Edge(previousState, (char) 0));</span>
-<span class="fc" id="L236">            automate.add(new Node());</span>
-<span class="fc" id="L237">            automate.get(previousState).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
-<span class="fc" id="L238">            currentState = automate.size() - 1;</span>
-<span class="fc" id="L239">            return true;</span>
+<span class="fc" id="L260">        char charBefore = expression.charAt(index - 1);</span>
+<span class="fc bfc" id="L261" title="All 6 branches covered.">        if (isStandardChar(charBefore) || charBefore == ']' || charBefore == '.') {</span>
+<span class="fc" id="L262">            automate.get(currentState).getEdgeList().add(new Edge(previousState, (char) 0));</span>
+<span class="fc" id="L263">            automate.add(new Node());</span>
+<span class="fc" id="L264">            automate.get(previousState).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
+<span class="fc" id="L265">            currentState = automate.size() - 1;</span>
+<span class="fc" id="L266">            return true;</span>
         }
-<span class="fc" id="L241">        return false;</span>
+<span class="fc" id="L268">        return false;</span>
     }
 
     /**
      * Käsittelee säännöllisen lausekkeen plussat.
+     *
+     * Muodostaa uuden tilan ja tekee tyhjän merkin siirtymän nykyisestä tilasta
+     * aiempaan tilaan ja nykyisestä tilasta uuteen tilaan.
      *
      * @param expression String, joka on säännöllinen lauseke, josta
      * muodostetaan automaattia.
      * @return Totuusarvo, joka kertoo, onnistuiko käsittely.
      */
     private boolean handlePlus(String expression) {
-<span class="fc bfc" id="L252" title="All 2 branches covered.">        if (index == 0) {</span>
-<span class="fc" id="L253">            return false;</span>
+<span class="fc bfc" id="L282" title="All 2 branches covered.">        if (index == 0) {</span>
+<span class="fc" id="L283">            return false;</span>
         }
-<span class="fc" id="L255">        char charBefore = expression.charAt(index - 1);</span>
-<span class="pc bpc" id="L256" title="1 of 6 branches missed.">        if (isStandardChar(charBefore) || charBefore == ']' || charBefore == '.') {</span>
-<span class="fc" id="L257">            automate.get(currentState).getEdgeList().add(new Edge(previousState, (char) 0));</span>
-<span class="fc" id="L258">            automate.add(new Node());</span>
-<span class="fc" id="L259">            automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
-<span class="fc" id="L260">            previousState = currentState;</span>
-<span class="fc" id="L261">            currentState = automate.size() - 1;</span>
-<span class="fc" id="L262">            return true;</span>
+<span class="fc" id="L285">        char charBefore = expression.charAt(index - 1);</span>
+<span class="pc bpc" id="L286" title="1 of 6 branches missed.">        if (isStandardChar(charBefore) || charBefore == ']' || charBefore == '.') {</span>
+<span class="fc" id="L287">            automate.get(currentState).getEdgeList().add(new Edge(previousState, (char) 0));</span>
+<span class="fc" id="L288">            automate.add(new Node());</span>
+<span class="fc" id="L289">            automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
+<span class="fc" id="L290">            previousState = currentState;</span>
+<span class="fc" id="L291">            currentState = automate.size() - 1;</span>
+<span class="fc" id="L292">            return true;</span>
         }
-<span class="fc" id="L264">        return false;</span>
+<span class="fc" id="L294">        return false;</span>
     }
 
     /**
      * Käsittelee säännöllisen lausekkeen kysymysmerkit.
+     *
+     * Muodostaa uuden tilan ja tekee tyhjän merkin siirtymän nykyisestä tilasta
+     * uuteen tilaan ja aiemmasta tilasta uuteen tilaan.
      *
      * @param expression String, joka on säännöllinen lauseke, josta
      * muodostetaan automaattia.
      * @return Totuusarvo, joka kertoo, onnistuiko käsittely.
      */
     private boolean handleQuestionmark(String expression) {
-<span class="fc bfc" id="L275" title="All 2 branches covered.">        if (index == 0) {</span>
-<span class="fc" id="L276">            return false;</span>
+<span class="fc bfc" id="L308" title="All 2 branches covered.">        if (index == 0) {</span>
+<span class="fc" id="L309">            return false;</span>
         }
-<span class="fc" id="L278">        char charBefore = expression.charAt(index - 1);</span>
-<span class="pc bpc" id="L279" title="1 of 6 branches missed.">        if (isStandardChar(charBefore) || charBefore == ']' || charBefore == '.') {</span>
-<span class="fc" id="L280">            automate.add(new Node());</span>
-<span class="fc" id="L281">            automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
-<span class="fc" id="L282">            automate.get(previousState).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
-<span class="fc" id="L283">            previousState = currentState;</span>
-<span class="fc" id="L284">            currentState = automate.size() - 1;</span>
-<span class="fc" id="L285">            return true;</span>
+<span class="fc" id="L311">        char charBefore = expression.charAt(index - 1);</span>
+<span class="pc bpc" id="L312" title="1 of 6 branches missed.">        if (isStandardChar(charBefore) || charBefore == ']' || charBefore == '.') {</span>
+<span class="fc" id="L313">            automate.add(new Node());</span>
+<span class="fc" id="L314">            automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
+<span class="fc" id="L315">            automate.get(previousState).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
+<span class="fc" id="L316">            previousState = currentState;</span>
+<span class="fc" id="L317">            currentState = automate.size() - 1;</span>
+<span class="fc" id="L318">            return true;</span>
         }
-<span class="fc" id="L287">        return false;</span>
+<span class="fc" id="L320">        return false;</span>
     }
 
     /**
      * Asettaa automaatin hyväksyvät tilat.
      *
+     * Asettaa nykyisen tilan ja kaikki tai-lohkon viimeisten tilojen muistissa
+     * pitävän pinon päälimmäisen listan tilat hyväksyviksi.
+     *
      * @return Totuusarvo, joka kertoo, onko automaatin käsittely loppunut
      * hyväksyttävään tilanteeseen.
      */
     private boolean setEndStates() {
-<span class="pc bpc" id="L297" title="1 of 4 branches missed.">        if (memory.size() &gt; 1 || stack.size() &gt; 1) {</span>
-<span class="fc" id="L298">            return false;</span>
+<span class="pc bpc" id="L333" title="1 of 4 branches missed.">        if (memory.size() &gt; 1 || stack.size() &gt; 1) {</span>
+<span class="fc" id="L334">            return false;</span>
         }
-<span class="fc bfc" id="L300" title="All 2 branches covered.">        for (int i = 0; i &lt; memory.peek().size(); i++) {</span>
-<span class="fc" id="L301">            int state = memory.peek().get(i);</span>
-<span class="fc" id="L302">            automate.get(state).setEnd();</span>
+<span class="fc bfc" id="L336" title="All 2 branches covered.">        for (int i = 0; i &lt; memory.peek().size(); i++) {</span>
+<span class="fc" id="L337">            int state = memory.peek().get(i);</span>
+<span class="fc" id="L338">            automate.get(state).setEnd();</span>
         }
-<span class="fc" id="L304">        automate.get(currentState).setEnd();</span>
-<span class="fc" id="L305">        return true;</span>
+<span class="fc" id="L340">        automate.get(currentState).setEnd();</span>
+<span class="fc" id="L341">        return true;</span>
     }
 
     /**
      * Käsittelee säännöllisen lausekkeen kaarisulkujen alun.
+     *
+     * Lisää nykyisen tilan sulkujen alkukohtia muistissa pitävään pinoon, lisää
+     * uuden listan tai-lohkon viimeisten tilojen muistissa pitävään pinoon,
+     * muodostaa uuden tilan ja tekee tyhjän merkin siirtymän nykyisestä tilasta
+     * uuteen.
      *
      * @param expression String, joka on säännöllinen lauseke, josta
      * muodostetaan automaattia.
      * @return Totuusarvo, joka kertoo, onnistuiko käsittely.
      */
     private boolean handleBracketStart() {
-<span class="fc" id="L316">        stack.push(currentState);</span>
-<span class="fc" id="L317">        memory.push(new List&lt;&gt;());</span>
-<span class="fc" id="L318">        automate.add(new Node());</span>
-<span class="fc" id="L319">        automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
-<span class="fc" id="L320">        previousState = currentState;</span>
-<span class="fc" id="L321">        currentState = automate.size() - 1;</span>
-<span class="fc" id="L322">        return true;</span>
+<span class="fc" id="L357">        stack.push(currentState);</span>
+<span class="fc" id="L358">        memory.push(new List&lt;&gt;());</span>
+<span class="fc" id="L359">        automate.add(new Node());</span>
+<span class="fc" id="L360">        automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
+<span class="fc" id="L361">        previousState = currentState;</span>
+<span class="fc" id="L362">        currentState = automate.size() - 1;</span>
+<span class="fc" id="L363">        return true;</span>
     }
 
     /**
      * Käsittelee säännöllisen lausekkeen kaarisulkujen lopun.
+     *
+     * Poistaa päälimmäisen tilan sulkujen alkukohtia muistissa pitävästä
+     * pinosta ja päälimmäisen listan tai-lohkon viimeisten tilojen muistissa
+     * pitävästä pinosta. Käsittelee ensin sulkujen sisällä mahdollisesti olevat
+     * tai-lohkot ja sitten sulkujen jälkeen mahdollisesti olevan tähden,
+     * plussan tai kysymysmerkin.
      *
      * @param expression String, joka on säännöllinen lauseke, josta
      * muodostetaan automaattia.
      * @return Totuusarvo, joka kertoo, onnistuiko käsittely.
      */
     private boolean handleBracketEnd(String expression) {
-<span class="fc bfc" id="L333" title="All 2 branches covered.">        if (stack.size() &lt;= 1) {</span>
-<span class="fc" id="L334">            return false;</span>
+<span class="fc bfc" id="L380" title="All 2 branches covered.">        if (stack.size() &lt;= 1) {</span>
+<span class="fc" id="L381">            return false;</span>
         }
-<span class="fc" id="L336">        int stateBeforeBracket = stack.pop();</span>
-<span class="fc" id="L337">        List&lt;Integer&gt; bracketMemory = memory.pop();</span>
-<span class="fc" id="L338">        handleBracketEndOr(bracketMemory);</span>
-<span class="fc bfc" id="L339" title="All 2 branches covered.">        if (index == expression.length() - 1) {</span>
-<span class="fc" id="L340">            return true;</span>
+<span class="fc" id="L383">        int stateBeforeBracket = stack.pop();</span>
+<span class="fc" id="L384">        List&lt;Integer&gt; bracketMemory = memory.pop();</span>
+<span class="fc" id="L385">        handleBracketEndOr(bracketMemory);</span>
+<span class="fc bfc" id="L386" title="All 2 branches covered.">        if (index == expression.length() - 1) {</span>
+<span class="fc" id="L387">            return true;</span>
         }
-<span class="fc" id="L342">        char nextChar = expression.charAt(index + 1);</span>
-<span class="fc" id="L343">        handleBracketEndQuestionmarkStarAndPlus(stateBeforeBracket, nextChar);</span>
-<span class="fc" id="L344">        return true;</span>
+<span class="fc" id="L389">        char nextChar = expression.charAt(index + 1);</span>
+<span class="fc" id="L390">        handleBracketEndQuestionmarkStarAndPlus(stateBeforeBracket, nextChar);</span>
+<span class="fc" id="L391">        return true;</span>
     }
 
     /**
      * Käsittelee säännöllisen lausekkeen kaarisulkujen lopun, kun sulkujen
      * sisällä on ollut | merkki.
      *
+     * Muodostaa uuden tilan ja tekee tyhjän merkin siirtymän siihen nykyisestä
+     * ja kaikista tai-lohkon viimeisten tilojen muistissa pitävästä pinon
+     * päälimmäisessä listassa olevista tiloista.
+     *
      * @param bracketMemory List, joka sisältää | lohkon viimeiset tilat.
      */
     private void handleBracketEndOr(List&lt;Integer&gt; bracketMemory) {
-<span class="fc bfc" id="L354" title="All 2 branches covered.">        if (!bracketMemory.isEmpty()) {</span>
-<span class="fc" id="L355">            automate.add(new Node());</span>
-<span class="fc" id="L356">            automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
-<span class="fc bfc" id="L357" title="All 2 branches covered.">            for (int i = 0; i &lt; bracketMemory.size(); i++) {</span>
-<span class="fc" id="L358">                int state = bracketMemory.get(i);</span>
-<span class="fc" id="L359">                automate.get(state).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
+<span class="fc bfc" id="L405" title="All 2 branches covered.">        if (!bracketMemory.isEmpty()) {</span>
+<span class="fc" id="L406">            automate.add(new Node());</span>
+<span class="fc" id="L407">            automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
+<span class="fc bfc" id="L408" title="All 2 branches covered.">            for (int i = 0; i &lt; bracketMemory.size(); i++) {</span>
+<span class="fc" id="L409">                int state = bracketMemory.get(i);</span>
+<span class="fc" id="L410">                automate.get(state).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
             }
-<span class="fc" id="L361">            previousState = currentState;</span>
-<span class="fc" id="L362">            currentState = automate.size() - 1;</span>
+<span class="fc" id="L412">            previousState = currentState;</span>
+<span class="fc" id="L413">            currentState = automate.size() - 1;</span>
         }
-<span class="fc" id="L364">    }</span>
+<span class="fc" id="L415">    }</span>
 
     /**
      * Käsittelee säännöllisen lausekkeen kaarisulkujen lopun, kun sulkujen
      * jälkeen on kysymysmerkki, plus tai tähti.
      *
+     * Käsittelee merkit samoin kuin ilman sulkuja, mutta edellisen tilan sijaan
+     * käytetään sulkuja ennen olevaa tilaa.
+     *
      * @param stateBeforeBracket int, joka kertoo sulkuja edeltävän tilan.
      * @param nextChar char, joka on seuraavana seuraavana
      */
     private void handleBracketEndQuestionmarkStarAndPlus(int stateBeforeBracket, char nextChar) {
-<span class="fc bfc" id="L374" title="All 6 branches covered.">        if (nextChar == '*' || nextChar == '+' || nextChar == '?') {</span>
-<span class="fc" id="L375">            index++;</span>
-<span class="fc" id="L376">            automate.add(new Node());</span>
-<span class="pc bpc" id="L377" title="1 of 4 branches missed.">            switch (nextChar) {</span>
+<span class="fc bfc" id="L428" title="All 6 branches covered.">        if (nextChar == '*' || nextChar == '+' || nextChar == '?') {</span>
+<span class="fc" id="L429">            index++;</span>
+<span class="fc" id="L430">            automate.add(new Node());</span>
+<span class="pc bpc" id="L431" title="1 of 4 branches missed.">            switch (nextChar) {</span>
                 case '*':
-<span class="fc" id="L379">                    automate.get(currentState).getEdgeList().add(new Edge(stateBeforeBracket, (char) 0));</span>
-<span class="fc" id="L380">                    automate.get(stateBeforeBracket).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
-<span class="fc" id="L381">                    currentState = automate.size() - 1;</span>
-<span class="fc" id="L382">                    previousState = stateBeforeBracket;</span>
-<span class="fc" id="L383">                    break;</span>
+<span class="fc" id="L433">                    automate.get(currentState).getEdgeList().add(new Edge(stateBeforeBracket, (char) 0));</span>
+<span class="fc" id="L434">                    automate.get(stateBeforeBracket).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
+<span class="fc" id="L435">                    currentState = automate.size() - 1;</span>
+<span class="fc" id="L436">                    previousState = stateBeforeBracket;</span>
+<span class="fc" id="L437">                    break;</span>
                 case '+':
-<span class="fc" id="L385">                    automate.get(currentState).getEdgeList().add(new Edge(stateBeforeBracket, (char) 0));</span>
-<span class="fc" id="L386">                    automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
-<span class="fc" id="L387">                    previousState = currentState;</span>
-<span class="fc" id="L388">                    currentState = automate.size() - 1;</span>
-<span class="fc" id="L389">                    break;</span>
+<span class="fc" id="L439">                    automate.get(currentState).getEdgeList().add(new Edge(stateBeforeBracket, (char) 0));</span>
+<span class="fc" id="L440">                    automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
+<span class="fc" id="L441">                    previousState = currentState;</span>
+<span class="fc" id="L442">                    currentState = automate.size() - 1;</span>
+<span class="fc" id="L443">                    break;</span>
                 case '?':
-<span class="fc" id="L391">                    automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
-<span class="fc" id="L392">                    automate.get(stateBeforeBracket).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
-<span class="fc" id="L393">                    previousState = currentState;</span>
-<span class="fc" id="L394">                    currentState = automate.size() - 1;</span>
-<span class="fc" id="L395">                    break;</span>
+<span class="fc" id="L445">                    automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
+<span class="fc" id="L446">                    automate.get(stateBeforeBracket).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
+<span class="fc" id="L447">                    previousState = currentState;</span>
+<span class="fc" id="L448">                    currentState = automate.size() - 1;</span>
+<span class="fc" id="L449">                    break;</span>
                 default:
                     break;
             }
         }
-<span class="fc" id="L400">    }</span>
+<span class="fc" id="L454">    }</span>
 
     /**
      * Käsittelee säännöllisen lausekkeen | merkin.
+     *
+     * Lisää nykyisen tilan tai-lohkon viimeisten tilojen muistissa pitävän
+     * pinon päälimmäiseen listaan, muodostaa uuden tilan ja tekee siihen tyhjän
+     * merkin siirtymän sulkujen alkukohtien muistissa pitävän pinon
+     * päälimmäisestä tilasta.
      *
      * @param expression String, joka on säännöllinen lauseke, josta
      * muodostetaan automaattia.
      * @return Totuusarvo, joka kertoo, onnistuiko käsittely.
      */
     private boolean handleOr() {
-<span class="fc" id="L410">        memory.peek().add(currentState);</span>
-<span class="fc" id="L411">        automate.add(new Node());</span>
-<span class="fc" id="L412">        automate.get(stack.peek()).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
-<span class="fc" id="L413">        currentState = automate.size() - 1;</span>
-<span class="fc" id="L414">        previousState = stack.peek();</span>
-<span class="fc" id="L415">        return true;</span>
+<span class="fc" id="L469">        memory.peek().add(currentState);</span>
+<span class="fc" id="L470">        automate.add(new Node());</span>
+<span class="fc" id="L471">        automate.get(stack.peek()).getEdgeList().add(new Edge(automate.size() - 1, (char) 0));</span>
+<span class="fc" id="L472">        currentState = automate.size() - 1;</span>
+<span class="fc" id="L473">        previousState = stack.peek();</span>
+<span class="fc" id="L474">        return true;</span>
     }
 
 }

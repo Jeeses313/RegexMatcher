@@ -36,12 +36,12 @@ Sulkujen ja tai-osioiden muistiin käytettävät tilat ovat myös O(n), koska pa
 #### [NFA:n käyttö](https://github.com/Jeeses313/RegexMatcher/blob/master/src/main/java/regexmatcher/Matcher.java)  
 NFA:ta käyttäessä merkkijonojen kieleen kuulumisen tarkistamiseen käydään läpi annettua merkkijonoa ja syvyyshaulla automaatin tiloja.  
 ```
-boolean seacrch(string, index, state)
+boolean search(string, index, state)
 	if(index == string.length)
 		if(automate.get(state).isEnd())
 			return true
 	result = false
-	for(edge of automate.get(state).edgeList)
+	for(edge in automate.get(state).edgeList)
 		if(edge.char == string.charAt(index))
 			result = search(string, index + 1, edge.goalState)
 		else if(edge.char == empty_char)
@@ -51,12 +51,49 @@ boolean seacrch(string, index, state)
 	return result
 ```  
 Koska haussa käydään kaikki annetun merkkijonon kirjaimet ja pahimmassa tapauksessa kaikki automaatin tilat, jotka on muodostettu annetun säännöllisen lausekkeen mukaan, aikavaativuus voisi olla O(n+m). 
-Tässä käytetyssä syvyyshaussa tosin ei katsota, onko tilassa jo käyty ja koska automaatti on NFA, siinä on siirtymiä tyhjillä merkeillä, joten jokaista merkkiä on mahdollista käydä kaikissa tiloissa, jolloin NFA:n käyttämisen 
+Tässä käytetyssä syvyyshaussa tosin ei katsota, onko tilassa jo käyty ja koska automaatti on NFA, siinä on siirtymiä tyhjillä merkeillä, joten jokaista merkkiä kohden on mahdollista käydä kaikissa tiloissa, jolloin NFA:n käyttämisen 
 aikavaativuus on O(n*m), jossa n on annetun merkkijonon pituus ja m on annetun säännöllisen lausekkeen pituus.  
 Koska syvyyshaun eteneminen kasvatta metodien pinoa ja pahimmassa tapauksessa merkkijonon kieleen kuulumisen tarkistuksessa käydään kaikissa tiloissa ilman peruuttamista, joissakin tiloissa voidaan käydä useampiakin kertoja 
 tyhjien merkkien siirtymien takia, NFA:n käyttämisen tilavaativuus on O(m), jossa m on annetun säännöllisen lausekkeen pituus, kun ajatellaan automaatin olevan valmiina käytettävissä.
 
 #### [DFA:n muodostus](https://github.com/Jeeses313/RegexMatcher/blob/master/src/main/java/regexmatcher/DFAfactory.java)  
+DFA:ta muodostaessa käydään NFA:n tiloja ja niiden vieruslistojen siirtymiä läpi muodostaen yhdistettyjä tiloja ja siirtymiä niiden välille.  
+```
+formDFA(unitedState)
+	collectEdges(unitedState, unitedEdgeList)
+	for(edge in unitedEdgeList)
+		goalUnitedState = formCurrentNode(edge.goalStates)
+		unitedState.edgeList.add(new Edge(edge.char, goalUnitedState)
+		if(!handledStates.contains(goalUnitedState))
+			handledStates.add(goalUnitedState)
+			statesToHandle.push(goalUnitedState)
+	while(!statesToHandle.isEmpty())
+		formDFA(statesToHandle.pop())
+
+collectEdges(unitedState, unitedEdgeList)
+	for(state in unitedState.stateList)
+		for(edge in state.edgeList)
+			if(edge.char != empty_char)
+				unitedEdgeList.getEdgeWithCharOrAddNewEdgeWithChar(edge.char).addGoal(edge.goalState)
+				
+formCurrentNode(stateList)
+	unitedState
+	for(state in stateList)
+		if(!unitedState.stateList.contains(state))
+			unitedState.stateList.add(state)
+			nodeSearch(state, unitedState)
+	if(automate.contains(unitedState))
+		return automate.get(unitedState)
+	else
+		automate.add(unitedState)
+		return unitedState
+		
+nodeSearch(state, unitedState)
+	for(edge in state.edgeList)
+		if(edge.char == 0 && !unitedState.edgeList.contains(edge.goalState)
+			unitedState.stateList.add(edge.goalState)
+			nodeSearch(edge.goalState, unitedState)
+```  
 ToDo
 
 #### [DFA:n käyttö](https://github.com/Jeeses313/RegexMatcher/blob/master/src/main/java/regexmatcher/Matcher.java)  
@@ -72,7 +109,11 @@ Näin aikavaativuus on O(n), jossa n on annetun merkkijonon pituus.
 Koska tässä ei käytetä apuna listoja yms., vaan vain kokonaislukuja ja totuusarvoja, kun ajatellaan automaatin olevan valmiina käytettävissä, tilavaativuus on O(1).  
 
 ### Työn mahdolliset puutteet ja parannusehdotukset  
-ToDo  
+#### Puutteet  
+ToDo
+
+#### Parannusehdotukset  
+* Parempi automaattien tulostus.  
 
 ### Lähteet  
 * [https://en.wikipedia.org/wiki/Regular_expression](https://en.wikipedia.org/wiki/Regular_expression)  

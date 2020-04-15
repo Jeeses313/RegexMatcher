@@ -95,6 +95,10 @@ public class NFAfactory {
     /**
      * Käsittelee säännöllisen lausekkeen hakasulkeet.
      *
+     * Muodostaa uuden tilan ja tekee siirtymän nykyisestä tilasta uuteen
+     * kaikilla hakasulkeiden sisällä olevilla ja tavuviivan osoittamilla
+     * merkeillä.
+     *
      * @param expression String, joka on säännöllinen lauseke, josta
      * muodostetaan automaattia.
      * @return Totuusarvo, joka kertoo, onnistuiko käsittely.
@@ -102,6 +106,7 @@ public class NFAfactory {
     private boolean handleSquareBrackets(String expression) {
         index++;
         automate.add(new Node());
+        boolean[] contained = new boolean[123];
         while (true) {
             if (index >= expression.length()) {
                 return false;
@@ -114,14 +119,15 @@ public class NFAfactory {
                 return false;
             }
             if (expression.charAt(index + 1) == '-') {
-                boolean works = handleHyphen(expression, startChar);
+                boolean works = handleHyphen(expression, startChar, contained);
                 if (!works) {
                     return false;
                 }
-            } else {
+            } else if (!contained[startChar]) {
                 automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) startChar));
-                index++;
+                contained[startChar] = true;
             }
+            index++;
         }
         previousState = currentState;
         currentState = automate.size() - 1;
@@ -131,12 +137,17 @@ public class NFAfactory {
     /**
      * Käsittelee säännöllisen lausekkeen tavuviivan hakasulkeiden sisällä.
      *
+     * Muodostaa siirtymän nykyisestä tilastaa uuteen tilaan kaikilla merkeillä,
+     * jotka ovat tavuviivan edeltävän ja jäljessä olevan merkin välillä.
+     *
      * @param expression String, joka on säännöllinen lauseke, josta
      * muodostetaan automaattia.
      * @param startChar int, joka on merkkijoukon aloittavan merkin numero.
+     * @param contained boolean taulukko, joka kertoo, onko merkki esiintynyt jo
+     * hakasulkeiden sisällä.
      * @return
      */
-    private boolean handleHyphen(String expression, int startChar) {
+    private boolean handleHyphen(String expression, int startChar, boolean[] contained) {
         if (index >= expression.length() - 2) {
             return false;
         }
@@ -145,14 +156,21 @@ public class NFAfactory {
             return false;
         }
         for (int k = startChar; k <= endChar; k++) {
-            automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) k));
+            if (!contained[k]) {
+                contained[k] = true;
+                automate.get(currentState).getEdgeList().add(new Edge(automate.size() - 1, (char) k));
+            }
         }
-        index += 3;
+        index += 2;
         return true;
     }
 
     /**
      * Alustaa automaatin tekoon käytettävän datan.
+     *
+     * Muodostaa kaksi tilaa, joista ensimmäinen on aloitustila, josta on tyhjän
+     * merkin siirtymä toiseen tilaan. Ensimmäinen tila lisätään myös sulkujen
+     * alkukohtia muistissa pitävään pinoon.
      */
     private void initData() {
         automate = new List<>();
@@ -171,6 +189,9 @@ public class NFAfactory {
     /**
      * Käsittelee säännöllisen lausekkeen muut merkit. Hyväksyy a-z, 0-9 ja A-Z.
      *
+     * Muodostaa uuden tilan ja tekee siirtymän nykyisestä tilasta uuteen
+     * annetulla merkillä.
+     *
      * @param character char, jota käsitellään.
      * @return Totuusarvo, joka kertoo, onnistuiko käsittely.
      */
@@ -187,6 +208,9 @@ public class NFAfactory {
 
     /**
      * Käsittelee säännöllisen lausekkeen pisteen.
+     *
+     * Muodostaa uuden tilan ja tekee siirtymän nykyisestä tilasta uuteen
+     * kaikilla hyväksytyillä merkeillä, eli a-z, 0-9 ja A-Z.
      *
      * @return Totuusarvo, joka kertoo, onnistuiko käsittely.
      */
@@ -222,6 +246,9 @@ public class NFAfactory {
     /**
      * Käsittelee säännöllisen lausekkeen tähdet.
      *
+     * Muodostaa uuden tilan ja tekee tyhjän merkin siirtymän nykyisestä tilasta
+     * aiempaan tilaan ja aiemmasta tilasta uuteen tilaan.
+     *
      * @param expression String, joka on säännöllinen lauseke, josta
      * muodostetaan automaattia.
      * @return Totuusarvo, joka kertoo, onnistuiko käsittely.
@@ -243,6 +270,9 @@ public class NFAfactory {
 
     /**
      * Käsittelee säännöllisen lausekkeen plussat.
+     *
+     * Muodostaa uuden tilan ja tekee tyhjän merkin siirtymän nykyisestä tilasta
+     * aiempaan tilaan ja nykyisestä tilasta uuteen tilaan.
      *
      * @param expression String, joka on säännöllinen lauseke, josta
      * muodostetaan automaattia.
@@ -267,6 +297,9 @@ public class NFAfactory {
     /**
      * Käsittelee säännöllisen lausekkeen kysymysmerkit.
      *
+     * Muodostaa uuden tilan ja tekee tyhjän merkin siirtymän nykyisestä tilasta
+     * uuteen tilaan ja aiemmasta tilasta uuteen tilaan.
+     *
      * @param expression String, joka on säännöllinen lauseke, josta
      * muodostetaan automaattia.
      * @return Totuusarvo, joka kertoo, onnistuiko käsittely.
@@ -290,6 +323,9 @@ public class NFAfactory {
     /**
      * Asettaa automaatin hyväksyvät tilat.
      *
+     * Asettaa nykyisen tilan ja kaikki tai-lohkon viimeisten tilojen muistissa
+     * pitävän pinon päälimmäisen listan tilat hyväksyviksi.
+     *
      * @return Totuusarvo, joka kertoo, onko automaatin käsittely loppunut
      * hyväksyttävään tilanteeseen.
      */
@@ -308,6 +344,11 @@ public class NFAfactory {
     /**
      * Käsittelee säännöllisen lausekkeen kaarisulkujen alun.
      *
+     * Lisää nykyisen tilan sulkujen alkukohtia muistissa pitävään pinoon, lisää
+     * uuden listan tai-lohkon viimeisten tilojen muistissa pitävään pinoon,
+     * muodostaa uuden tilan ja tekee tyhjän merkin siirtymän nykyisestä tilasta
+     * uuteen.
+     *
      * @param expression String, joka on säännöllinen lauseke, josta
      * muodostetaan automaattia.
      * @return Totuusarvo, joka kertoo, onnistuiko käsittely.
@@ -324,6 +365,12 @@ public class NFAfactory {
 
     /**
      * Käsittelee säännöllisen lausekkeen kaarisulkujen lopun.
+     *
+     * Poistaa päälimmäisen tilan sulkujen alkukohtia muistissa pitävästä
+     * pinosta ja päälimmäisen listan tai-lohkon viimeisten tilojen muistissa
+     * pitävästä pinosta. Käsittelee ensin sulkujen sisällä mahdollisesti olevat
+     * tai-lohkot ja sitten sulkujen jälkeen mahdollisesti olevan tähden,
+     * plussan tai kysymysmerkin.
      *
      * @param expression String, joka on säännöllinen lauseke, josta
      * muodostetaan automaattia.
@@ -348,6 +395,10 @@ public class NFAfactory {
      * Käsittelee säännöllisen lausekkeen kaarisulkujen lopun, kun sulkujen
      * sisällä on ollut | merkki.
      *
+     * Muodostaa uuden tilan ja tekee tyhjän merkin siirtymän siihen nykyisestä
+     * ja kaikista tai-lohkon viimeisten tilojen muistissa pitävästä pinon
+     * päälimmäisessä listassa olevista tiloista.
+     *
      * @param bracketMemory List, joka sisältää | lohkon viimeiset tilat.
      */
     private void handleBracketEndOr(List<Integer> bracketMemory) {
@@ -366,6 +417,9 @@ public class NFAfactory {
     /**
      * Käsittelee säännöllisen lausekkeen kaarisulkujen lopun, kun sulkujen
      * jälkeen on kysymysmerkki, plus tai tähti.
+     *
+     * Käsittelee merkit samoin kuin ilman sulkuja, mutta edellisen tilan sijaan
+     * käytetään sulkuja ennen olevaa tilaa.
      *
      * @param stateBeforeBracket int, joka kertoo sulkuja edeltävän tilan.
      * @param nextChar char, joka on seuraavana seuraavana
@@ -401,6 +455,11 @@ public class NFAfactory {
 
     /**
      * Käsittelee säännöllisen lausekkeen | merkin.
+     *
+     * Lisää nykyisen tilan tai-lohkon viimeisten tilojen muistissa pitävän
+     * pinon päälimmäiseen listaan, muodostaa uuden tilan ja tekee siihen tyhjän
+     * merkin siirtymän sulkujen alkukohtien muistissa pitävän pinon
+     * päälimmäisestä tilasta.
      *
      * @param expression String, joka on säännöllinen lauseke, josta
      * muodostetaan automaattia.
