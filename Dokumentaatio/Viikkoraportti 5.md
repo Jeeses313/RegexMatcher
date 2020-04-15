@@ -1,5 +1,5 @@
 # Viikkoraportti 5.
-Viikon aikana työhön käytettyjä tunteja: 15
+Viikon aikana työhön käytettyjä tunteja: 16
 ### Viikolla tehty työ
 * Vertaisarvioinnin tekeminen.  
 * Kysymysmerkin toiminnan toteutus ja testaus.  

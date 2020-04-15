@@ -14,7 +14,11 @@ Testikattavuusraportti komennolla:
 
 ```
 mvn jacoco:report
+```  
+tai yksityisten metodien kanssa:  
 ```
+mvn javadoc:javadoc -Dshow=private
+```  
 
 Kattavuusraportti löytyy: _target/site/jacoco/index.html_
 

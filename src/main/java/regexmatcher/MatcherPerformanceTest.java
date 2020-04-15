@@ -114,7 +114,7 @@ public class MatcherPerformanceTest {
      * @param expression String, joka on säännöllinen lauseke, josta automaatti
      * muodostetaan.
      * @param testName String, joka on testin nimi.
-     * @param string List, joka sisältää tarkistettavat merkkijonot.
+     * @param strings List, joka sisältää tarkistettavat merkkijonot.
      */
     private static void testMatching(String expression, String testName, List<String> strings) {
         long[] nfaTimes = new long[1000];

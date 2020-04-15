@@ -145,7 +145,7 @@ public class NFAfactory {
      * @param startChar int, joka on merkkijoukon aloittavan merkin numero.
      * @param contained boolean taulukko, joka kertoo, onko merkki esiintynyt jo
      * hakasulkeiden sisällä.
-     * @return
+     * @return Totuusarvo, joka kertoo, onnistuiko käsittely.
      */
     private boolean handleHyphen(String expression, int startChar, boolean[] contained) {
         if (index >= expression.length() - 2) {
@@ -349,8 +349,6 @@ public class NFAfactory {
      * muodostaa uuden tilan ja tekee tyhjän merkin siirtymän nykyisestä tilasta
      * uuteen.
      *
-     * @param expression String, joka on säännöllinen lauseke, josta
-     * muodostetaan automaattia.
      * @return Totuusarvo, joka kertoo, onnistuiko käsittely.
      */
     private boolean handleBracketStart() {
@@ -461,8 +459,6 @@ public class NFAfactory {
      * merkin siirtymän sulkujen alkukohtien muistissa pitävän pinon
      * päälimmäisestä tilasta.
      *
-     * @param expression String, joka on säännöllinen lauseke, josta
-     * muodostetaan automaattia.
      * @return Totuusarvo, joka kertoo, onnistuiko käsittely.
      */
     private boolean handleOr() {

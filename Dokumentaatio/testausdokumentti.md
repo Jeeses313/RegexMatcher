@@ -20,7 +20,12 @@ Testit voidaan toistaa lataamalla projekti ja suorittamalla testit antamalla kom
 
 ### Ohjelman toiminnan empiirisen testauksen tulosten esittäminen graafisessa muodossa  
 #### Automaattien rakenteen testaus  
-##### DFA: muodostus  
+##### NFA:n muodostus  
+Erilaisten säännöllisten lausekkeiden muuttaminen automaateiksi [NFAfactory.java](https://github.com/Jeeses313/RegexMatcher/blob/master/src/main/java/regexmatcher/NFAfactory.java):lla.  
+![alt text](https://github.com/Jeeses313/RegexMatcher/blob/master/Dokumentaatio/kuvat/saannollinenlauseke3.png)  
+Tarkemmat tiedot automaatin muodostamisesta löytyvät luokan dokumentaatiosta ja koodista.  
+
+##### DFA:n muodostus  
 Kun ohjelmalle antaa syötteen [a-z]*a, se antaa tiloja ja niistä lähteviä siirtymiä seuraavan kuvan mukaisesti.  
 ![alt text](https://github.com/Jeeses313/RegexMatcher/blob/master/Dokumentaatio/kuvat/saannollinenlauseke1.png)  
 Kuvassa oikealla ylhäällä on automaatti, joka muodostettiin aiemmin, kun yritettiin muodostaa DFA:ta. Automaatti ei ole DFA, koska samasta tilasta(0,1,3), lähtee siirtymä a:lla kahteen eri tilaan. 
