@@ -94,7 +94,10 @@ nodeSearch(state, unitedState)
 			unitedState.stateList.add(edge.goalState)
 			nodeSearch(edge.goalState, unitedState)
 ```  
-ToDo
+Koska DFA:n koko voi olla [enintään](https://en.wikipedia.org/wiki/State_complexity) 2^m, kun m on NFA:n tilojen määrä, ja koska NFA:n tilojen määrä on lineaarinen säännöllisen lausekkeen pituuden suhteen, 
+DFA:n muodostamisen tilavaativuus on O(2^n), jossa n on säännöllisen lausekkeen pituus.  
+Jokaista DFA:n tilaa kohden käydään läpi NFA:n tiloja joihin päästää DFA:n tilan sisältämistä NFA:n tiloista ja pahimmassa tapauksessa jokaista DFA:n tilaa 
+kohden käydään kaikissa NFA:n tiloissa, jolloin DFA:n muodostamisen aikavaativuus on O(n*2^n), jossa n on säännöllisen lausekkeen pituus.  
 
 #### [DFA:n käyttö](https://github.com/Jeeses313/RegexMatcher/blob/master/src/main/java/regexmatcher/Matcher.java)  
 DFA:ta käyttäessä merkkijonojen kieleen kuulumisen tarkistamiseen käydään läpi annettua merkkijonoa, automaatin tiloja ja tilojen vieruslistoja. Vieruslistoista etsitään siirtymää, jonka merkki on sama kuin merkkijonossa tarkistettava merkki.  
@@ -110,13 +113,15 @@ Koska tässä ei käytetä apuna listoja yms., vaan vain kokonaislukuja ja totuu
 
 ### Työn mahdolliset puutteet ja parannusehdotukset  
 #### Puutteet  
-ToDo
+* Ohjelma ei toteuta kaikkia mahdollisia säännöllisen lausekkeen toimintoja.  
+* DFA:n voisi muodostaa tehokkaammin.  
 
 #### Parannusehdotukset  
-* Parempi automaattien tulostus.  
+* Parempi automaattien tulostus.   
 
 ### Lähteet  
 * [https://en.wikipedia.org/wiki/Regular_expression](https://en.wikipedia.org/wiki/Regular_expression)  
 * [https://en.wikipedia.org/wiki/Nondeterministic_finite_automaton](https://en.wikipedia.org/wiki/Nondeterministic_finite_automaton)  
+* [https://en.wikipedia.org/wiki/State_complexity)  
 * Introduction to the theory of computation - Michael Sipser  
 * Tietorakenteet ja algoritmit - Antti Laaksonen

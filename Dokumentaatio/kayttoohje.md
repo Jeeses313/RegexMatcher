@@ -1,5 +1,18 @@
 # Käyttöohje  
 
+### Asennus  
+1. Sovellus vaatii [Javan](https://www.java.com/en/) suorittamiseen.
+2. Lataa suoritettava jar [tästä](https://github.com/Jeeses313/RegexMatcher/releases/latest/download/RegexMatcher.jar).  
+3. Sovellus on valmis suoritettavaksi.  
+
+### Käynnistys ja käyttö  
+1. Avaa komentokehote.  
+2. Käytä komentoa ```cd``` siirtyäksesi hakemistoon, jossa ladattu jar on.  
+3. Käynnistä sovellus komennolla ```java -jar RegexMatcher.jar```.  
+4. Anna sovellukselle säännöllinen lauseke ja merkkijonoja, joiden säännöllisen lausekkeen määrittelemään kieleen kuulumisen haluat tarkistaa.  
+5. Sovellus tulostaa tarkemmat ohjeet sen käynnistyessä ja ohjeet saa tulostettua milloin tahansa antamalla syötteen ```-i```.  
+6. Sovelluksen voi sulkea milloin tahansa antamalla syötteen ```-q```.  
+
 ### Komentorivitoiminnot 
 
 #### Testaus

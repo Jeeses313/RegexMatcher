@@ -21,8 +21,8 @@ public class MatcherFactory {
      * NFA.
      * @param printDFA boolean, joka kertoo tulostetaanko onnistuneesti tehty
      * DFA.
-     * @return Matcher, jota käyetään säännöllisen lausekkeen kieleen kuulumisen
-     * tarkistamiseen.
+     * @return Matcher, jota käytetään säännöllisen lausekkeen kieleen
+     * kuulumisen tarkistamiseen.
      */
     public Matcher createMatcher(String expression, boolean useDFA, boolean printNFA, boolean printDFA) {
         if (expression.isEmpty()) {
@@ -41,9 +41,6 @@ public class MatcherFactory {
             if (printDFA && matcher.getWorks()) {
                 System.out.println("DFA");
                 matcher.printAutomate();
-            }
-            if (!matcher.getWorks()) {
-                return new Matcher(null, false);
             }
         }
         return matcher;

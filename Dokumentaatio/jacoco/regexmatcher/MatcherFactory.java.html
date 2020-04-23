@@ -21,7 +21,7 @@
      * NFA.
      * @param printDFA boolean, joka kertoo tulostetaanko onnistuneesti tehty
      * DFA.
-     * @return Matcher, jota käyetään säännöllisen lausekkeen kieleen kuulumisen
+     * @return Matcher, jota käytetään säännöllisen lausekkeen kieleen kuulumisen
      * tarkistamiseen.
      */
     public Matcher createMatcher(String expression, boolean useDFA, boolean printNFA, boolean printDFA) {
@@ -42,11 +42,8 @@
 <span class="fc" id="L42">                System.out.println(&quot;DFA&quot;);</span>
 <span class="fc" id="L43">                matcher.printAutomate();</span>
             }
-<span class="pc bpc" id="L45" title="1 of 2 branches missed.">            if (!matcher.getWorks()) {</span>
-<span class="nc" id="L46">                return new Matcher(null, false);</span>
-            }
         }
-<span class="fc" id="L49">        return matcher;</span>
+<span class="fc" id="L46">        return matcher;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>
