@@ -1,5 +1,6 @@
 package regexmatcher;
 
+import regexmatcher.ui.TextUserInterface;
 import java.util.Scanner;
 
 /**

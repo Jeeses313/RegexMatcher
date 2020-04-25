@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fi"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Matcher.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">RegexMatcher</a> &gt; <a href="index.source.html" class="el_package">regexmatcher.util</a> &gt; <span class="el_source">Matcher.java</span></div><h1>Matcher.java</h1><pre class="source lang-java linenums">package regexmatcher.util;
+
+import regexmatcher.domain.Node;
+import regexmatcher.domain.List;
+import regexmatcher.domain.Edge;
+
+/**
+ * Säännöllisen lausekkeen kieleen kuulumisen tarkistamiseen käytettävä luokka.
+ */
+public class Matcher {
+
+    private List&lt;Node&gt; automate;
+    private boolean useDFA;
+    /**
+     * Tyhjien merkkien siirtymillä käytyjen tilojen ja ei tyhjien merkkien
+     * siirtymillä käytyjen tilojen, jotka johtivat umpikujaan, muistissa
+     * pitämiseen tarkoitettu lista.
+     */
+    private List&lt;Integer&gt; stateMemory;
+
+    /**
+     * Luokan konstruktori, jolle annetaan parametriksi Nodeja sisältävä lista,
+     * joka toimii automaattina/verkkona ja jolla kieleen kuulumisen tarkistus
+     * suoritetaan ja totuusarvon, joka kertoo, onko annettu lista NFA vai DFA.
+     *
+     * @param automate List, jolla kielen kuulumisen tarkistus suoritetaan.
+     * @param useDFA boolean, joka kertoo, onko annettu lista DFA vai NFA.
+     */
+<span class="fc" id="L29">    public Matcher(List&lt;Node&gt; automate, boolean useDFA) {</span>
+<span class="fc" id="L30">        this.automate = automate;</span>
+<span class="fc" id="L31">        this.useDFA = useDFA;</span>
+<span class="fc" id="L32">    }</span>
+
+    /**
+     * Tarkistaa kuuluuko annettu merkkijono annetun automaatin kieleen.
+     *
+     * @param string String, jonka kuulumista tarkistetaan.
+     * @return Totuusarvo, joka kertoo, kuuluuko merkkijono kieleen.
+     */
+    public boolean match(String string) {
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        if (automate == null) {</span>
+<span class="fc" id="L42">            return false;</span>
+        }
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        if (useDFA) {</span>
+<span class="fc" id="L45">            return matchDFA(string);</span>
+        } else {
+<span class="fc" id="L47">            return matchNFA(string);</span>
+        }
+    }
+
+    /**
+     * Tarkistaa merkkijonon kieleen kuulumisen NFA:ssa, eli tekee syvyyshaun
+     * autoimaatissa.
+     *
+     * @param string String, jonka kuulumista tarkistetaan.
+     * @return Totuusarvo, joka kertoo, kuuluuko merkkijono kieleen.
+     */
+    private boolean matchNFA(String string) {
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        if (string.length() == 0) {</span>
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">            if (automate.get(0).isEnd()) {</span>
+<span class="nc" id="L61">                return true;</span>
+            }
+<span class="fc" id="L63">            string = Character.toString((char) 0);</span>
+        }
+<span class="fc" id="L65">        stateMemory = new List&lt;&gt;();</span>
+<span class="fc" id="L66">        return search(string, 0, 0);</span>
+    }
+
+    /**
+     * Tarkistaa merkkijonon kieleen kuulumisen DFA:ssa, eli tekee syvyyshaun
+     * autoimaatissa ilman peruuttamista.
+     *
+     * @param string String, jonka kuulumista tarkistetaan.
+     * @return Totuusarvo, joka kertoo, kuuluuko merkkijono kieleen.
+     */
+    private boolean matchDFA(String string) {
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        if (string.length() == 0) {</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">            if (automate.get(0).isEnd()) {</span>
+<span class="fc" id="L79">                return true;</span>
+            }
+<span class="fc" id="L81">            return false;</span>
+        }
+<span class="fc" id="L83">        int currentState = 0;</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        for (int i = 0; i &lt; string.length(); i++) {</span>
+<span class="fc" id="L85">            boolean edgeFound = false;</span>
+<span class="fc" id="L86">            Node currentStateNode = automate.get(currentState);</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">            for (int j = 0; j &lt; currentStateNode.getEdgeList().size(); j++) {</span>
+<span class="fc" id="L88">                Edge currentEdge = currentStateNode.getEdgeList().get(j);</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">                if (currentEdge.getCaharacter() == string.charAt(i)) {</span>
+<span class="fc" id="L90">                    edgeFound = true;</span>
+<span class="fc" id="L91">                    currentState = currentEdge.getGoalNode();</span>
+                }
+            }
+<span class="fc bfc" id="L94" title="All 2 branches covered.">            if (!edgeFound) {</span>
+<span class="fc" id="L95">                return false;</span>
+            }
+        }
+<span class="fc" id="L98">        return automate.get(currentState).isEnd();</span>
+    }
+
+    /**
+     * Kertoo, saatiinko annetusta säännöllisestä lausekkeesta tehtyä
+     * automaattia.
+     *
+     * @return Totuusarvo, joka kertoo, onnistuiko automaatin muodostus.
+     */
+    public boolean getWorks() {
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        return automate != null;</span>
+    }
+
+    /**
+     * Palauttaa automaatin.
+     *
+     * @return List, joka sisältää automaatin tilat.
+     */
+    public List&lt;Node&gt; getAutomate() {
+<span class="fc" id="L117">        return automate;</span>
+    }
+
+    /**
+     * Kertoo, onko annettu merkki tavallinen merkki, eli 0-9, a-z tai A-Z.
+     *
+     * @param character char, jota tutkitaan.
+     * @return Totuusarvo, joka kertoo, onko merkki tavallinen.
+     */
+    private boolean isStandardChar(char character) {
+<span class="pc bpc" id="L127" title="1 of 12 branches missed.">        if ((character &gt;= 48 &amp;&amp; character &lt;= 57) || (character &gt;= 65 &amp;&amp; character &lt;= 90) || (character &gt;= 97 &amp;&amp; character &lt;= 122)) {</span>
+<span class="fc" id="L128">            return true;</span>
+        }
+<span class="fc" id="L130">        return false;</span>
+    }
+
+    /**
+     * Käy automaattia läpi syvyyshaulla.
+     *
+     * @param string String, jonka kuulumista tarkistetaan.
+     * @param index int, joka kertoo tutkittavan merkin indeksin.
+     * @param state int, joka kertoo tämän hetkisen tilan.
+     * @return Totuusarvo, joka kertoo ollaanko päästy hyväksyvään tilaan
+     * kaikkien merkkien läpikäymisen jälkeen.
+     */
+    private boolean search(String string, int index, int state) {
+<span class="fc" id="L143">        char currentChar = (char) 174;</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">        if (index &gt;= string.length()) {</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">            if (automate.get(state).isEnd()) {</span>
+<span class="fc" id="L146">                return true;</span>
+            }
+        } else {
+<span class="fc" id="L149">            currentChar = string.charAt(index);</span>
+<span class="fc bfc" id="L150" title="All 4 branches covered.">            if (!isStandardChar(currentChar) &amp;&amp; (int) currentChar != 0) {</span>
+<span class="fc" id="L151">                return false;</span>
+            }
+        }
+<span class="fc" id="L154">        boolean result = false;</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">        for (int i = 0; i &lt; automate.get(state).getEdgeList().size(); i++) {</span>
+<span class="fc" id="L156">            Edge edge = automate.get(state).getEdgeList().get(i);</span>
+<span class="fc bfc" id="L157" title="All 2 branches covered.">            if (result) {</span>
+<span class="fc" id="L158">                break;</span>
+            }
+<span class="fc bfc" id="L160" title="All 2 branches covered.">            if (edge.getCaharacter() == currentChar) {</span>
+<span class="fc" id="L161">                stateMemory = new List&lt;&gt;();</span>
+<span class="fc" id="L162">                result = search(string, index + 1, edge.getGoalNode());</span>
+<span class="fc bfc" id="L163" title="All 4 branches covered.">            } else if (edge.getCaharacter() == (char) 0 &amp;&amp; !stateMemory.contains(edge.getGoalNode())) {</span>
+<span class="fc" id="L164">                stateMemory.add(edge.getGoalNode());</span>
+<span class="fc" id="L165">                result = search(string, index, edge.getGoalNode());</span>
+            }
+        }
+<span class="fc" id="L168">        stateMemory.add(state);</span>
+<span class="fc" id="L169">        return result;</span>
+    }
+
+    /**
+     * Tulostaa automaatin.
+     */
+    public void printAutomate() {
+<span class="fc bfc" id="L176" title="All 2 branches covered.">        for (int i = 0; i &lt; automate.size(); i++) {</span>
+<span class="fc" id="L177">            Node node = automate.get(i);</span>
+<span class="fc" id="L178">            System.out.println(&quot;State: &quot; + i + &quot; Is end: &quot; + node.isEnd());</span>
+<span class="fc" id="L179">            System.out.println(&quot;Edges(char --&gt; goal state): &quot;);</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">            for (int j = 0; j &lt; node.getEdgeList().size(); j++) {</span>
+<span class="fc" id="L181">                Edge edge = node.getEdgeList().get(j);</span>
+<span class="fc" id="L182">                System.out.println(edge.getCaharacter() + &quot; --&gt; &quot; + edge.getGoalNode());</span>
+            }
+<span class="fc" id="L184">            System.out.println(&quot;&quot;);</span>
+        }
+<span class="fc" id="L186">        System.out.println(&quot;&quot;);</span>
+<span class="fc" id="L187">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

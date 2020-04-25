@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fi"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DFAfactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">RegexMatcher</a> &gt; <a href="index.source.html" class="el_package">regexmatcher.util</a> &gt; <span class="el_source">DFAfactory.java</span></div><h1>DFAfactory.java</h1><pre class="source lang-java linenums">package regexmatcher.util;
+
+import regexmatcher.domain.DFAnode;
+import regexmatcher.domain.Node;
+import regexmatcher.domain.Stack;
+import regexmatcher.domain.List;
+import regexmatcher.domain.Edge;
+
+/**
+ * Luokka, jonka avulla muodostetaan DFA.
+ */
+<span class="fc" id="L12">public class DFAfactory {</span>
+
+    /**
+     * Muodostettava/valmis DFA.
+     */
+    private List&lt;Node&gt; automate;
+    /**
+     * Yhdistettyjen tilojen lista.
+     */
+    private List&lt;DFAnode&gt; dfa;
+    private List&lt;Node&gt; nfa;
+    /**
+     * Käsiteltyjen yhdistettyjen tilojen lista.
+     */
+    private List&lt;Integer&gt; dfaFormed;
+
+    /**
+     * Muodostaa DFA:n annetusta NFA:sta.
+     *
+     * @param nfa List, eli nfa, josta dfa muodostetaan.
+     * @return List, eli muodostettu DFA. Jos annettu nfa on tyhjä tai null,
+     * palauttaa null.
+     */
+    public List&lt;Node&gt; generateDFA(List&lt;Node&gt; nfa) {
+<span class="pc bpc" id="L36" title="1 of 4 branches missed.">        if (nfa == null || nfa.isEmpty()) {</span>
+<span class="fc" id="L37">            return null;</span>
+        }
+<span class="fc" id="L39">        this.nfa = nfa;</span>
+<span class="fc" id="L40">        automate = new List&lt;&gt;();</span>
+<span class="fc" id="L41">        dfa = new List&lt;&gt;();</span>
+<span class="fc" id="L42">        dfaFormed = new List&lt;&gt;();</span>
+<span class="fc" id="L43">        List&lt;Integer&gt; stateList = new List&lt;&gt;();</span>
+<span class="fc" id="L44">        stateList.add(0);</span>
+<span class="fc" id="L45">        formCurrentNode(stateList);</span>
+<span class="fc" id="L46">        formDFA(0);</span>
+<span class="fc" id="L47">        formAutomate();</span>
+<span class="fc" id="L48">        return automate;</span>
+    }
+
+    /**
+     * Muodostaa lopullisen DFA:n, eli muuttaa NFA:sta tehdyn yhdistettyjen
+     * solmujen automaatiin yksinkertaisten solmujen automaatiksi.
+     */
+    private void formAutomate() {
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        for (int i = 0; i &lt; dfa.size(); i++) {</span>
+<span class="fc" id="L57">            Node node = new Node();</span>
+<span class="fc" id="L58">            DFAnode dfaNode = dfa.get(i);</span>
+<span class="fc" id="L59">            node.setEdgeList(dfaNode.getEdgeList());</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">            if (dfaNode.isEnd()) {</span>
+<span class="fc" id="L61">                node.setEnd();</span>
+            }
+<span class="fc" id="L63">            automate.add(node);</span>
+        }
+<span class="fc" id="L65">    }</span>
+
+    /**
+     * Muodostaa yhdistetyn tilan, eli kaikkien tyhjien merkkien siirtymien
+     * päässä olevan tilan, jossa annetuissa NFA:n tiloissa ollaan.
+     *
+     * @param stateList List, joka viittaa NFA:n tiloihin, joissa tällä hetkellä
+     * ollaan.
+     * @return int, joka viittaa muodostettuun yhdistettyyn tilaan yhdistettyjen
+     * tilojen listassa.
+     */
+    private int formCurrentNode(List&lt;Integer&gt; stateList) {
+<span class="fc" id="L77">        DFAnode currentNode = new DFAnode();</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        for (int i = 0; i &lt; stateList.size(); i++) {</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">            if (!currentNode.getNodeList().contains(stateList.get(i))) {</span>
+<span class="fc" id="L80">                currentNode.getNodeList().add(stateList.get(i));</span>
+<span class="fc" id="L81">                nodeSearch(stateList.get(i), currentNode);</span>
+            }
+        }
+<span class="fc" id="L84">        int index = dfa.indexOf(currentNode);</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        if (index != -1) {</span>
+<span class="fc" id="L86">            return index;</span>
+        } else {
+<span class="fc" id="L88">            checkIfCurrentIsGoal(currentNode);</span>
+<span class="fc" id="L89">            dfa.add(currentNode);</span>
+<span class="fc" id="L90">            return dfa.size() - 1;</span>
+        }
+    }
+
+    /**
+     * Etsii syvyyshaulla kaikki tilat, joihin päästään tyhjillä merkeillä ja
+     * lisää ne muodostettavan yhdistetyn tilan tilojen listaan.
+     *
+     * @param state int, joka viittaa NFA:n tilaan, jossa tällä hetkellä ollaan.
+     * @param currentNode DFAnode, eli yhdistetty tila, jota ollaan
+     * muodostamassa.
+     */
+    private void nodeSearch(int state, DFAnode currentNode) {
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        for (int i = 0; i &lt; nfa.get(state).getEdgeList().size(); i++) {</span>
+<span class="fc" id="L104">            Edge edge = nfa.get(state).getEdgeList().get(i);</span>
+<span class="pc bpc" id="L105" title="1 of 4 branches missed.">            if (edge.getCaharacter() == (char) 0 &amp;&amp; !currentNode.getNodeList().contains(edge.getGoalNode())) {</span>
+<span class="fc" id="L106">                currentNode.getNodeList().add(edge.getGoalNode());</span>
+<span class="fc" id="L107">                nodeSearch(edge.getGoalNode(), currentNode);</span>
+            }
+        }
+<span class="fc" id="L110">    }</span>
+
+    /**
+     * Tarkistaa, onko yhdistetyn tilan tiloissa hyväksyviä tiloja ja jos on,
+     * niin merkitsee yhdistetyn tilan hyväksyväksi tilaksi.
+     *
+     * @param node DFAnode, eli yhditetty tila, jota tarkistetaan.
+     */
+    private void checkIfCurrentIsGoal(DFAnode node) {
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        for (int i = 0; i &lt; node.getNodeList().size(); i++) {</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">            if (nfa.get(node.getNodeList().get(i)).isEnd()) {</span>
+<span class="fc" id="L121">                node.setEnd();</span>
+<span class="fc" id="L122">                return;</span>
+            }
+        }
+<span class="fc" id="L125">    }</span>
+
+    /**
+     * Mudostaa DFA:n käyden yhdistettyjen tilojen sisältämien solmujen kaaria
+     * läpi.
+     *
+     * @param state int, joka viittaa yhdistettyyn tilaan, jonka kaaria käydään
+     * läpi.
+     */
+    private void formDFA(int state) {
+<span class="fc" id="L135">        Stack&lt;Integer&gt; dfaGoalStack = new Stack&lt;&gt;();</span>
+<span class="fc" id="L136">        List&lt;Character&gt; edgeCharacters = new List&lt;&gt;();</span>
+<span class="fc" id="L137">        List&lt;List&lt;Integer&gt;&gt; nfaGoalList = new List&lt;&gt;();</span>
+<span class="fc" id="L138">        collectEdges(state, edgeCharacters, nfaGoalList);</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">        for (int i = 0; i &lt; edgeCharacters.size(); i++) {</span>
+<span class="fc" id="L140">            int dfaGoal = formCurrentNode(nfaGoalList.get(i));</span>
+<span class="fc" id="L141">            dfa.get(state).getEdgeList().add(new Edge(dfaGoal, edgeCharacters.get(i)));</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">            if (!dfaFormed.contains(dfaGoal)) {</span>
+<span class="fc" id="L143">                dfaFormed.add(dfaGoal);</span>
+<span class="fc" id="L144">                dfaGoalStack.push(dfaGoal);</span>
+            }
+        }
+<span class="fc bfc" id="L147" title="All 2 branches covered.">        while (!dfaGoalStack.isEmpty()) {</span>
+<span class="fc" id="L148">            formDFA(dfaGoalStack.pop());</span>
+        }
+<span class="fc" id="L150">    }</span>
+
+    /**
+     * Käy yhdistetyn tilan sisältämien solmujen kaaria ja lisää niiden
+     * kirjaimet ja kirjaimia vastaavat maalisolmut annetuille listoille.
+     *
+     * @param state int, joka viittaa yhdistettyyn tilaan, jonka kaaria käydään
+     * läpi.
+     * @param edgeCharacters List, johon kaarien kirjaimet talletetaan.
+     * @param nfaGoalList List, jonka sisältämiin listoihin kaarien kirjaimia
+     * vastaavat maalisomut talletetaan.
+     */
+    private void collectEdges(int state, List&lt;Character&gt; edgeCharacters, List&lt;List&lt;Integer&gt;&gt; nfaGoalList) {
+<span class="fc bfc" id="L163" title="All 2 branches covered.">        for (int i = 0; i &lt; dfa.get(state).getNodeList().size(); i++) {</span>
+<span class="fc" id="L164">            Node node = nfa.get(dfa.get(state).getNodeList().get(i));</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">            for (int j = 0; j &lt; node.getEdgeList().size(); j++) {</span>
+<span class="fc" id="L166">                Edge edge = node.getEdgeList().get(j);</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">                if (edge.getCaharacter() != (char) 0) {</span>
+<span class="fc" id="L168">                    int index = edgeCharacters.indexOf(edge.getCaharacter());</span>
+<span class="pc bpc" id="L169" title="1 of 4 branches missed.">                    if (index != -1 &amp;&amp; !nfaGoalList.get(index).contains(edge.getGoalNode())) {</span>
+<span class="fc" id="L170">                        nfaGoalList.get(index).add(edge.getGoalNode());</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">                    } else if (index == -1) {</span>
+<span class="fc" id="L172">                        edgeCharacters.add(edge.getCaharacter());</span>
+<span class="fc" id="L173">                        nfaGoalList.add(new List&lt;&gt;());</span>
+<span class="fc" id="L174">                        nfaGoalList.get(nfaGoalList.size() - 1).add(edge.getGoalNode());</span>
+                    }
+                }
+            }
+        }
+<span class="fc" id="L179">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

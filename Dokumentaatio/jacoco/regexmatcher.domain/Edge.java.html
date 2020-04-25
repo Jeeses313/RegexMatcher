@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fi"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Edge.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">RegexMatcher</a> &gt; <a href="index.source.html" class="el_package">regexmatcher.domain</a> &gt; <span class="el_source">Edge.java</span></div><h1>Edge.java</h1><pre class="source lang-java linenums">package regexmatcher.domain;
+
+/**
+ * Luokka, joka toimii verkon kaarena.
+ */
+public class Edge {
+
+    private int goalNode;
+    private char character;
+
+    /**
+     * Luokan konstruktori, joka saa parametreina maalisolmun viitteen ja kaaren
+     * kirjaimen.
+     *
+     * @param goalNode int, joka viittaa maalisolmuun.
+     * @param character char, joka on kaaren kirjain.
+     */
+<span class="fc" id="L18">    public Edge(int goalNode, char character) {</span>
+<span class="fc" id="L19">        this.goalNode = goalNode;</span>
+<span class="fc" id="L20">        this.character = character;</span>
+<span class="fc" id="L21">    }</span>
+
+    /**
+     * Palauttaa kaaren kirjaimen.
+     *
+     * @return char, joka on kaaren kirjain.
+     */
+    public char getCaharacter() {
+<span class="fc" id="L29">        return character;</span>
+    }
+
+    /**
+     * Palauttaa kaaren maalisolmun viitteen.
+     *
+     * @return int, joka viittaa maalisolmuun.
+     */
+    public int getGoalNode() {
+<span class="fc" id="L38">        return goalNode;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

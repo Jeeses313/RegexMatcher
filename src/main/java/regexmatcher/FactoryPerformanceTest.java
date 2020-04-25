@@ -1,5 +1,10 @@
 package regexmatcher;
 
+import regexmatcher.util.NFAfactory;
+import regexmatcher.util.DFAfactory;
+import regexmatcher.domain.Node;
+import regexmatcher.domain.List;
+
 /**
  * Automaattien muodostamisen suorituskykyä testaava luokka.
  */

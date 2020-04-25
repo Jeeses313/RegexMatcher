@@ -1,5 +1,10 @@
 package regexmatcher;
 
+import regexmatcher.util.Matcher;
+import regexmatcher.util.NFAfactory;
+import regexmatcher.util.DFAfactory;
+import regexmatcher.domain.List;
+
 /**
  * Merkkijonojen kieleen kuulumisen tarkistamisen suorituskykyä testaava luokka.
  */
