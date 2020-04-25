@@ -21,7 +21,7 @@ Testit voidaan toistaa lataamalla projekti ja suorittamalla testit antamalla kom
 ### Ohjelman toiminnan empiirisen testauksen tulosten esittäminen graafisessa muodossa  
 #### Automaattien rakenteen testaus  
 ##### NFA:n muodostus  
-Erilaisten säännöllisten lausekkeiden muuttaminen automaateiksi [NFAfactory.java](https://github.com/Jeeses313/RegexMatcher/blob/master/src/main/java/regexmatcher/NFAfactory.java):lla.  
+Erilaisten säännöllisten lausekkeiden muuttaminen automaateiksi [NFAfactory.java](https://github.com/Jeeses313/RegexMatcher/blob/master/src/main/java/regexmatcher/util/NFAfactory.java):lla.  
 ![alt text](https://github.com/Jeeses313/RegexMatcher/blob/master/Dokumentaatio/kuvat/saannollinenlauseke3.png)  
 Tarkemmat tiedot automaatin muodostamisesta löytyvät luokan dokumentaatiosta ja koodista.  
 
