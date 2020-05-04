@@ -85,12 +85,9 @@ public class MatcherPerformanceTest {
     }
 
     /**
-     * Muodostaa listan merkkijonoja, joiden enimmäispituus ja sisältämät
-     * kirjaimet on annettu.
+     * Muodostaa listan merkkijonoja, joiden enimmäispituus on 7 ja sisältämät
+     * kirjaimet ovat a-d ja 0-3.
      *
-     * @param charList List, joka sisältää kirjaimet, joita merkkijonoissa
-     * voidaan käyttää.
-     * @param length int, merkkijonojen enimmäispituus.
      * @return List, joka sisältää muodostetut merkkijonot.
      */
     private static List<List<String>> generateListOfStrings() {
