@@ -123,6 +123,6 @@ Koska tässä ei käytetä apuna listoja yms., vaan vain kokonaislukuja ja totuu
 ### Lähteet  
 * [https://en.wikipedia.org/wiki/Regular_expression](https://en.wikipedia.org/wiki/Regular_expression)  
 * [https://en.wikipedia.org/wiki/Nondeterministic_finite_automaton](https://en.wikipedia.org/wiki/Nondeterministic_finite_automaton)  
-* [https://en.wikipedia.org/wiki/State_complexity)  
+* [https://en.wikipedia.org/wiki/State_complexity](https://en.wikipedia.org/wiki/State_complexity)  
 * Introduction to the theory of computation - Michael Sipser  
 * Tietorakenteet ja algoritmit - Antti Laaksonen
