@@ -107,6 +107,8 @@ NFA: Or(100): 11100ns
 DFA: Or(100): 24300ns 
 ```  
 
+![alt text](https://github.com/Jeeses313/RegexMatcher/blob/master/Dokumentaatio/kuvat/suorituskykytestaus1.png)  
+
 Tuloksista huomataan, että NFA:n muostukseen kuluva aikaa kasvaa lienaarisesti tai lineaarista hitaammin. Tuloksista huomaa myös, että sulkuja sisältävien lausekkeiden muuttaminen automaatiksi kuluttaa eniten aikaa. Tämä 
 johtuu siitä, että sulkuja käyttäessä lausekkeista on tullut pidempiä, koska kahden merkin, eli a*, a+ ja a?, tuleekin kolme, (a), eli käsitellään enemmän merkkejä.  
 
@@ -118,30 +120,107 @@ saattaa tapahtua Javan aiheuttaamaa häiriötä.
 ##### [Merkkijonojen tarkistaminen](https://github.com/Jeeses313/RegexMatcher/blob/master/src/main/java/regexmatcher/MatcherPerformanceTest.java)  
 On selvää, että DFA on NFA:ta nopeampi, mutta DFA:n muodostuksessa kestää kauemmin. Tämän takia on hyvä tutkia miten paljon/millaisia merkkijonoja pitää tarkistaa, että DFA:n muodostaminen on nopeampaa.  
 
-Testeissä mudostetaan erilaisista säännöllisistä lausekkeista NFA ja DFA ja tarkistetaan molemmilla erilaisia merkkijonoja. Muodostus ja tarkistukset tehdään tuhat kertaa ja näistä lasketaan automaatin muodostuksen ja tarkistusten yhteen kuluvan ajan mediaani. 
+Testeissä mudostetaan erilaisista säännöllisistä lausekkeista NFA ja DFA ja tarkistetaan molemmilla erilaisia merkkijonoja. Merkkijonot ovat kaikki a-d ja 0-3 merkkien yhdistelmät testin suluissa olevan numeron osoittamaan pituuteen saakka, eli merkkijonoja on (8^n)+(8^n-1)+...+(8^0). 
+Muodostus ja tarkistukset tehdään tuhat kertaa ja näistä lasketaan automaatin muodostuksen ja tarkistusten yhteen kuluvan ajan mediaani. 
 Testeissä käytetään mediaania, koska Javan toiminta voi aiheuttaa/aiheuttaa hyvin suuria eroja ajoissa, mikä kasvattaisi keskiarvoa paljon. Testeistä saadaan seuraavat tulokset:  
 
 ```  
-NFA: Simple expression: 345100ns
-DFA: Simple expression: 39500ns
-Difference(NFA-DFA): 305600
+NFA: Simple expression(1): 2400ns
+DFA: Simple expression(1): 13200ns
+Difference(NFA-DFA): -10800
+NFA: Simple expression(2): 5000ns
+DFA: Simple expression(2): 4600ns
+Difference(NFA-DFA): 400
+NFA: Simple expression(3): 33100ns
+DFA: Simple expression(3): 5100ns
+Difference(NFA-DFA): 28000
+NFA: Simple expression(4): 123700ns
+DFA: Simple expression(4): 21200ns
+Difference(NFA-DFA): 102500
+NFA: Simple expression(5): 680200ns
+DFA: Simple expression(5): 85400ns
+Difference(NFA-DFA): 594800
+NFA: Simple expression(6): 5297500ns
+DFA: Simple expression(6): 692300ns
+Difference(NFA-DFA): 4605200
+NFA: Simple expression(7): 42524900ns
+DFA: Simple expression(7): 5882500ns
+Difference(NFA-DFA): 36642400
 ------------------------
-NFA: Simple expression with or: 27400ns
-DFA: Simple expression with or: 32900ns
-Difference(NFA-DFA): -5500
+NFA: Simple expression with or(1): 1600ns
+DFA: Simple expression with or(1): 8100ns
+Difference(NFA-DFA): -6500
+NFA: Simple expression with or(2): 2500ns
+DFA: Simple expression with or(2): 8300ns
+Difference(NFA-DFA): -5800
+NFA: Simple expression with or(3): 13300ns
+DFA: Simple expression with or(3): 7200ns
+Difference(NFA-DFA): 6100
+NFA: Simple expression with or(4): 100000ns
+DFA: Simple expression with or(4): 20700ns
+Difference(NFA-DFA): 79300
+NFA: Simple expression with or(5): 736800ns
+DFA: Simple expression with or(5): 71500ns
+Difference(NFA-DFA): 665300
+NFA: Simple expression with or(6): 5799700ns
+DFA: Simple expression with or(6): 563100ns
+Difference(NFA-DFA): 5236600
+NFA: Simple expression with or(7): 46769900ns
+DFA: Simple expression with or(7): 5053000ns
+Difference(NFA-DFA): 41716900
 ------------------------
-NFA: Difficult expression: 233400ns
-DFA: Difficult expression: 127300ns
-Difference(NFA-DFA): 106100
+NFA: Difficult expression(1): 1500ns
+DFA: Difficult expression(1): 38800ns
+Difference(NFA-DFA): -37300
+NFA: Difficult expression(2): 5700ns
+DFA: Difficult expression(2): 36400ns
+Difference(NFA-DFA): -30700
+NFA: Difficult expression(3): 54900ns
+DFA: Difficult expression(3): 40600ns
+Difference(NFA-DFA): 14300
+NFA: Difficult expression(4): 630500ns
+DFA: Difficult expression(4): 120000ns
+Difference(NFA-DFA): 510500
+NFA: Difficult expression(5): 6054300ns
+DFA: Difficult expression(5): 815400ns
+Difference(NFA-DFA): 5238900
+NFA: Difficult expression(6): 57443400ns
+DFA: Difficult expression(6): 7624100ns
+Difference(NFA-DFA): 49819300
+NFA: Difficult expression(7): 527586800ns
+DFA: Difficult expression(7): 69705300ns
+Difference(NFA-DFA): 457881500
 ------------------------
-NFA: Difficult expression with or: 48400ns
-DFA: Difficult expression with or: 118600ns
-Difference(NFA-DFA): -70200  
+NFA: Difficult expression with or(1): 1600ns
+DFA: Difficult expression with or(1): 41400ns
+Difference(NFA-DFA): -39800
+NFA: Difficult expression with or(2): 6100ns
+DFA: Difficult expression with or(2): 41300ns
+Difference(NFA-DFA): -35200
+NFA: Difficult expression with or(3): 54900ns
+DFA: Difficult expression with or(3): 44000ns
+Difference(NFA-DFA): 10900
+NFA: Difficult expression with or(4): 526800ns
+DFA: Difficult expression with or(4): 86400ns
+Difference(NFA-DFA): 440400
+NFA: Difficult expression with or(5): 4970500ns
+DFA: Difficult expression with or(5): 451100ns
+Difference(NFA-DFA): 4519400
+NFA: Difficult expression with or(6): 43841100ns
+DFA: Difficult expression with or(6): 3531400ns
+Difference(NFA-DFA): 40309700
+NFA: Difficult expression with or(7): 380261800ns
+DFA: Difficult expression with or(7): 29502000ns
+Difference(NFA-DFA): 350759800
 ```  
 
-Tuloksista huomataan, että NFA:n käyttäminen on hitaampaa kuin DFA:n muodostaminen ja sen käyttäminen silloin, kun säännöllisessä lausekkeessa on tai-osioita. Tämä johtuu siitä, että tarkistus NFA:lla toimii syvyyshaun tavoin ja tai-osioiden takia joudutaan tekemään paljon 
-peruuttamista, koska automaatissa on useita siirtymä vaihtoehtoja, kun DFA:lla on aina vain yksi vaihtoehto. Muulloin on paljon nopeampaa olla muodostamatta DFA:ta ja käyttää vain NFA:ta merkkijonojen tarkistamiseen.  
+![alt text](https://github.com/Jeeses313/RegexMatcher/blob/master/Dokumentaatio/kuvat/suorituskykytestaus2.png)  
 
+Tuloksista huomataan, että NFA:n käyttäminen on tehokkaampaa, kun tarkistettavia merkkijonoja on vähän, mikä on aika selvää, kun DFA:n muodostamiseen menee enemmän aikaa, mutta sen käyttäminen on nopeampaa. 
+Vaikeammilla säännöllisillä lausekkeilla NFA:n ja DFA:n ero kasvaa huomattavasti merkkijonojen määrän kasvaessa, mikä voi johtua siitä, että merkkijonojen pituudet kasvavat, jolloin NFA:n tarkistuksessa joudutaan tekemään enemmän tyhjien siirtymien läpikäyntiä ja peruutusta.  
+
+Erikoisena tuloksena on kuitenkin se, että vaikea säännöllinen lauseke ilman tai-osioita on vaativampi kuin vaikea säännöllinen lauseke niiden kanssa, koska tai-osioiden takia täytyy tehdä paljon peruutusta ja tarkistaa eri haaroja. Yksinkertaisilla 
+säännöllisillä lausekkeilla tai-osion sisältävä on kuitenkin vaativampi, eli tulokseen on voinut vaikuttaa valitut säännölliset lausekkeet tai Javan toiminta.
 
 
 

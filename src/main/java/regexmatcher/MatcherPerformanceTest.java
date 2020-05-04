@@ -17,99 +17,119 @@ public class MatcherPerformanceTest {
      * ohjeita, joilla ei tehdä mitään.
      */
     public static void main(String[] args) {
-        testSimpleExpression();
-        testSimpleExpressionWithOr();
-        testDifficultExpression();
-        testDifficultExpressionWithOr();
+        List<List<String>> strings = generateListOfStrings();
+        testSimpleExpression(strings);
+        testSimpleExpressionWithOr(strings);
+        testDifficultExpression(strings);
+        testDifficultExpressionWithOr(strings);
     }
 
     /**
      * Testaa yksinkertaista säännöllistä lauseketta.
      */
-    private static void testSimpleExpression() {
+    private static void testSimpleExpression(List<List<String>> strings) {
         String expression = "a*b*c*";
-        List<String> strings = new List<>();
-        strings.add("");
-        strings.add("a");
-        strings.add("aa");
-        strings.add("b");
-        strings.add("bb");
-        strings.add("c");
-        strings.add("cc");
-        strings.add("d");
-        strings.add("abc");
-        strings.add("aabbcc");
-        strings.add("ccbbaa");
-        strings.add("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbcccccccccccccccccccccccccccccccccc");
-        strings.add("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbcccccccccccccccccccccccccccccccccca");
-        testMatching(expression, "Simple expression", strings);
+        testMatching(expression, "Simple expression(1)", strings, 1);
+        testMatching(expression, "Simple expression(2)", strings, 2);
+        testMatching(expression, "Simple expression(3)", strings, 3);
+        testMatching(expression, "Simple expression(4)", strings, 4);
+        testMatching(expression, "Simple expression(5)", strings, 5);
+        testMatching(expression, "Simple expression(6)", strings, 6);
+        testMatching(expression, "Simple expression(7)", strings, 7);
         System.out.println("------------------------");
     }
 
     /**
      * Testaa yksinkertaista säännöllistä lauseketta, jossa on tai-osioita.
      */
-    private static void testSimpleExpressionWithOr() {
+    private static void testSimpleExpressionWithOr(List<List<String>> strings) {
         String expression = "ab*c|a*bc|abc*";
-        List<String> strings = new List<>();
-        strings.add("");
-        strings.add("ab");
-        strings.add("bc");
-        strings.add("ac");
-        strings.add("abc");
-        strings.add("aaaaaaaaaaaaaaaaaaaabc");
-        strings.add("abbbbbbbbbbbbbbbbbbbbc");
-        strings.add("abcccccccccccccccccccc");
-        strings.add("aaaaaaaaaaaaaaaaaaaaaaaaaabcccccccccccccccccccc");
-        strings.add("aaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbc");
-        strings.add("abbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccc");
-        strings.add("cba");
-        testMatching(expression, "Simple expression with or", strings);
+        testMatching(expression, "Simple expression with or(1)", strings, 1);
+        testMatching(expression, "Simple expression with or(2)", strings, 2);
+        testMatching(expression, "Simple expression with or(3)", strings, 3);
+        testMatching(expression, "Simple expression with or(4)", strings, 4);
+        testMatching(expression, "Simple expression with or(5)", strings, 5);
+        testMatching(expression, "Simple expression with or(6)", strings, 6);
+        testMatching(expression, "Simple expression with or(7)", strings, 7);
         System.out.println("------------------------");
     }
 
     /**
      * Testaa vaikeaa säännöllistä lauseketta.
      */
-    private static void testDifficultExpression() {
+    private static void testDifficultExpression(List<List<String>> strings) {
         String expression = "([a-z]*[0-9])+";
-        List<String> strings = new List<>();
-        strings.add("");
-        strings.add("1");
-        strings.add("9");
-        strings.add("a1");
-        strings.add("z9");
-        strings.add("A");
-        strings.add("a1b2C3");
-        strings.add("aaaaaaaaaaaaaaaaaaaaaa");
-        strings.add("aaaaaaaaaaaaaaaaaaaaaa1");
-        strings.add("aaaaaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa");
-        strings.add("aaaaaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1");
-        strings.add("abcdefghijklmnopqrstuvwxyz0123456789");
-        testMatching(expression, "Difficult expression", strings);
+        testMatching(expression, "Difficult expression(1)", strings, 1);
+        testMatching(expression, "Difficult expression(2)", strings, 2);
+        testMatching(expression, "Difficult expression(3)", strings, 3);
+        testMatching(expression, "Difficult expression(4)", strings, 4);
+        testMatching(expression, "Difficult expression(5)", strings, 5);
+        testMatching(expression, "Difficult expression(6)", strings, 6);
+        testMatching(expression, "Difficult expression(7)", strings, 7);
         System.out.println("------------------------");
     }
 
     /**
      * Testaa vaikeaa säännöllistä lauseketta, jossa on tai-osioita.
      */
-    private static void testDifficultExpressionWithOr() {
+    private static void testDifficultExpressionWithOr(List<List<String>> strings) {
         String expression = "(abc|[0-9]*|a*b*c*)+";
-        List<String> strings = new List<>();
-        strings.add("");
-        strings.add("ac");
-        strings.add("abc");
-        strings.add("cba");
-        strings.add("cbabc");
-        strings.add("cbabcc");
-        strings.add("d");
-        strings.add("aabbcc");
-        strings.add("abcabcabc");
-        strings.add("0123456789");
-        strings.add("abcabcaabbccaaabbbcccaaaabbbbcccc");
-        strings.add("abc0123456789abcccccccccccccccccc");
-        testMatching(expression, "Difficult expression with or", strings);
+        testMatching(expression, "Difficult expression with or(1)", strings, 1);
+        testMatching(expression, "Difficult expression with or(2)", strings, 2);
+        testMatching(expression, "Difficult expression with or(3)", strings, 3);
+        testMatching(expression, "Difficult expression with or(4)", strings, 4);
+        testMatching(expression, "Difficult expression with or(5)", strings, 5);
+        testMatching(expression, "Difficult expression with or(6)", strings, 6);
+        testMatching(expression, "Difficult expression with or(7)", strings, 7);
         System.out.println("------------------------");
+    }
+
+    /**
+     * Muodostaa listan merkkijonoja, joiden enimmäispituus ja sisältämät
+     * kirjaimet on annettu.
+     *
+     * @param charList List, joka sisältää kirjaimet, joita merkkijonoissa
+     * voidaan käyttää.
+     * @param length int, merkkijonojen enimmäispituus.
+     * @return List, joka sisältää muodostetut merkkijonot.
+     */
+    private static List<List<String>> generateListOfStrings() {
+        List<Character> charList = new List<>();
+        charList.add('a');
+        charList.add('b');
+        charList.add('c');
+        charList.add('d');
+        charList.add('0');
+        charList.add('1');
+        charList.add('2');
+        charList.add('3');
+        List<List<String>> strings = new List<>();
+        for (int i = 0; i <= 7; i++) {
+            strings.add(new List<>());
+        }
+        fillListOfStringWithStringOfCertainLength(strings, charList, "", 7);
+        return strings;
+    }
+
+    /**
+     * Täyttää annetun listan halutun pituisilla merkkijonoilla, jotka on
+     * muodostettu annetuista merkeistä.
+     *
+     * @param strings List, joka täytetään muodostetuilla merkkijonoilla.
+     * @param charList List, joka sisältää kirjaimet, joita merkkijonoissa
+     * voidaan käyttää.
+     * @param currentString String, joka lisätään listaan ja josta muodostetaan
+     * pidempiä merkkijonoja.
+     * @param length int, merkkijonojen enimmäispituus.
+     */
+    private static void fillListOfStringWithStringOfCertainLength(List<List<String>> strings, List<Character> charList, String currentString, int length) {
+        strings.get(currentString.length()).add(currentString);
+        if (currentString.length() == length) {
+            return;
+        }
+        for (int i = 0; i < charList.size(); i++) {
+            fillListOfStringWithStringOfCertainLength(strings, charList, currentString + charList.get(i), length);
+        }
     }
 
     /**
@@ -121,25 +141,31 @@ public class MatcherPerformanceTest {
      * @param testName String, joka on testin nimi.
      * @param strings List, joka sisältää tarkistettavat merkkijonot.
      */
-    private static void testMatching(String expression, String testName, List<String> strings) {
+    private static void testMatching(String expression, String testName, List<List<String>> strings, int maxLength) {
         long[] nfaTimes = new long[1000];
         long[] dfaTimes = new long[1000];
         for (int j = 0; j < 1000; j++) {
             long start = System.nanoTime();
             Matcher matcher = new Matcher(new NFAfactory().generateNFA(expression), false);
-            for (int i = 0; i < strings.size(); i++) {
-                matcher.match(strings.get(i));
+            for (int i = 0; i < maxLength; i++) {
+                for (int k = 0; k < strings.get(i).size(); k++) {
+                    matcher.match(strings.get(i).get(k));
+                }
             }
             long end = System.nanoTime();
             nfaTimes[j] = (end - start);
             start = System.nanoTime();
             matcher = new Matcher(new DFAfactory().generateDFA(new NFAfactory().generateNFA(expression)), true);
-            for (int i = 0; i < strings.size(); i++) {
-                matcher.match(strings.get(i));
+            for (int i = 0; i < maxLength; i++) {
+                for (int k = 0; k < strings.get(i).size(); k++) {
+                    matcher.match(strings.get(i).get(k));
+                }
             }
             end = System.nanoTime();
             dfaTimes[j] = (end - start);
         }
+        sort(nfaTimes);
+        sort(dfaTimes);
         System.out.println("NFA: " + testName + ": " + (nfaTimes[1000 / 2]) + "ns");
         System.out.println("DFA: " + testName + ": " + (dfaTimes[1000 / 2]) + "ns");
         System.out.println("Difference(NFA-DFA): " + ((nfaTimes[1000 / 2]) - (dfaTimes[1000 / 2])));

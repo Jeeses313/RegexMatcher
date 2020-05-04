@@ -117,7 +117,8 @@ Koska tässä ei käytetä apuna listoja yms., vaan vain kokonaislukuja ja totuu
 * DFA:n voisi muodostaa tehokkaammin.  
 
 #### Parannusehdotukset  
-* Parempi automaattien tulostus.   
+* Parempi automaattien tulostus.  
+* Parempi suorituskykytestaus. Merkkijonojen tarkistuksen testauksessa olisi ehkä kannattanut vain tehdä saman pituisia merkkijonoja ja testata niistä eri määriä. Tosin silloinkin tuloksiin vaikuttaa, mitkä merkkijonot valitaan tarkistettaviksi. 
 
 ### Lähteet  
 * [https://en.wikipedia.org/wiki/Regular_expression](https://en.wikipedia.org/wiki/Regular_expression)  
