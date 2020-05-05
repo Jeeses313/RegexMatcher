@@ -119,6 +119,8 @@ DFA: Or(1000): 1101400ns
 
 ![alt text](https://github.com/Jeeses313/RegexMatcher/blob/master/Dokumentaatio/kuvat/suorituskykytestaus1.png)  
 ![alt text](https://github.com/Jeeses313/RegexMatcher/blob/master/Dokumentaatio/kuvat/suorituskykytestaus3.png)  
+![alt text](https://github.com/Jeeses313/RegexMatcher/blob/master/Dokumentaatio/kuvat/suorituskykytestaus5.png)  
+![alt text](https://github.com/Jeeses313/RegexMatcher/blob/master/Dokumentaatio/kuvat/suorituskykytestaus6.png)  
 
 Tuloksista huomataan, että NFA:n muostukseen kuluva aikaa kasvaa lienaarisesti tai lineaarista hitaammin. Tuloksista huomaa myös, että sulkuja sisältävien lausekkeiden muuttaminen NFA:ksi kuluttaa eniten aikaa, mikä 
 johtuu siitä, että sulkuja käyttäessä lausekkeista on tullut pidempiä, koska kahden merkin, eli a*, a+ ja a?, tuleekin kolme, (a), eli käsitellään enemmän merkkejä.  
@@ -231,11 +233,13 @@ Difference(NFA-DFA): 350759800
 ```  
 
 ![alt text](https://github.com/Jeeses313/RegexMatcher/blob/master/Dokumentaatio/kuvat/suorituskykytestaus2.png)  
+![alt text](https://github.com/Jeeses313/RegexMatcher/blob/master/Dokumentaatio/kuvat/suorituskykytestaus7.png)  
+![alt text](https://github.com/Jeeses313/RegexMatcher/blob/master/Dokumentaatio/kuvat/suorituskykytestaus8.png)  
 
-Tuloksista huomataan, että NFA:n käyttäminen on tehokkaampaa, kun tarkistettavia merkkijonoja on vähän, mikä on aika selvää, kun DFA:n muodostamiseen menee enemmän aikaa, mutta sen käyttäminen on nopeampaa. 
+Tuloksista huomataan, että NFA:n käyttäminen on tehokkaampaa, kun tarkistettavia merkkijonoja on vähän, mikä on aika selvää, kun DFA:n muodostamiseen menee enemmän aikaa, mutta DFA:lla tarkistaminen on nopeampaa. 
 Vaikeammilla säännöllisillä lausekkeilla NFA:n ja DFA:n ero kasvaa huomattavasti merkkijonojen määrän kasvaessa, mikä voi johtua siitä, että merkkijonojen pituudet kasvavat, jolloin NFA:n tarkistuksessa joudutaan tekemään enemmän tyhjien siirtymien läpikäyntiä ja peruutusta.  
 
-Erikoisena tuloksena on kuitenkin se, että vaikea säännöllinen lauseke ilman tai-osioita on vaativampi kuin vaikea säännöllinen lauseke niiden kanssa, koska tai-osioiden takia täytyy tehdä paljon peruutusta ja tarkistaa eri haaroja. Yksinkertaisilla 
+Erikoisena tuloksena on kuitenkin se, että vaikea säännöllinen lauseke ilman tai-osioita on vaativampi NFA:lla kuin vaikea säännöllinen lauseke niiden kanssa, koska tai-osioiden takia täytyy tehdä paljon peruutusta ja tarkistaa eri haaroja. Yksinkertaisilla 
 säännöllisillä lausekkeilla tai-osion sisältävä on kuitenkin vaativampi, eli tulokseen on voinut vaikuttaa valitut säännölliset lausekkeet tai Javan toiminta.
 
 
