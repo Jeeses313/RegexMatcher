@@ -122,11 +122,11 @@ DFA: Or(1000): 1101400ns
 ![alt text](https://github.com/Jeeses313/RegexMatcher/blob/master/Dokumentaatio/kuvat/suorituskykytestaus5.png)  
 ![alt text](https://github.com/Jeeses313/RegexMatcher/blob/master/Dokumentaatio/kuvat/suorituskykytestaus6.png)  
 
-Tuloksista huomataan, että NFA:n muostukseen kuluva aikaa kasvaa lienaarisesti tai lineaarista hitaammin. Tuloksista huomaa myös, että sulkuja sisältävien lausekkeiden muuttaminen NFA:ksi kuluttaa eniten aikaa, mikä 
+Tuloksista huomataan, että NFA:n muostukseen kuluva aikaa kasvaa lienaarisesti. Tuloksista huomaa myös, että sulkuja sisältävien lausekkeiden muuttaminen NFA:ksi kuluttaa eniten aikaa, mikä 
 johtuu siitä, että sulkuja käyttäessä lausekkeista on tullut pidempiä, koska kahden merkin, eli a*, a+ ja a?, tuleekin kolme, (a), eli käsitellään enemmän merkkejä.  
 
 DFA:n tuloksista oudoimpana on yhden ja kymmenen merkkiyhdistelmän tai-osion sisältävät lausekkeet, koska ne ovat jostain syystä nopeampia kuin NFA:n muodostus, vaikka DFA:ta muodostaessa aina muodostetaan NFA ensin. Tämä voi johtua Javan toiminnasta ja siitä, että käytetään mediaania. 
-Muuten DFA:n muodostamiseen kuluva aika kasvaa lienaarisesti tai lineaarista hitaammin, mutta plussia ja kysymysmerkkejä sisältävien lausekkeiden ajat kasvavat todella paljon, kun 1000 merkin säännöllisten lausekkeiden muuttamiseen menee lähes 1s muutaman millisekuntin sijaan. Kysymysmerkkejä sisältävien pitkä kesto johtuu 
+Muuten DFA:n muodostamiseen kuluva aika näyttäisi kasvavan lienaarisesti, mutta plussia ja kysymysmerkkejä sisältävien lausekkeiden ajat kasvavat todella paljon, kun 1000 merkin säännöllisten lausekkeiden muuttamiseen menee lähes yksi sekunti muutaman millisekuntin sijaan. Kysymysmerkkejä sisältävien pitkä kesto johtuu 
 pitkistä tyhjien merkkien siirtymäketjuista, jolloin DFA:ta muodostaessa joudutaan käymään paljon tiloja läpi jokaisen siirtymän jälkeen, että saataisiin muodostettua yhdistetty tila. Plussia sisältävillä näin ei pitäisi käydä, kun taas tähtiä sisältävillä, joiden aika on paljon lyhyempi, näin pitäisi käydä, eli testeissä 
 saattaa tapahtua Javan aiheuttaamaa häiriötä.  
 
