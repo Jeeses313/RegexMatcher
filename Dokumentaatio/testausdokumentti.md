@@ -67,7 +67,7 @@ Virhe tarkistetaan JUnitilla antamalla merkkijonon tarkistajalle kolme ylläolev
 ##### [Automaattien muodostus](https://github.com/Jeeses313/RegexMatcher/blob/master/src/main/java/regexmatcher/FactoryPerformanceTest.java)  
 NFA:n ja DFA:n muodostamisnopeuksien vertailu on turhaa, koska ohjelma vaatii NFA:n muodostuksen DFA:n muodostamiseksi, mutta erilaisten säännöllisten lausekkeiden muuttaminen automaateiksi voi tuottaa kiinnostavia tuloksia.  
 
-Testeissä muodostetaan erilaisia toistuvia merkkiyhdistelmiä sisältäviä säännöllisiä lausekkeita 1, 10 ja 100 merkkiyhdistelmän kokoisina ja jokaisesta säännöllisestä lausekkeesta muodostetaan tuhat kertaa NFA ja DFA ja sitten lasketaan näiden tuhannen muodostamiseen kuluvan 
+Testeissä muodostetaan erilaisia toistuvia merkkiyhdistelmiä sisältäviä säännöllisiä lausekkeita 1, 10, 100 ja 1000 merkkiyhdistelmän kokoisina ja jokaisesta säännöllisestä lausekkeesta muodostetaan tuhat kertaa NFA ja DFA ja sitten lasketaan näiden tuhannen muodostamiseen kuluvan 
 ajan mediaanin. Testeissä käytetään mediaania, koska Javan toiminta voi aiheuttaa/aiheuttaa hyvin suuria eroja ajoissa, mikä kasvattaisi keskiarvoa paljon. Testeistä saadaan seuraavat tulokset:  
 
 ```  
