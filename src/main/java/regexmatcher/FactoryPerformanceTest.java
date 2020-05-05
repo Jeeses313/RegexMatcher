@@ -29,7 +29,7 @@ public class FactoryPerformanceTest {
      */
     private static void testExpressionWithBrackets() {
         int scale = 1;
-        while (scale <= 100) {
+        while (scale <= 1000) {
             String expression = generateBracketExpression(scale);
             testAutomateForming(expression, "Brackets(" + scale + ")");
             scale *= 10;
@@ -60,7 +60,7 @@ public class FactoryPerformanceTest {
      */
     private static void testExpressionWithStar() {
         int scale = 1;
-        while (scale <= 100) {
+        while (scale <= 1000) {
             String expression = generateStarExpression(scale);
             testAutomateForming(expression, "Star(" + scale + ")");
             scale *= 10;
@@ -88,7 +88,7 @@ public class FactoryPerformanceTest {
      */
     private static void testExpressionWithPlus() {
         int scale = 1;
-        while (scale <= 100) {
+        while (scale <= 1000) {
             String expression = generatePlusExpression(scale);
             testAutomateForming(expression, "Plus(" + scale + ")");
             scale *= 10;
@@ -116,7 +116,7 @@ public class FactoryPerformanceTest {
      */
     private static void testExpressionWithQuestionmark() {
         int scale = 1;
-        while (scale <= 100) {
+        while (scale <= 1000) {
             String expression = generateQuestionmarkExpression(scale);
             testAutomateForming(expression, "Question mark(" + scale + ")");
             scale *= 10;
@@ -145,7 +145,7 @@ public class FactoryPerformanceTest {
      */
     private static void testExpressionWithOr() {
         int scale = 1;
-        while (scale <= 100) {
+        while (scale <= 1000) {
             String expression = generateOrExpression(scale);
             testAutomateForming(expression, "Or(" + scale + ")");
             scale *= 10;

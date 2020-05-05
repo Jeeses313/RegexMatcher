@@ -13,7 +13,7 @@ Myös monia erilaisia ei valideja säännöllisiä lausekkeita on myös testattu
 Esim. ]a, [a, [a-.], [a-9], (*a), +a, ?a ja @.  
 
 Suorituskykytestausksessa merkkijonojen tarkistamiseen on käytetty säännöllisiä lausekkeita a*b*c*, ab*c|a*bc|abc*, ([a-z]*[0-9])+ ja (abc|[0-9]*|a*b*c*)+ 
-ja automaattien muodostamiseen on käytetty säännöllisiä lausekkeita, joissa on 1, 10 ja 100 kertaa peräkkäin a*, a+, a?, (a, jonka jälkeen 1, 10 ja 100 kertaa ), ja a|, jonka jälkeen yksi a.  
+ja automaattien muodostamiseen on käytetty säännöllisiä lausekkeita, joissa on 1, 10, 100 ja 1000 kertaa peräkkäin a*, a+, a?, (a, jonka jälkeen 1, 10 ja 100 kertaa ), ja a|, jonka jälkeen yksi a.  
 
 ### Miten testit voidaan toistaa  
 Testit voidaan toistaa lataamalla projekti ja suorittamalla testit antamalla komentokehotteelle komento ```mvn test```, suorittamalla ohjelman tai suorittamalla suorituskykytestaukseen tarkoitetut luokat.  
@@ -71,51 +71,67 @@ Testeissä muodostetaan erilaisia toistuvia merkkiyhdistelmiä sisältäviä sä
 ajan mediaanin. Testeissä käytetään mediaania, koska Javan toiminta voi aiheuttaa/aiheuttaa hyvin suuria eroja ajoissa, mikä kasvattaisi keskiarvoa paljon. Testeistä saadaan seuraavat tulokset:  
 
 ```  
-NFA: Brackets(1): 2900ns
-DFA: Brackets(1): 6200ns
-NFA: Brackets(10): 6100ns
-DFA: Brackets(10): 15100ns
-NFA: Brackets(100): 16600ns
-DFA: Brackets(100): 149500ns
+NFA: Brackets(1): 3600ns
+DFA: Brackets(1): 6900ns
+NFA: Brackets(10): 7300ns
+DFA: Brackets(10): 19700ns
+NFA: Brackets(100): 16300ns
+DFA: Brackets(100): 162300ns
+NFA: Brackets(1000): 95300ns
+DFA: Brackets(1000): 4762600ns
 ------------------------
-NFA: Star(1): 800ns
-DFA: Star(1): 3000ns
-NFA: Star(10): 3200ns
-DFA: Star(10): 47900ns
-NFA: Star(100): 10400ns
-DFA: Star(100): 126600ns
+NFA: Star(1): 400ns
+DFA: Star(1): 1700ns
+NFA: Star(10): 1100ns
+DFA: Star(10): 7200ns
+NFA: Star(100): 6600ns
+DFA: Star(100): 80700ns
+NFA: Star(1000): 65800ns
+DFA: Star(1000): 6478900ns
 ------------------------
-NFA: Plus(1): 600ns
-DFA: Plus(1): 900ns
-NFA: Plus(10): 1600ns
-DFA: Plus(10): 11600ns
-NFA: Plus(100): 10700ns
-DFA: Plus(100): 2020900ns
+NFA: Plus(1): 500ns
+DFA: Plus(1): 600ns
+NFA: Plus(10): 1100ns
+DFA: Plus(10): 8300ns
+NFA: Plus(100): 7300ns
+DFA: Plus(100): 1360900ns
+NFA: Plus(1000): 71700ns
+DFA: Plus(1000): 986163100ns
 ------------------------
-NFA: Question mark(1): 700ns
-DFA: Question mark(1): 700ns
-NFA: Question mark(10): 1500ns
-DFA: Question mark(10): 9000ns
-NFA: Question mark(100): 10100ns
-DFA: Question mark(100): 1834400ns
+NFA: Question mark(1): 500ns
+DFA: Question mark(1): 500ns
+NFA: Question mark(10): 1100ns
+DFA: Question mark(10): 7100ns
+NFA: Question mark(100): 8600ns
+DFA: Question mark(100): 1497900ns
+NFA: Question mark(1000): 72400ns
+DFA: Question mark(1000): 856037800ns
 ------------------------
-NFA: Or(1): 700ns
-DFA: Or(1): 600ns
-NFA: Or(10): 2000ns
-DFA: Or(10): 1500ns
-NFA: Or(100): 11100ns
-DFA: Or(100): 24300ns 
+NFA: Or(1): 600ns
+DFA: Or(1): 500ns
+NFA: Or(10): 1500ns
+DFA: Or(10): 1100ns
+NFA: Or(100): 7800ns
+DFA: Or(100): 17400ns
+NFA: Or(1000): 75900ns
+DFA: Or(1000): 1101400ns 
 ```  
 
 ![alt text](https://github.com/Jeeses313/RegexMatcher/blob/master/Dokumentaatio/kuvat/suorituskykytestaus1.png)  
+![alt text](https://github.com/Jeeses313/RegexMatcher/blob/master/Dokumentaatio/kuvat/suorituskykytestaus3.png)  
 
-Tuloksista huomataan, että NFA:n muostukseen kuluva aikaa kasvaa lienaarisesti tai lineaarista hitaammin. Tuloksista huomaa myös, että sulkuja sisältävien lausekkeiden muuttaminen automaatiksi kuluttaa eniten aikaa. Tämä 
+Tuloksista huomataan, että NFA:n muostukseen kuluva aikaa kasvaa lienaarisesti tai lineaarista hitaammin. Tuloksista huomaa myös, että sulkuja sisältävien lausekkeiden muuttaminen NFA:ksi kuluttaa eniten aikaa, mikä 
 johtuu siitä, että sulkuja käyttäessä lausekkeista on tullut pidempiä, koska kahden merkin, eli a*, a+ ja a?, tuleekin kolme, (a), eli käsitellään enemmän merkkejä.  
 
 DFA:n tuloksista oudoimpana on yhden ja kymmenen merkkiyhdistelmän tai-osion sisältävät lausekkeet, koska ne ovat jostain syystä nopeampia kuin NFA:n muodostus, vaikka DFA:ta muodostaessa aina muodostetaan NFA ensin. Tämä voi johtua Javan toiminnasta ja siitä, että käytetään mediaania. 
-Muuten DFA:n muodostamiseen kuluva aika kasvaa lienaarisesti tai lineaarista hitaammin, mutta plussia ja kysymysmerkkejä sisältävien lausekkeiden ajat kasvavat todella paljon, ~10000ns -> ~2000000ns verrattuna ~20000ns -> 130000ns. Kysymysmerkkejä sisältävien pitkä kesto johtuu 
+Muuten DFA:n muodostamiseen kuluva aika kasvaa lienaarisesti tai lineaarista hitaammin, mutta plussia ja kysymysmerkkejä sisältävien lausekkeiden ajat kasvavat todella paljon, kun 1000 merkin säännöllisten lausekkeiden muuttamiseen menee lähes 1s muutaman millisekuntin sijaan. Kysymysmerkkejä sisältävien pitkä kesto johtuu 
 pitkistä tyhjien merkkien siirtymäketjuista, jolloin DFA:ta muodostaessa joudutaan käymään paljon tiloja läpi jokaisen siirtymän jälkeen, että saataisiin muodostettua yhdistetty tila. Plussia sisältävillä näin ei pitäisi käydä, kun taas tähtiä sisältävillä, joiden aika on paljon lyhyempi, näin pitäisi käydä, eli testeissä 
 saattaa tapahtua Javan aiheuttaamaa häiriötä.  
+
+![alt text](https://github.com/Jeeses313/RegexMatcher/blob/master/Dokumentaatio/kuvat/suorituskykytestaus4.png)  
+
+Kuten kuvasta näkyy, kysymysmerkkejä sisältävän säännöllisen lausekkeen NFA:ssa a-siirtymien jälkeen päästään tyhjien merkkien siirtymien kautta kaikkiin nykyistä tilaa seuraaviin tilohin, joihin ei ole siirtymää a:lla. 
+Tähtiä sisältävässä tapahtuu samoin, kun taas plussia sisältävässä päästään vain a-siirtymää edeltävään tilaan ja yhteen seuraavaan tilaan.
 
 ##### [Merkkijonojen tarkistaminen](https://github.com/Jeeses313/RegexMatcher/blob/master/src/main/java/regexmatcher/MatcherPerformanceTest.java)  
 On selvää, että DFA on NFA:ta nopeampi, mutta DFA:n muodostuksessa kestää kauemmin. Tämän takia on hyvä tutkia miten paljon/millaisia merkkijonoja pitää tarkistaa, että DFA:n muodostaminen on nopeampaa.  
