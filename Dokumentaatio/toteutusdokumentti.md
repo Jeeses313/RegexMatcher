@@ -114,7 +114,7 @@ Koska tässä ei käytetä apuna listoja yms., vaan vain kokonaislukuja ja totuu
 ### Työn mahdolliset puutteet ja parannusehdotukset  
 #### Puutteet  
 * Ohjelma ei toteuta kaikkia mahdollisia säännöllisen lausekkeen toimintoja.  
-* DFA:n voisi muodostaa tehokkaammin. Tällä hetkellä joudutaan kaikkien siirtymine jälkeen tekeemään nykyinen yhdistettytila, mikä vaatii kaikissa tyhjien merkkien siirtymien päässä olevissa tiloissa käymisen. Tätä voisi vähentää laittamalla muistiin, mihin tiloihin päästään tyhjien merkkien siirtymillä mistäkin tilasta, jolloin tilojen läpikäynti loppuu, kun 
+* DFA:n voisi muodostaa tehokkaammin. Tällä hetkellä täytyy kaikkien siirtymien jälkeen tehdä nykyinen yhdistetty tila, mikä vaatii kaikissa tyhjien merkkien siirtymien päässä olevissa tiloissa käymisen. Tätä voisi vähentää laittamalla muistiin, mihin tiloihin päästään tyhjien merkkien siirtymillä mistäkin tilasta, jolloin tilojen läpikäynti loppuu, kun 
 saavutaan muistissa olevaan tilaan.  
 
 #### Parannusehdotukset  
