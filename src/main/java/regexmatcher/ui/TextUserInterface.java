@@ -69,7 +69,7 @@ public class TextUserInterface {
         System.out.println("- | = or");
         System.out.println("- [a-z], [A-Z] and [0-9]");
         System.out.println("- ()");
-        System.out.println("- . = {0, ... 9, a, ... z, A, ..., Z}");
+        System.out.println("- . = {0, ..., 9, a, ..., z, A, ..., Z}");
         System.out.println("Type -q at any time to quit");
         System.out.println("Type -r to change regular expression");
         System.out.println("Type -i at any time to get these instructions");
